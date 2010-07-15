@@ -1,0 +1,79 @@
+======================
+about.txt
+======================
+Last modified 7/15/10.
+
+This is an information file for the codebase running the SCCS online cygnet.  It explains
+the overall structure of the code and how it works at a high level.
+
+Major files:
+- index.php
+- cygnet.css
+- livecygnet.js
+- libXML.js
+- cygnetxml.py
+- config.py
+- cygnet.xsd
+- directories/
+- photos/
+
+Other files are mostly media files used for the frontend of the cygnet.
+
+In more detail:
+
+----------------------
+FILE SUMMARIES
+
+index.php
+
+This is the "frontend" page, which defines the structure of the online cygnet webpage, contains
+the text for the instructions and other miscellaneous information, and provides the form into
+which users can type search queries.  It's also where results are displayed.  It works via AJAX
+by calling a function in the livecygnet.js file.
+
+cygnet.css
+
+The CSS stylesheet for the cygnet, defining styles for the inital appearance of the main page
+and also for the results that appear once a query completes.
+
+etc...
+
+----------------------
+CHANGELOG
+
+Version 3.0
+
+Possible changes:
+- Display execution time of query (for debugging, maybe as feature?) **
+- Make queries execute faster ***
+	- Store data in a faster-to-read format? Database? JSON?
+    - Only reread directory file when it's been updated since the last query
+    - Faster way to filter?
+- Allow clicking on photos as "mailto:" links
+- Offer multiple display options? E.g. photos vs. text-only
+- Sort into multiple columns intelligently (i.e. based on width of browser window) *
+- Use JQuery to animate display of results
+- Make results more compact somehow (text to right of photos, smaller text/photos?) **
+- Standardize photo sizes more, lock sizes of grid contents more
+- Predict size of image to prevent "jumping" as images load *
+- Include directory of off-campus students and abroad students **
+- Collapse libXML.js & livecygnet.js into "cygnet.js" *
+- PHP-ize frontend more (automate copyright logo, etc.) *
+- Indicate when housing data was last updated on front page?
+- Don't use symbolic links for missing photos (allows caching of alternate.jpg, less confusing) **
+- Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
+- Show 7 digit phone numbers with a dash in them *
+- Use AJAXified URL updating (with hash component) to allow bookmarking of search terms
+- Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
+
+
+----------------------
+OLD VERSIONS
+
+Version 2.0
+Cygnet is "live" i.e. uses AJAX for requests instead of traditional form submission.
+
+Version 1.0
+First online cygnet?
+
+
