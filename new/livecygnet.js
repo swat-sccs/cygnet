@@ -1,7 +1,5 @@
 var timer = null;
 
-var searchedFor = "";
-
 var starttime = 0;
 
 function doImport() {

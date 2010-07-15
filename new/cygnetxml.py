@@ -1,16 +1,27 @@
 #!/usr/bin/env python
 
-# get our configuration information
-from config import *
+### ========================
+###      cygnetxml.py
+### ========================
+###
+### This is the main python code that parses the housing directory file
+### into a Python data structure.  The data can then be filtered based on the
+### search terms entered by the user, and the results are returned via
+### AJAX as an XML document.
+###
 
+# Import configuration information, variables defined include:
+# - directory_file 		String pointing to file to parse for directory information
+# - field_order 		List of names of fields, in the order they are in the file
+# - class_years 		List of class years to include
+from config import *
 
 import cgi
 import types
 import xml.dom
-# import xml.dom.ext
 import re
-
 import logging
+
 LOG_FILENAME = 'cygnet_errors.log'
 
 class Record:
