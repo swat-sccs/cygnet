@@ -1,5 +1,3 @@
-var xmlReq;
-
 /*
  * importXML - handle the messiness of creating the XMLHttpRequest
  * across different browser types, and insulate the user from nasty
@@ -39,9 +37,6 @@ function importXML(webservice, callback, noXMLloc) {
     xmlReq.open("get", webservice, true);
     xmlReq.onreadystatechange = function() {
 	if (xmlReq.readyState == 4) {
-	    if (xmlReq.status != 200) {
-		alert("HTTP Status: " + xmlReq.status + " = " + xmlReq.statusText);
-	    }
 	    callback(xmlReq);
 
 	}

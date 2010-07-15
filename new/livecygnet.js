@@ -2,8 +2,11 @@ var timer = null;
 
 var searchedFor = "";
 
+var starttime = 0;
+
 function doImport() {
     timer = null;
+    starttime = (new Date()).getTime();
     
     var search = document.getElementById("terms").value;
     
@@ -31,6 +34,10 @@ function updateBookmarkLink() {
 }
 
 function displayResults(xmlDoc) {
+
+    if (xmlDoc.status != 200) {
+		alert("HTTP Status: " + xmlReq.status + " = " + xmlReq.statusText);
+    }
 
     if (xmlDoc.responseXML == null) {
 	alert("Error: xmlDoc.responseXML is null");
@@ -126,6 +133,10 @@ function displayResults(xmlDoc) {
 
     // now clear the message
     document.getElementById("spinner").src = "spinner-stopped.gif";
+    
+    var endtime = (new Date()).getTime();
+    var timediff = endtime - starttime;
+    document.getElementById("timevalue").innerHTML = timediff + " ms";
 }
 
 var lastsearch = "";

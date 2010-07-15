@@ -44,6 +44,10 @@
                 <input type="text" name="terms" id="terms" size="40" onkeyup="javascript:waitSomeTime(500)" value="<?php echo $_REQUEST['terms']; ?>"/>
             </form>
             <img id="spinner" src="spinner-stopped.gif" align="absbottom" width="20" height="20" alt=""/>
+            <div id="responsetime">
+            	<span id="timelabel">Query took: </span>
+            	<span id="timevalue"></span>
+            </div>
         </div>
         <div id="results" style="text-align:center; margin: 1em auto 0;">
         </div>

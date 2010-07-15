@@ -82,4 +82,9 @@ div#results {
     padding:4px 2px;
 }
 
+#responsetime {
+	font-size: 80%;
+	color: gray;
+}
+
 
