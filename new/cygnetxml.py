@@ -136,8 +136,6 @@ def get_matches(terms):
     document_elm.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema-instance")
     document_elm.setAttribute("xsd:schemaLocation", "http://www.sccs.swarthmore.edu/cygnet cygnet.xsd")
 
-    logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
-    logging.debug('Running cygnetxml.py.')
 
     if terms is not None:
 
@@ -174,7 +172,7 @@ def get_matches(terms):
             document_elm.appendChild(result.toXMLNode(xml_document))
 
         fp.close()
-        logging.debug("Number of results %i" % len(results))
+        logging.info("Found %i results." % len(results))
 
     return xml_document
 
@@ -193,19 +191,21 @@ def parse_form():
         return None
 
 if __name__ == "__main__":
-   """
-   do our CGI thing
-   """
+    """
+    do our CGI thing
+    """
+    
+    format = "%(asctime)s - %(levelname)s - %(message)s"
+    logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, format=format)
+    logging.debug('Running cygnetxml.py.')
 
-   
-
-   terms = parse_form()
+    terms = parse_form()
     
 
-   print "Content-Type: text/xml\n"
+    print "Content-Type: text/xml\n"
     
-   xml_doc = get_matches(terms)
-   print xml_doc.toxml()
+    xml_doc = get_matches(terms)
+    print xml_doc.toxml()
     # xml.dom.ext.PrettyPrint(xml_doc) # no longer exists
 
 

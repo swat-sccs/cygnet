@@ -44,27 +44,27 @@ CHANGELOG
 Version 3.0
 
 Possible changes:
+- Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
 - Display execution time of query (for debugging, maybe as feature?) **
 - Make queries execute faster ***
-	- Store data in a faster-to-read format? Database? JSON?
-    - Only reread directory file when it's been updated since the last query
+	- Store data in a faster-to-read format? Database? cPickle?
+    - Only reread directory file when it's been updated since the last query (or when code is updated)
     - Faster way to filter?
-- Allow clicking on photos as "mailto:" links
-- Offer multiple display options? E.g. photos vs. text-only
-- Sort into multiple columns intelligently (i.e. based on width of browser window) *
-- Use JQuery to animate display of results
-- Make results more compact somehow (text to right of photos, smaller text/photos?) **
-- Standardize photo sizes more, lock sizes of grid contents more
-- Predict size of image to prevent "jumping" as images load *
-- Include directory of off-campus students and abroad students **
-- Collapse libXML.js & livecygnet.js into "cygnet.js" *
-- PHP-ize frontend more (automate copyright logo, etc.) *
-- Indicate when housing data was last updated on front page?
 - Don't use symbolic links for missing photos (allows caching of alternate.jpg, less confusing) **
-- Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
+- Make results more compact somehow (text to right of photos, smaller text/photos?) **
+- Include directory of off-campus students and abroad students **
+- Use AJAXified URL updating (with hash component) to allow bookmarking of search terms *
+- Allow clicking on photos as "mailto:" links *
 - Show 7 digit phone numbers with a dash in them *
-- Use AJAXified URL updating (with hash component) to allow bookmarking of search terms
-- Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
+- Sort into multiple columns intelligently (i.e. based on width of browser window) *
+- Predict size of image to prevent "jumping" as images load *
+- Collapse libXML.js & livecygnet.js into "cygnet.js" *
+- PHP-ize frontend more (automate copyright logo, etc.)
+- Use JQuery to animate display of results
+- Offer multiple display options? E.g. photos vs. text-only
+- Standardize photo sizes more, lock sizes of grid contents more
+- Indicate when housing data was last updated on front page?
+- Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
 
 
 ----------------------
