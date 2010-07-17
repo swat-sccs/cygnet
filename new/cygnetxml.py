@@ -21,6 +21,7 @@ import types
 import xml.dom
 import re
 import logging
+import time
 
 LOG_FILENAME = 'cygnet_errors.log'
 
@@ -139,6 +140,8 @@ def get_matches(terms):
 
     if terms is not None:
 
+        recordtime()
+
         #
         ###### INSERT TRY/CATCH STATEMENT HERE 
         #
@@ -166,10 +169,14 @@ def get_matches(terms):
             if included:
                 results.append(r)
 
+        recordtime("Reading directory file")
+
         # results.sort()
 
         for result in results:
             document_elm.appendChild(result.toXMLNode(xml_document))
+
+        recordtime("Creating XML document")
 
         fp.close()
         logging.info("Found %i results." % len(results))
@@ -190,22 +197,50 @@ def parse_form():
     else:
         return None
 
+
+def recordtime(taskname = None):
+    """
+    Logs the amount of time used since the last time this function was called, using
+    'taskname' as the name of the task. If taskname is None, it just stores the time value.
+    """
+    now = time.clock()
+    if taskname is not None:
+        try:
+            elapsedtime = now - recordtime.timemark
+        except NameError:
+            elapsedtime = now        
+        logging.debug("%s took %f seconds." % (taskname, elapsedtime))
+    recordtime.timemark = now
+
+
 if __name__ == "__main__":
     """
     do our CGI thing
     """
     
+    starttime = time.clock()
+    
     format = "%(asctime)s - %(levelname)s - %(message)s"
     logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, format=format)
-    logging.debug('Running cygnetxml.py.')
+    logging.debug("=== Running cygnetxml.py. ===")
 
+    recordtime()
     terms = parse_form()
-    
+    recordtime("Form parsing")
 
     print "Content-Type: text/xml\n"
     
     xml_doc = get_matches(terms)
-    print xml_doc.toxml()
+
+    recordtime()
+    xmltext = xml_doc.toxml()    
+    recordtime("Generating XML text")
+    
+    logging.debug("Size of XML document returned: %i chars or %g KB." % (len(xmltext), len(xmltext) / 512.0))
+    
+    print xmltext
     # xml.dom.ext.PrettyPrint(xml_doc) # no longer exists
+
+    logging.debug("Total time elapsed in cygnetxml.py: %.3g seconds" % (time.clock() - starttime))
 
 

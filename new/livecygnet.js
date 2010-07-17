@@ -34,14 +34,15 @@ function updateBookmarkLink() {
 function displayResults(xmlDoc) {
 
     if (xmlDoc.status != 200) {
-		alert("HTTP Status: " + xmlReq.status + " = " + xmlReq.statusText);
+		alert("HTTP Status: " + xmlDoc.status + " = " + xmlDoc.statusText);
+		die();
     }
 
     if (xmlDoc.responseXML == null) {
-	alert("Error: xmlDoc.responseXML is null");
-	alert("response text: " + xmlDoc.responseText);
-	throw("Error: xmlDoc.responseXML is null");
-	die();
+		alert("Error: xmlDoc.responseXML is null");
+		alert("response text: " + xmlDoc.responseText);
+		throw("Error: xmlDoc.responseXML is null");
+		die();
     }
 
     var div = document.getElementById("results");
