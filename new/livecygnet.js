@@ -2,29 +2,30 @@ var timer = null;
 
 var starttime = 0;
 
-function doImport() {
-    timer = null;
+var lastsearch = "";
+
+function doSearch() {
+    clearTimeout(timer);
     starttime = (new Date()).getTime();
     
-    var search = document.getElementById("terms").value;
+    var searchterms = document.getElementById("terms").value;
+    lastsearch = searchterms;
     
     updateBookmarkLink();
     
-    
-    // don't do empty searches, but instead clear the results area
-    if (search == "") {
-        document.getElementById("results").innerHTML = "";    
-    
-        return;
+    // Ignore empty searches, instead clear the results area
+    if (searchterms == "") {
+        document.getElementById("results").innerHTML = "";
+            
+    // Do search if different from search just performed
+    } else if (!sameSearch(searchterms)) {
+        document.getElementById("spinner").src = "spinner.gif";
+        importXML("cygnetxml.py?terms=" + searchterms, displayResults, "index.php");
     }
-                    
-    document.getElementById("spinner").src = "spinner.gif";
-    importXML("cygnetxml.py?terms=" + search, displayResults, "index.php");
 }
 
-
 function updateBookmarkLink() {
-    var url = 'http://cygnet.sccs.swarthmore.edu/index.php';
+    var url = 'index.php';
     if (lastsearch != "") {
         url += "?terms=" + lastsearch;
     }
@@ -138,8 +139,25 @@ function displayResults(xmlDoc) {
     document.getElementById("timevalue").innerHTML = timediff + " ms";
 }
 
-var lastsearch = "";
+function waitSomeTime(delay) {
+    if (timer != null) {
+        clearTimeout(timer);
+    }    
+    timer = setTimeout(doSearch, delay);
+}
 
+var sameSearch = (function() {
+    var lastsearch = '';
+    return function(newsearch) {
+        //alert("newsearch: " + newsearch + "  lastsearch: " + lastsearch); 
+        var isSame = (newsearch == lastsearch);
+        lastsearch = newsearch;
+        return isSame;
+    }
+})();
+
+
+/*
 function waitSomeTime(delay) {
     var thissearch = document.getElementById("terms").value;
 
@@ -153,3 +171,4 @@ function waitSomeTime(delay) {
     }
     timer = setTimeout(doImport, delay);
 }
+*/
