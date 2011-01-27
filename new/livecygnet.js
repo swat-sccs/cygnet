@@ -81,14 +81,13 @@ function updateBookmarkLink() {
     document.getElementById("bookmarkurl").href = url;
 }
 
-function displayResults(xmlDoc) {
-
-    if (xmlDoc.status != 200) {
-		alert("HTTP Status: " + xmlDoc.status + " = " + xmlDoc.statusText);
+function displayResults(ajax) {
+    if (ajax.status != 200) {
+		document.write("<!-- HTTP Status: " + ajax.status + " = " + ajax.statusText + "-->");
 		die();
     }
 
-    if (xmlDoc.responseXML == null) {
+    if (ajax.responseXML == null) {
 		alert("Error: xmlDoc.responseXML is null");
 		alert("response text: " + xmlDoc.responseText);
 		throw("Error: xmlDoc.responseXML is null");
@@ -97,9 +96,9 @@ function displayResults(xmlDoc) {
 
     var div = document.getElementById("results");
     var newHTML = "";
-    var docElement = xmlDoc.responseXML.documentElement;
+    var docElement = ajax.responseXML.documentElement;
     var textNodeType = 3;
-    var results = 0;
+    var resultcount = 0;
 
     div.innerHTML = "";
     
@@ -148,12 +147,9 @@ function displayResults(xmlDoc) {
                 nodeDict["phone"] = "x " + nodeDict["phone"];
             }
             
-            var col = results % 4;
+            var col = resultcount % 4;
             if (col == 0) {
-                if (results > 0) {
-                    newHTML += "</tr>";
-                }
-                newHTML += "<tr>";
+                newHTML += "</tr><tr>";
             }
 
             newHTML += "<td>";
@@ -165,20 +161,25 @@ function displayResults(xmlDoc) {
             newHTML += nodeDict["class"] + " / " + nodeDict["email"] + "<br/>";
             newHTML += "</span></td>";
             
-            results ++;
+            resultcount ++;   
         }
-
-        var col = (results % 4);
-        if (col != 0 && results > 4) {
+        
+        // Fill out the rest of the bottom of the table
+        var col = (resultcount % 4);
+        if (col != 0 && resultcount > 4) {
             for (var i=0; i<(4 - col); i++) {
                 newHTML += "<td>&nbsp;</td>";
             }
         }
 
-        newHTML += "</table>";
+        newHTML += "</tr></table>";
+        
+        div.innerHTML = "Search for \"" + lastsearch + "\" returned " + resultcount + " results.<br/><br/>" + newHTML;
+        
+    } else {
+        div.innerHTML = "Search for \"" + lastsearch + "\" found no matches";
+
     }
-    
-    div.innerHTML = "Search for \"" + lastsearch + "\" returned " + results + " results.<br/><br/>" + newHTML;
 
     // now clear the message
     document.getElementById("spinner").src = "spinner-stopped.gif";
