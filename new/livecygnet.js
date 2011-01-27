@@ -1,3 +1,4 @@
+
 /*
  * importXML - handle the messiness of creating the XMLHttpRequest
  * across different browser types, and insulate the user from nasty
@@ -7,47 +8,43 @@
  * @param[in] callback   the function co call once the XML fetch is completed
  * @param[in] noXMLloc   a page to redirect to if the browser doesn't support XMLHttpRequests
  */ 
-function importXML(webservice, callback, noXMLloc) {
+function requestAJAX(webservice, callback, noXMLloc) {
 
     var workers = [
         "MSXML2.XMLHTTP.5.0", 
         "MSXML2.XMLHTTP.4.0", 
         "MSXML2.XMLHTTP.3.0", 
         "Microsoft.XMLHTTP"
-        ]; 
+        ];
     
-    var xmlReq = null;
+    var ajax = null;
 
     try {
-        xmlReq = new XMLHttpRequest();
+        ajax = new XMLHttpRequest();
     } catch (error) {
-        for (var i=0; i<workers.length; i++) {
+        for (worker in workers) {
             try {
-                xmlReq = new ActiveXObject(workers[i]);
-                
-                break; // exit the loop
+                ajax = new ActiveXObject(worker);
+                break;
             } catch (ignored) { }
         }
     }
 
-    if (xmlReq == null || xmlReq == undefined) {
+    if (ajax == null || ajax == undefined) {
         window.location = noXMLloc;
     }
             
-    xmlReq.open("get", webservice, true);
-    xmlReq.onreadystatechange = function() {
-	if (xmlReq.readyState == 4) {
-	    callback(xmlReq);
-
-	}
+    ajax.open("get", webservice, true);
+    ajax.onreadystatechange = function() {
+    	if (ajax.readyState == 4) {
+    	    callback(ajax);
+    	}
     };
-    xmlReq.send(null);
+    ajax.send(null);
 }
 
 
-//
-// -------- Merge libXML.js above this ---------
-//
+// =======================================
 
 var timer = null;
 
@@ -67,11 +64,12 @@ function doSearch() {
     // Ignore empty searches, instead clear the results area
     if (searchterms == "") {
         document.getElementById("results").innerHTML = "";
+        sameSearch(searchterms); // to register empty search
             
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
         document.getElementById("spinner").src = "spinner.gif";
-        importXML("cygnetxml.py?terms=" + searchterms, displayResults, "index.php");
+        requestAJAX("cygnetxml.py?terms=" + searchterms, displayResults, "index.php");
     }
 }
 
