@@ -1,5 +1,16 @@
+# .gitignore for sccs-cygnet
+
+# Junk files
 *.pyc
 *~
 .DS_Store
+
+# Private data
 new/photos/*
 new/directories/*
+
+# Old reference version
+version2
+
+# Log files
+new/cygnet_errors.log*
