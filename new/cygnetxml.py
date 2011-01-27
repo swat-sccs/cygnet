@@ -11,9 +11,11 @@
 ###
 
 # Import configuration information, variables defined include:
-# - directory_file 		String pointing to file to parse for directory information
-# - field_order 		List of names of fields, in the order they are in the file
-# - class_years 		List of class years to include
+# - DIRECTORY_FILE 		String pointing to file to parse for directory information
+# - FIELD_ORDER 		List of names of fields, in the order they are in the file
+# - CLASS_YEARS 		List of class years to include
+# - DELIMITING_CHAR             Character used to delimit fields in DIRECTORY_FILE
+# - LOG_FILENAME                Path to error log file
 from config import *
 
 import cgi
@@ -22,8 +24,6 @@ import xml.dom
 import re
 import logging
 import time
-
-LOG_FILENAME = 'cygnet_errors.log'
 
 class Record:
     """
@@ -35,34 +35,36 @@ class Record:
 
     def __init__(self, line):
         """
-        Parse the line from the file
+        Parse the delimited line from the file
         """
         self.orig = line
-        
-        split_fields = line.split('\t')
-
+        split_fields = line.split(DELIMITING_CHAR)
         self.fields = {}
-        num = min(len(field_order), len(split_fields)) 
         
-        for i in range(num):
-            self.fields[field_order[i]] = split_fields[i].strip()
+        for i in range(min(len(FIELD_ORDER), len(split_fields))):
+            self.fields[FIELD_ORDER[i]] = split_fields[i].strip()
 
-        for f in field_order:
+        for f in FIELD_ORDER:
             if f not in self.fields:
                 self.fields[f] = ''
 
-    def filter(self, s_field, s_val):
+    def filter(self, search_field, search_val):
         """
-        returns true if the value in 'term' appears
-        in *any* field in this record
+        Returns true if the search value appears in the corresponding
+        search field, or if the search value appears in ANY field if
+        the search field is 'bare'.
         """
         
-        if s_field == 'bare':
-            for field in field_order:
-                if s_val.lower() in self.fields[field].lower():
+        if search_field == None:
+#            if search_val.lower() in self.fields.itervalues.lower():
+#                return True
+            
+            for field in FIELD_ORDER:
+                if search_val.lower() in self.fields[field].lower():
                     return True
+
         else:
-            if s_val.lower() in self.fields[s_field].lower():
+            if search_val.lower() in self.fields[search_field].lower():
                 return True
 
         return False
@@ -77,7 +79,7 @@ class Record:
         
         node = xml_document.createElement("person")
         
-        for field in field_order:
+        for field in FIELD_ORDER:
             if len(self.fields[field].strip()) == 0:
                 continue
                 
@@ -92,14 +94,15 @@ def dict_add(dict, key, value):
     if dict.has_key(key):
         dict[key].append(value)
     else:
-        dict[key] = [value]
+#        dict[key] = [value]
+        dict[key] = value
 
 def terms_to_dict(terms):
     """
-    the online cygnet accepts input in the form "field:value" to allow for specific searches
+    the online cygnet accepts input in the form 'field:value' to allow for specific searches
     this method takes a string of terms
     this method returns a dictionary of the form {field: value}
-    if there are no specific fields, a dictionary is returned only one key, "bare"
+    if there are no specific fields, a dictionary is returned only one key, None
     """
     bare_re = re.compile(r'(\w*:\w*)|(\w*:"[\w ]*")|(\w+)')
 
@@ -109,15 +112,18 @@ def terms_to_dict(terms):
     for match in matches:
         if not match[0] == '':
             toks = match[0].split(':')
-            if toks[0] in field_order:
+            if toks[0] in FIELD_ORDER:
                 dict_add(d, toks[0], toks[1])
         elif not match[1] == '':
             toks = match[1].split(':')
-            if toks[0] in field_order:
+            if toks[0] in FIELD_ORDER:
                 dict_add(d, toks[0], toks[1].strip('"'))
         elif not match[2] == '':
             for s in match[2].split():
-                dict_add(d, 'bare', s)
+                dict_add(d, None, s)
+                
+    logging.info("Search terms are: " + repr(d))
+    
     if d == {}:
         return None
     else:
@@ -137,6 +143,7 @@ def get_matches(terms):
     document_elm.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema-instance")
     document_elm.setAttribute("xsd:schemaLocation", "http://www.sccs.swarthmore.edu/cygnet cygnet.xsd")
 
+    results = []
 
     if terms is not None:
 
@@ -145,54 +152,45 @@ def get_matches(terms):
         #
         ###### INSERT TRY/CATCH STATEMENT HERE 
         #
-        fp = file(directory_file, 'r') 
-
-        results = []
-
-        for line in fp:
+        try:
+            dirfile = open(DIRECTORY_FILE, 'r') 
+        except IOError:
+            logging.error("Cygnet file not found!")
+            exit
+        
+        for line in dirfile:
             line = line.strip()
             if len(line) == 0:
                 continue
-    
             r = Record(line)
+
+            # included is true only as long as all terms filter to true
             included = True
-            for term in terms.keys():
-                # included is true only as long as all terms filter
-                # to true
-                for val in terms[term]:
-                    included = included and r.filter(term,val)
-                    if included == False:
+            for term, value in terms.iteritems():
+                    if not r.filter(term, value):
+                        included = False
                         break
-                if included == False:
-                    break
-                
             if included:
+#                results.append(r.orig)
                 results.append(r)
-
-        recordtime("Reading directory file")
-
-        # results.sort()
 
         for result in results:
             document_elm.appendChild(result.toXMLNode(xml_document))
 
-        recordtime("Creating XML document")
-
-        fp.close()
+        dirfile.close()
         logging.info("Found %i results." % len(results))
 
     return xml_document
 
 def parse_form():
     """
-    returns a list of separated search terms, or None if nothing
+    Returns a list of separated search terms, or None if nothing
     is entered
     """
     form = cgi.FieldStorage()
 
     if 'terms' in form:
         terms = terms_to_dict(form.getfirst('terms'))
-
         return terms
     else:
         return None
