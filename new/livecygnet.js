@@ -139,10 +139,13 @@ function displayResults(xmlDoc) {
     document.getElementById("timevalue").innerHTML = timediff + " ms";
 }
 
-function waitSomeTime(delay) {
+var TYPEDELAY = 300; // In milliseconds.
+
+function callSearch(noDelay) {
     if (timer != null) {
         clearTimeout(timer);
-    }    
+    }
+    var delay = noDelay ? 0 : TYPEDELAY;
     timer = setTimeout(doSearch, delay);
 }
 
@@ -156,19 +159,3 @@ var sameSearch = (function() {
     }
 })();
 
-
-/*
-function waitSomeTime(delay) {
-    var thissearch = document.getElementById("terms").value;
-
-    if (thissearch == lastsearch)
-        return;
-    
-    lastsearch = thissearch;
-    
-    if (timer != null) {
-        clearTimeout(timer);
-    }
-    timer = setTimeout(doImport, delay);
-}
-*/

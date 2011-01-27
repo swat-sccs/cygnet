@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
     </head>
     
-    <body<?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:waitSomeTime(0)"'; } ?>>
+    <body<?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>>
         <div id="banner">
             <div style="float: left; text-align: center;">
             	<img src="cygnet-banner.png" width="315" height="60" />
@@ -41,7 +41,7 @@
         <div id="searchbar" style="clear: both;">
             Find:
             <form style="display:inline" method="get" action="index.php">
-                <input type="text" name="terms" id="terms" size="40" onkeyup="javascript:waitSomeTime(500)" value="<?php echo $_REQUEST['terms']; ?>"/>
+                <input type="text" name="terms" id="terms" size="40" onkeyup="javascript:callSearch()" value="<?php echo $_REQUEST['terms']; ?>"/>
             </form>
             <img id="spinner" src="spinner-stopped.gif" align="absbottom" width="20" height="20" alt=""/>
             <div id="responsetime">
@@ -66,7 +66,7 @@
                 If you would like to be removed from the online cygnet, email SCCS Staff at <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs</a>.
             </p>
             <p>
-                Content copyright &copy; 2010-2011. All rights reserved.
+                Content copyright &copy;<?php echo date("Y") ?>. All rights reserved.
                 <br/><a href="http://www.sccs.swarthmore.edu/">Swarthmore College Computer Society</a>
                 <br/>500 College Ave, Swarthmore, PA 19081-1397
             </p>
