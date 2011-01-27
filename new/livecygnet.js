@@ -1,3 +1,9 @@
+
+
+//
+// -------- Merge libXML.js above this ---------
+//
+
 var timer = null;
 
 var starttime = 0;
