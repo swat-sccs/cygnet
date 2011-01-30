@@ -174,12 +174,10 @@ function displayResults(ajax) {
 
         newHTML += "</tr></table>";
         
-        div.innerHTML = "Search for \"" + lastsearch + "\" returned " + resultcount + " results.<br/><br/>" + newHTML;
+        newHTML = "Search for \"" + lastsearch + "\" returned " + resultcount + " results.<br/><br/>" + newHTML;
         
-    } else {
-        div.innerHTML = "Search for \"" + lastsearch + "\" found no matches";
-
     }
+    div.innerHTML = newHTML;
 
     // now clear the message
     document.getElementById("spinner").src = "spinner-stopped.gif";
