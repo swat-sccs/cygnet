@@ -87,64 +87,38 @@ function displayResults(ajax) {
 		die();
     }
 
-    if (ajax.responseXML == null) {
-		alert("Error: xmlDoc.responseXML is null");
-		alert("response text: " + xmlDoc.responseText);
-		throw("Error: xmlDoc.responseXML is null");
-		die();
-    }
-
+    var results = ajax.responseText.replace(/^\s+|\s+$/g, ''); // trims whitespace    
     var div = document.getElementById("results");
     var newHTML = "";
-    var docElement = ajax.responseXML.documentElement;
-    var textNodeType = 3;
     var resultcount = 0;
 
     div.innerHTML = "";
-    
-    
-    if (!docElement.hasChildNodes()) {
-        newHTML += "Search for \"" + lastsearch + "\" found no matches";
-    } else {
-        var node = docElement.firstChild;
-        
-        var people = docElement.childNodes;
 
-        
-        
-        newHTML += '<table border="0" cellpadding="0" cellspacing="0">';
-        
-        for (var i=0; i<people.length; i++) {
-            var person = people[i];
+    if (results.length > 0) {
+        newHTML += '<table border="0" cellpadding="0" cellspacing="0"><tr>';
+   
+        var resultcount = 0;
 
-            if (person.nodeType == textNodeType) {
-                continue;
+        var lines = results.split('\n');        
+        for (var i = 0; i < lines.length; i++) {
+            var data = lines[i].split('\t');
+            var record = [];
+            
+            FIELDORDER = ["last","first","middle","class","phone","email","address"];
+            
+            for (var j = 0; j < FIELDORDER.length; j++) {
+                var field = FIELDORDER[j];
+                record[field] = data[j];
             }
-            
-            var nodeDict = {};
-            nodeDict["first"] = "";
-            nodeDict["middle"] = "";
-            nodeDict["last"] = "";
-            nodeDict["address"] = "";
-            nodeDict["phone"] = "";
-            nodeDict["email"] = "";
-            nodeDict["class"] = "";
-            
-            var fields = person.childNodes;
-            
-            for (var j=0; j< fields.length; j++) {
-                var field = fields[j];
 
-                if (field.nodeType == textNodeType) {
-                    continue;
+            // Add leading "x" to 4-digit phone numbers and hyphen to 7-digit numbers
+            if (record["phone"]) {
+                var phone = record["phone"];
+                if (phone.length == 4) {
+                    record["phone"] = "x" + phone;
+                } else if (phone.length == 7) {
+                    record["phone"] = phone.substr(0,3) + "-" + phone.substr(3);
                 }
-
-                nodeDict[field.nodeName] = field.firstChild.nodeValue;
-            }
-
-            // add leading "x " to 4-digit phone numbers
-            if (nodeDict["phone"] && nodeDict["phone"].length == 4) {
-                nodeDict["phone"] = "x " + nodeDict["phone"];
             }
             
             var col = resultcount % 4;
@@ -153,12 +127,12 @@ function displayResults(ajax) {
             }
 
             newHTML += "<td>";
-            newHTML += '<img src="photos/' + nodeDict["class"] + '/' + nodeDict["email"] +
-                       '.jpg" alt="' + nodeDict["first"] + " " + nodeDict["last"] + '"/><br/>';
-            newHTML += nodeDict["first"] + " " + nodeDict["middle"] + " " + nodeDict["last"] + "<br/>";
+            newHTML += '<img src="photos/' + record["class"] + '/' + record["email"] +
+                       '.jpg" alt="' + record["first"] + " " + record["last"] + '"/><br/>';
+            newHTML += record["first"] + " " + record["middle"] + " " + record["last"] + "<br/>";
             newHTML += '<span style="font-size:smaller">';
-            newHTML += nodeDict["address"] + " (" + nodeDict["phone"] + ")<br/>";
-            newHTML += nodeDict["class"] + " / " + nodeDict["email"] + "<br/>";
+            newHTML += record["address"] + " (" + record["phone"] + ")<br/>";
+            newHTML += record["class"] + " / " + record["email"] + "<br/>";
             newHTML += "</span></td>";
             
             resultcount ++;   
@@ -173,13 +147,13 @@ function displayResults(ajax) {
         }
 
         newHTML += "</tr></table>";
-        
-        newHTML = "Search for \"" + lastsearch + "\" returned " + resultcount + " results.<br/><br/>" + newHTML;
-        
+        newHTML = "Search for \"" + lastsearch + "\" returned " + resultcount + " result" + (resultcount == 1 ? '' : 's') +  ".<br/><br/>" + newHTML;
+    } else {
+	newHTML = "Search for \"" + lastsearch + "\" returned no matches."
     }
+
     div.innerHTML = newHTML;
 
-    // now clear the message
     document.getElementById("spinner").src = "spinner-stopped.gif";
     
     var endtime = (new Date()).getTime();

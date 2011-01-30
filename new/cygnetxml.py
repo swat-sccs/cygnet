@@ -69,33 +69,11 @@ class Record:
 
         return False
 
-
-    def toXMLNode(self, xml_document):
-        """
-        returns an XML-node representing this person. xml_document
-        must be a valid DOMImplementation, like that returned by
-        xml.dom.minidom.getDOMImplementation(...)
-        """
-        
-        node = xml_document.createElement("person")
-        
-        for field in FIELD_ORDER:
-            if len(self.fields[field].strip()) == 0:
-                continue
-                
-            text = xml_document.createTextNode(self.fields[field])
-            wrapper = xml_document.createElement(field)
-            wrapper.appendChild(text)
-            node.appendChild(wrapper)
-        
-        return node
-
 def dict_add(dict, key, value):
     if dict.has_key(key):
         dict[key].append(value)
     else:
-#        dict[key] = [value]
-        dict[key] = value
+        dict[key] = [value]
 
 def terms_to_dict(terms):
     """
@@ -134,15 +112,6 @@ def get_matches(terms):
     returns a list of matches (list of Record objects)
     that match the query represented by the search terms
     """
-
-    xml_impl = xml.dom.getDOMImplementation()
-    xml_document = xml_impl.createDocument(None, "records", None)
-    document_elm = xml_document.documentElement
-
-    document_elm.setAttribute("xmlns", "http://www.sccs.swarthmore.edu/cygnet")
-    document_elm.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema-instance")
-    document_elm.setAttribute("xsd:schemaLocation", "http://www.sccs.swarthmore.edu/cygnet cygnet.xsd")
-
     results = []
 
     if terms is not None:
@@ -166,21 +135,20 @@ def get_matches(terms):
 
             # included is true only as long as all terms filter to true
             included = True
-            for term, value in terms.iteritems():
+            for term, valuelist in terms.iteritems():
+                for value in valuelist:
                     if not r.filter(term, value):
                         included = False
                         break
             if included:
-#                results.append(r.orig)
-                results.append(r)
+                results.append(r.orig)
 
-        for result in results:
-            document_elm.appendChild(result.toXMLNode(xml_document))
+        recordtime("Reading and searching directory file")
 
         dirfile.close()
         logging.info("Found %i results." % len(results))
 
-    return xml_document
+    return results
 
 def parse_form():
     """
@@ -225,20 +193,18 @@ if __name__ == "__main__":
     recordtime()
     terms = parse_form()
     recordtime("Form parsing")
-
-    print "Content-Type: text/xml\n"
     
-    xml_doc = get_matches(terms)
+    results = get_matches(terms)
 
     recordtime()
-    xmltext = xml_doc.toxml()    
-    recordtime("Generating XML text")
+    resultdata = "\n".join(results)
+    recordtime("Generating data text")
     
-    logging.debug("Size of XML document returned: %i chars or %g KB." % (len(xmltext), len(xmltext) / 512.0))
+    logging.debug("Size of data returned: %i chars or %g KB." % (len(resultdata), len(resultdata) / 1024.0))
     
-    print xmltext
-    # xml.dom.ext.PrettyPrint(xml_doc) # no longer exists
+    print "Content-type: text/html;charset=utf-8\r\n"
+    print resultdata
 
-    logging.debug("Total time elapsed in cygnetxml.py: %.3g seconds" % (time.clock() - starttime))
+    logging.debug("Total time elapsed in backend.py: %.3g seconds" % (time.clock() - starttime))
 
 
