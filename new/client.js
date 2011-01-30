@@ -69,7 +69,7 @@ function doSearch() {
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
         document.getElementById("spinner").src = "spinner.gif";
-        requestAJAX("cygnetxml.py?terms=" + searchterms, displayResults, "index.php");
+        requestAJAX("backend.py?terms=" + searchterms, displayResults, "index.php");
     }
 }
 

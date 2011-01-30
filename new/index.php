@@ -7,9 +7,8 @@
 ?>
 <html>
     <head>
-        <title>cygnet (swarthmore college computer society)</title>
-        <script type="text/javascript" language="javascript" src="libXML.js"></script>
-        <script type="text/javascript" language="javascript" src="livecygnet.js"></script>
+        <title>the cygnet (swarthmore college computer society)</title>
+        <script type="text/javascript" language="javascript" src="client.js"></script>
         <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
     </head>
     
