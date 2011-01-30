@@ -6,11 +6,12 @@
 .DS_Store
 
 # Private data
-new/photos/*
-new/directories/*
+/photos/*
+/directories/*
 
-# Old reference version
+# Old reference version and old files
 version2
+old
 
 # Log files
-new/cygnet_errors.log*
+/cygnet_errors.log*
