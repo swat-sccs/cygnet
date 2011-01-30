@@ -7,7 +7,7 @@
 ### This is the main python code that parses the housing directory file
 ### into a Python data structure.  The data can then be filtered based on the
 ### search terms entered by the user, and the results are returned via
-### AJAX as an XML document.
+### AJAX as a tab-delimited document.
 ###
 
 # Import configuration information, variables defined include:
@@ -15,14 +15,15 @@
 # - FIELD_ORDER 		List of names of fields, in the order they are in the file
 # - CLASS_YEARS 		List of class years to include
 # - DELIMITING_CHAR             Character used to delimit fields in DIRECTORY_FILE
-# - LOG_FILENAME                Path to error log file
+# - LOGPARAMS                   Container for several logging paramters used below
 from config import *
 
 import cgi
-import types
-import xml.dom
-import re
 import logging
+import logging.handlers
+import os
+import os.path
+import re
 import time
 
 class Record:
@@ -179,27 +180,41 @@ def recordtime(taskname = None):
     recordtime.timemark = now
 
 
+def configureLogging():
+    """
+    Configures logging for this script, using a rotating file handler
+    and the specified formatting string. Configuration parameters below.
+    """
+    madelogdir = False
+    logdir = os.path.dirname(LOGPARAMS.FILENAME)
+    if not os.path.exists(logdir):
+        os.makedirs(logdir)
+        madelogdir = True
+
+    rootlogger = logging.getLogger()
+    rootlogger.setLevel(logging.DEBUG)
+    roothandler = logging.handlers.RotatingFileHandler(
+            LOGPARAMS.FILENAME,
+            maxBytes=1024*LOGPARAMS.FILESIZE_KB,
+            backupCount=LOGPARAMS.BACKUP_COUNT)
+    roothandler.setFormatter(logging.Formatter(LOGPARAMS.FORMAT))
+    rootlogger.addHandler(roothandler)
+    logging.info("Made log directory at: './%s'." % logdir)
+
 if __name__ == "__main__":
     """
-    do our CGI thing
+    Run the script with the provided terms, and print the results.
     """
-    
-    starttime = time.clock()
-    
-    format = "%(asctime)s - %(levelname)s - %(message)s"
-    logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, format=format)
+    configureLogging()
     logging.debug("=== Running cygnetxml.py. ===")
 
+    starttime = time.clock()
     recordtime()
     terms = parse_form()
     recordtime("Form parsing")
     
     results = get_matches(terms)
-
-    recordtime()
     resultdata = "\n".join(results)
-    recordtime("Generating data text")
-    
     logging.debug("Size of data returned: %i chars or %g KB." % (len(resultdata), len(resultdata) / 1024.0))
     
     print "Content-type: text/html;charset=utf-8\r\n"

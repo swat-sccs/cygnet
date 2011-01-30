@@ -5,13 +5,12 @@
 *~
 .DS_Store
 
-# Private data
-/photos/*
-/directories/*
+# Private data, logs, and old versions
+/photos
+/directories
+/logs
+/version2
+/old
 
-# Old reference version and old files
-version2
-old
 
-# Log files
-/cygnet_errors.log*
+

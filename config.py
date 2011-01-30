@@ -4,9 +4,7 @@
 ### ========================
 ###
 ### The configuration file for the Python code behind the Cygnet.
-### Defines variables that store configuration settings for cygnetxml.py.
-###
-### LAST MODIFIED: 1/27/11 by nfelt1
+### Defines variables that store configuration settings for backend.py.
 ###
 
 # This is the file (or symlink) that contains the
@@ -25,5 +23,10 @@ CLASS_YEARS = ['2011', '2012', '2013','2014']
 # Character used to delimit fields
 DELIMITING_CHAR = '\t'
 
-# Path to the error log file
-LOG_FILENAME = 'cygnet_errors.log'
+# Logging parameters
+class LOGPARAMS:
+    FILENAME = 'logs/cygnet.log'
+    FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+    FILESIZE_KB = 50
+    BACKUP_COUNT = 3
+
