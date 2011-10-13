@@ -1,42 +1,19 @@
-======================
-about.txt
-======================
-Last modified 7/15/10.
+====================
+README - SCCS Cygnet
+====================
+Last modified 10/12/11.
 
-This is an information file for the codebase running the SCCS online cygnet.  It explains
-the overall structure of the code and how it works at a high level.
+This is an information file for the codebase running the SCCS online cygnet.
 
-Major files:
+Files:
 - index.php
 - cygnet.css
-- livecygnet.js
-- libXML.js
-- cygnetxml.py
+- client.js
+- backend.py
 - config.py
-- cygnet.xsd
 - directories/
 - photos/
-
-Other files are mostly media files used for the frontend of the cygnet.
-
-In more detail:
-
-----------------------
-FILE SUMMARIES
-
-index.php
-
-This is the "frontend" page, which defines the structure of the online cygnet webpage, contains
-the text for the instructions and other miscellaneous information, and provides the form into
-which users can type search queries.  It's also where results are displayed.  It works via AJAX
-by calling a function in the livecygnet.js file.
-
-cygnet.css
-
-The CSS stylesheet for the cygnet, defining styles for the inital appearance of the main page
-and also for the results that appear once a query completes.
-
-etc...
+- media/
 
 ----------------------
 CHANGELOG
@@ -46,8 +23,8 @@ Version 3.0
 Possible changes:
 - Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
 - Display detailed execution time of query (for debugging, maybe as feature?) **
-- Make queries execute faster ***
-    - Avoid using XML? Or make it faster and lighter... ***
++ Make queries execute faster ***
+    * Avoid using XML? Or make it faster and lighter... ***
 	- Store data in a faster-to-read format? Database? cPickle?
     - Only reread directory file when it's been updated since the last query (or when code is updated)
     - Faster way to filter?
@@ -59,7 +36,7 @@ Possible changes:
 - Show 7 digit phone numbers with a dash in them *
 - Sort into multiple columns intelligently (i.e. based on width of browser window) *
 - Predict size of image to prevent "jumping" as images load *
-- Collapse libXML.js & livecygnet.js into "cygnet.js" *
+* Collapse libXML.js & livecygnet.js into "cygnet.js"
 - PHP-ize frontend more (automate copyright logo, etc.)
 - Use JQuery to animate display of results
 - Offer multiple display options? E.g. photos vs. text-only
