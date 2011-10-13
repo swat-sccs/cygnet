@@ -55,19 +55,14 @@ class Record:
         search field, or if the search value appears in ANY field if
         the search field is 'bare'.
         """
-        
+        if self.fields['email'].lower() in EXCLUDED_USERS:
+            return False
         if search_field == None:
-#            if search_val.lower() in self.fields.itervalues.lower():
-#                return True
-            
             for field in FIELD_ORDER:
                 if search_val.lower() in self.fields[field].lower():
                     return True
-
-        else:
-            if search_val.lower() in self.fields[search_field].lower():
-                return True
-
+        elif search_val.lower() in self.fields[search_field].lower():
+            return True
         return False
 
 def dict_add(dict, key, value):

@@ -20,6 +20,10 @@ FIELD_ORDER = ['last','first','middle','class','phone','email','address']
 # they'll show up in the page.
 CLASS_YEARS = ['2011', '2012', '2013','2014']
 
+# A list of email usernames of students who have asked to be entirely
+# removed from the Cygnet.
+EXCLUDED_USERS = []
+
 # Character used to delimit fields
 DELIMITING_CHAR = '\t'
 
