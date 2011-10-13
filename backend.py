@@ -11,12 +11,13 @@
 ###
 
 # Import configuration information, variables defined include:
-# - DIRECTORY_FILE 		String pointing to file to parse for directory information
-# - FIELD_ORDER 		List of names of fields, in the order they are in the file
-# - CLASS_YEARS 		List of class years to include
-# - DELIMITING_CHAR             Character used to delimit fields in DIRECTORY_FILE
-# - LOGPARAMS                   Container for several logging paramters used below
-from config import *
+# - DIRECTORY_FILE     String pointing to file to parse for directory information
+# - FIELD_ORDER        List of names of fields, in the order they are in the file
+# - DELIMITING_CHAR    Character used to delimit fields in DIRECTORY_FILE
+# - CLASS_YEARS        List of class years to include
+# - EXCLUDED_USERS     List of users to completely exclude from the Cygnet
+# - LOGPARAMS          Container for several logging paramters used below
+from settings import *
 
 import cgi
 import logging
