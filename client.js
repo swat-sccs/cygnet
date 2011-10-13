@@ -125,7 +125,7 @@ function displayResults(ajax) {
             newHTML += record["class"] + " / " + record["email"] + "<br/>";
             newHTML += "</span></td>";
             
-            resultcount ++;   
+            resultcount++;
         }
         
         // Fill out the rest of the bottom of the table

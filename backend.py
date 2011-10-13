@@ -113,15 +113,11 @@ def get_matches(terms):
     if terms is not None:
 
         recordtime()
-
-        #
-        ###### INSERT TRY/CATCH STATEMENT HERE 
-        #
         try:
             dirfile = open(DIRECTORY_FILE, 'r') 
         except IOError:
             logging.error("Cygnet file not found!")
-            exit
+            exit()
         
         for line in dirfile:
             line = line.strip()

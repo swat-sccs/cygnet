@@ -5,11 +5,12 @@
 *~
 .DS_Store
 
-# Private data, logs, and old versions
+# Ignore the actual data in /photos and /directories
 /photos
 /directories
+
+# Ignore logs and old stuff, if they're there
 /logs
-/version2
 /old
 
 
