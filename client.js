@@ -68,7 +68,7 @@ function doSearch() {
             
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
-        document.getElementById("spinner").src = "media/spinner.gif";
+        document.getElementById("spinner").style.display = "block";
         requestAJAX("backend.py?terms=" + searchterms, displayResults, "index.php");
     }
 }
@@ -142,9 +142,9 @@ function displayResults(ajax) {
 	newHTML = "Search for \"" + lastsearch + "\" returned no matches."
     }
 
-    div.innerHTML = newHTML;
+    div.innerHTML = newHTML + '<hr style="width: 95%; margin-top:15px;"/>';
 
-    document.getElementById("spinner").src = "media/spinner-stopped.gif";
+    document.getElementById("spinner").style.display = "none";
     
     var endtime = (new Date()).getTime();
     var timediff = endtime - starttime;

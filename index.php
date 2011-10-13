@@ -14,9 +14,8 @@
     
     <body<?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>>
         <div id="banner">
-            <div style="float: left; text-align: center;">
+            <div style="float: left; text-align: center; margin-bottom: 10px;">
                 <img src="media/cygnet-banner.png" width="315" height="60" />
-                <p style="margin-top: 10px; font-variant:small-caps; font-size: 20px;">Version 3.0</p>
             </div>
             <div style="margin-left: 315px; padding-left: 20px;">
             	<p><strong>Instructions:</strong> To use the online cygnet,
@@ -38,16 +37,20 @@
             </div>
         </div>
         <div id="searchbar" style="clear: both;">
-            Find:
-            <form style="display:inline" method="get" action="index.php">
-                <input type="text" name="terms" id="terms" size="40" onkeyup="javascript:callSearch()" value="<?php echo $_REQUEST['terms']; ?>"/>
-            </form>
-            <img id="spinner" src="media/spinner-stopped.gif" align="absbottom" width="20" height="20" alt=""/>
-            <div id="responsetime">
-            	<span id="timelabel">Query took: </span>
-            	<span id="timevalue"></span>
-            </div>
-        </div>
+          <form method="get" action="index.php">
+            <input id="terms" type="text" name="terms"
+		   onkeyup="javascript:callSearch()"
+		   value="<?php echo $_REQUEST['terms']; ?>"/>
+	    <div id="spinner-box">
+	      <img id="spinner" src="media/spinner.gif" alt=""/>
+	    </div>
+	    <div class="clearer">&nbsp;</div>
+          </form>
+          <div id="responsetime"
+	       style="display: <?php echo (isset($_REQUEST['debug']) ? 'block' : 'none') ?>;">
+            <span id="timelabel">Query took: </span>
+            <span id="timevalue"></span>
+          </div>
         <div id="results" style="text-align:center; margin: 1em auto 0;">
         </div>
         <div id="footer">

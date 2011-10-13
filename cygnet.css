@@ -34,10 +34,46 @@ div#banner {
     font-size:0.75em;
 }
 
+#searchbar {
+    clear: both;
+}
+
+#searchbar form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 5px 0;
+    clear: both;
+}
+
+#searchbar form label {
+    float: left;
+    font-variant: small-caps;
+    margin-right: 5px;
+}
+
+#searchbar form input {
+    height: 20px;
+    width: 300px;
+    float: left;
+}
+
+#spinner-box {
+    width: 0px;
+    height: 20px;
+    padding: 2px 0;
+    float: left;
+    position: relative;
+    left: 4px;
+}
+
+#spinner {
+    position: relative;
+    left: 5px;
+    display: none;
+}
 
 div#footer {
     margin:10px;
-    border-top:1px solid black;
     padding-top:5px;
 }
 
@@ -65,26 +101,30 @@ input#searchterms {
     border:1px solid black;
 }
 
-div#results {
-    margin:10px;
+#results {
+    text-align: center;
+    margin: 1em auto 0;
 }
 
 #results table {
     border:1px solid lightgray;
-    border-collapse:collapse;
+    border-collapse: collapse;
     margin: 0 auto;
 }
 
 #results td {
-    text-align:center;
-    width:195px;
-    border:1px solid lightgray;
-    padding:4px 2px;
+    text-align: center;
+    width: 195px;
+    border: 1px solid lightgray;
+    padding: 4px 2px;
 }
 
 #responsetime {
-	font-size: 80%;
-	color: gray;
+   font-size: 80%;
+   color: gray;
 }
 
-
+div.clearer {
+    clear: both;
+    height: 0;
+}
