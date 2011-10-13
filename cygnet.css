@@ -1,105 +1,84 @@
+/* CSS Stylesheet for the SCCS Cygnet */
+
+/* GENERAL STYLE */
+
 body {
-    margin:0;
-    font-family:Verdana, Tahoma, sans-serif;
-    font-size:smaller;
+    margin: 0;
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: smaller;
 }
 
 a, a:visited, a:active {
-    color:#C0362C;
+    color: #C0362C;
 }
 
 a:hover {
-    color:red;
+    color: red;
 }
 
-ul.InlineList, .InlineList li {
-	display: inline;
-	margin: 0;
-	padding: 0;
-}
 
-.InlineList li:after {
-	content: ", ";
-}
+/* HEADER SECTION */
 
-.InlineList li:last-child:after {
-	content: "."
-}
-
-div#banner {
+#banner {
     margin: 10px;
 }
 
-#banner td {
-    font-size:0.75em;
+#logo {
+    width: 315px;
+    height: 60px;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
+#instructions {
+    margin-left: 325px;
+    color: gray;
+}
+
+/* SEARCH BAR SECTION */
+
 #searchbar {
-    clear: both;
+    width: 100%;
+    padding: 5px 0;
+    text-align: center;
+    background-color: #E4A173;
+    border: 4px solid #C0362C;
+    border-width: 4px 0;
 }
 
 #searchbar form {
     width: 300px;
     margin: 0 auto;
     padding: 5px 0;
-    clear: both;
-}
-
-#searchbar form label {
-    float: left;
-    font-variant: small-caps;
-    margin-right: 5px;
 }
 
 #searchbar form input {
     height: 20px;
-    width: 300px;
+    width: 100%;
     float: left;
 }
 
 #spinner-box {
+    float: left;
+    position: relative;
+    left: 7px;
     width: 0px;
     height: 20px;
     padding: 2px 0;
-    float: left;
-    position: relative;
-    left: 4px;
 }
 
 #spinner {
-    position: relative;
-    left: 5px;
     display: none;
 }
 
-div#footer {
-    margin:10px;
-    padding-top:5px;
+#responsetime {
+   font-size: 80%;
+   color: gray;
 }
 
-#footer p {
-    width:550px;
-    text-align:center;
-    margin-left: auto;
-    margin-right: auto;
-}
 
-div#searchbar {
-    width:100%;
-
-    padding: 5px 0;
-    text-align:center;
-    background-color:#E4A173;
-    
-    border:4px solid #C0362C;
-    border-width: 4px 0;
-}
-
-input#searchterms {
-    height:20px;
-    width:250px;
-    border:1px solid black;
-}
+/* RESULTS SECTION */
 
 #results {
     text-align: center;
@@ -119,9 +98,31 @@ input#searchterms {
     padding: 4px 2px;
 }
 
-#responsetime {
-   font-size: 80%;
-   color: gray;
+
+/* FOOTER SECTION */
+
+#footer {
+    margin: 10px auto;
+    padding-top: 5px;
+    text-align: center;
+    width: 550px;
+}
+
+
+/* MISCELLANEOUS */
+
+ul.InlineList, .InlineList li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.InlineList li:after {
+    content: ", ";
+}
+
+.InlineList li:last-child:after {
+    content: "."
 }
 
 div.clearer {

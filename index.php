@@ -7,34 +7,31 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
 }
 ?>
 <html>
-    <head>
-        <title>the cygnet (swarthmore college computer society)</title>
-        <script type="text/javascript" language="javascript" src="client.js"></script>
-        <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
-    </head>
-    
-    <body<?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>>
-        <div id="banner">
-            <div style="float: left; text-align: center; margin-bottom: 10px;">
-                <img src="media/cygnet-banner.png" width="315" height="60" />
-            </div>
-            <div style="margin-left: 315px; padding-left: 20px;">
-	      <div style="color: gray;"><strong>Advanced searching:</strong>
-		You can do a more specific search by using keywords in the search box.
-		An advanced search might look like, "first:matt address:lodges",
-		which would return everyone named Matt who lives in one of the lodges.
-		The accepted keywords are:
-	        <ul style="display: inline;" class="InlineList">
-	          <li>first</li>
-	          <li>last</li>
-	          <li>class</li>
-	          <!-- <li>phone</li> -->
-	          <li>email</li>
-	          <li>address</li>
-	        </ul>
-	      </div>
-            </div>
-        </div>
+<head>
+  <title>the cygnet (swarthmore college computer society)</title>
+  <script type="text/javascript" language="javascript" src="client.js"></script>
+  <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
+</head>
+
+<body<?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>>
+  <div id="banner">
+    <img id="logo" src="media/cygnet-banner.png" />
+    <div id="instructions">
+      <strong>Advanced searching:</strong>
+      You can do a more specific search by using keywords in the search box.
+      An advanced search might look like, "first:matt address:lodges",
+      which would return everyone named Matt who lives in one of the lodges.
+      The accepted keywords are:
+      <ul class="InlineList">
+	<li>first</li>
+	<li>last</li>
+	<li>class</li>
+	<!-- <li>phone</li> -->
+	<li>email</li>
+	<li>address</li>
+      </ul>
+    </div>
+  </div>
         <div id="searchbar" style="clear: both;">
           <form method="get" action="index.php">
             <input id="terms" type="text" name="terms"
