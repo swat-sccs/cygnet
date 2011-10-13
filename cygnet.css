@@ -27,19 +27,24 @@ a:hover {
     width: 315px;
     height: 60px;
     float: left;
-    margin-right: 10px;
+    margin-right: 25px;
     margin-bottom: 10px;
 }
 
-#instructions {
-    margin-left: 325px;
+#banner-text {
+    margin-left: 340px;
     color: gray;
+}
+
+#advanced {
+    display: none;
 }
 
 /* SEARCH BAR SECTION */
 
 #searchbar {
     width: 100%;
+    clear: both;
     padding: 5px 0;
     text-align: center;
     background-color: #E4A173;

@@ -142,7 +142,7 @@ function displayResults(ajax) {
 	newHTML = "Search for \"" + lastsearch + "\" returned no matches."
     }
 
-    div.innerHTML = newHTML + '<hr style="width: 95%; margin-top:15px;"/>';
+    div.innerHTML = newHTML;
 
     document.getElementById("spinner").style.display = "none";
     
@@ -151,7 +151,7 @@ function displayResults(ajax) {
     document.getElementById("timevalue").innerHTML = timediff + " ms";
 }
 
-var TYPEDELAY = 300; // In milliseconds.
+var TYPEDELAY = 500; // In milliseconds.
 
 function callSearch(noDelay) {
     if (timer != null) {
@@ -171,3 +171,17 @@ var sameSearch = (function() {
     }
 })();
 
+
+function toggleAdvanced() {
+    var advanced_div = document.getElementById("advanced");
+    var advanced_toggle = document.getElementById("toggle-advanced");
+    if (advanced_div.style.display == "none") {
+	advanced_div.style.display = "block";
+	advanced_toggle.innerHTML = "click to hide";
+	advanced_toggle.title = "Hide advanced search options";
+    } else {
+	advanced_div.style.display = "none";
+	advanced_toggle.innerHTML = "click to show";
+	advanced_toggle.title = "Show advanced search options";
+    }
+}
