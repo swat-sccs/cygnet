@@ -111,16 +111,6 @@ function displayResults(ajax) {
                 record[field] = data[j];
             }
 
-            // Add leading "x" to 4-digit phone numbers and hyphen to 7-digit numbers
-            if (record["phone"]) {
-                var phone = record["phone"];
-                if (phone.length == 4) {
-                    record["phone"] = "x" + phone;
-                } else if (phone.length == 7) {
-                    record["phone"] = phone.substr(0,3) + "-" + phone.substr(3);
-                }
-            }
-            
             var col = resultcount % 4;
             if (col == 0) {
                 newHTML += "</tr><tr>";
@@ -131,7 +121,7 @@ function displayResults(ajax) {
                        '.jpg" alt="' + record["first"] + " " + record["last"] + '"/><br/>';
             newHTML += record["first"] + " " + record["middle"] + " " + record["last"] + "<br/>";
             newHTML += '<span style="font-size:smaller">';
-            newHTML += record["address"] + " (" + record["phone"] + ")<br/>";
+            newHTML += record["address"] + "<br/>";
             newHTML += record["class"] + " / " + record["email"] + "<br/>";
             newHTML += "</span></td>";
             
