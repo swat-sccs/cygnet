@@ -68,7 +68,7 @@ function doSearch() {
             
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
-        document.getElementById("spinner").src = "spinner.gif";
+        document.getElementById("spinner").src = "media/spinner.gif";
         requestAJAX("backend.py?terms=" + searchterms, displayResults, "index.php");
     }
 }
@@ -154,7 +154,7 @@ function displayResults(ajax) {
 
     div.innerHTML = newHTML;
 
-    document.getElementById("spinner").src = "spinner-stopped.gif";
+    document.getElementById("spinner").src = "media/spinner-stopped.gif";
     
     var endtime = (new Date()).getTime();
     var timediff = endtime - starttime;

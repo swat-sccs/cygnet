@@ -15,8 +15,8 @@
     <body<?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>>
         <div id="banner">
             <div style="float: left; text-align: center;">
-            	<img src="cygnet-banner.png" width="315" height="60" />
-            	<p style="margin-top: 10px; font-variant:small-caps; font-size: 20px;">Version 3.0</p>
+                <img src="media/cygnet-banner.png" width="315" height="60" />
+                <p style="margin-top: 10px; font-variant:small-caps; font-size: 20px;">Version 3.0</p>
             </div>
             <div style="margin-left: 315px; padding-left: 20px;">
             	<p><strong>Instructions:</strong> To use the online cygnet,
@@ -42,7 +42,7 @@
             <form style="display:inline" method="get" action="index.php">
                 <input type="text" name="terms" id="terms" size="40" onkeyup="javascript:callSearch()" value="<?php echo $_REQUEST['terms']; ?>"/>
             </form>
-            <img id="spinner" src="spinner-stopped.gif" align="absbottom" width="20" height="20" alt=""/>
+            <img id="spinner" src="media/spinner-stopped.gif" align="absbottom" width="20" height="20" alt=""/>
             <div id="responsetime">
             	<span id="timelabel">Query took: </span>
             	<span id="timevalue"></span>
