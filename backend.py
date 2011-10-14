@@ -16,10 +16,14 @@
 # - DELIMITING_CHAR    Character used to delimit fields in DIRECTORY_FILE
 # - CLASS_YEARS        List of class years to include
 # - EXCLUDED_USERS     List of users to completely exclude from the Cygnet
+# - PHOTO_DIRECTORY    The path to the directory that stores all the photos
+# - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
 # - LOGPARAMS          Container for several logging paramters used below
 from settings import *
 
 import cgi
+from collections import namedtuple
+import json
 import logging
 import logging.handlers
 import os
@@ -27,7 +31,7 @@ import os.path
 import re
 import time
 
-class Record:
+class Record(namedtuple('RawRecord', FIELD_ORDER)):
     """
     Record handles reading and parsing a line from the directory
     file into a more handy format for searching. It also provides
@@ -35,20 +39,33 @@ class Record:
     requirements are matched by the Record.
     """
 
-    def __init__(self, line):
-        """
-        Parse the delimited line from the file
-        """
-        self.orig = line
-        split_fields = line.split(DELIMITING_CHAR)
-        self.fields = {}
-        
-        for i in range(min(len(FIELD_ORDER), len(split_fields))):
-            self.fields[FIELD_ORDER[i]] = split_fields[i].strip()
+    @classmethod
+    def FromLine(cls, line):
+        return cls(*line.split(DELIMITING_CHAR))
 
-        for f in FIELD_ORDER:
-            if f not in self.fields:
-                self.fields[f] = ''
+    @classmethod
+    def FromJSON(cls, json_obj):
+        raise NotImplementedError
+
+    def __init__(self, *args, **kwargs):
+        super(Record, self).__init__(*args, **kwargs)
+        self.excluded = self.email.lower() in EXCLUDED_USERS
+
+    def toJSON(self):
+        if self.excluded:
+            return ''
+        data = self._asdict()
+        data['photo'] = self.photo
+        return json.dumps(data)
+
+    @property
+    def photo(self):
+        location = "%s/%s.jpg" % (self.year, self.email)
+        try:
+            open(PHOTO_DIRECTORY + "/" + location)
+            return location
+        except IOError:
+            return ALTERNATE_PHOTO
 
     def filter(self, search_field, search_val):
         """
@@ -56,21 +73,20 @@ class Record:
         search field, or if the search value appears in ANY field if
         the search field is 'bare'.
         """
-        if self.fields['email'].lower() in EXCLUDED_USERS:
+        if self.excluded:
             return False
         if search_field == None:
-            for field in FIELD_ORDER:
-                if search_val.lower() in self.fields[field].lower():
-                    return True
-        elif search_val.lower() in self.fields[search_field].lower():
+            return any([search_val.lower() in getattr(self, field).lower()
+                        for field in self._fields])
+        elif search_val.lower() in getattr(self, search_field).lower():
             return True
         return False
 
-def dict_add(dict, key, value):
-    if dict.has_key(key):
-        dict[key].append(value)
-    else:
-        dict[key] = [value]
+    def filter_by_terms(self, terms):
+        return all(self.filter(term, value)
+                   for term, valuelist in terms.iteritems()
+                   for value in valuelist)
+
 
 def terms_to_dict(terms):
     """
@@ -79,82 +95,82 @@ def terms_to_dict(terms):
     this method returns a dictionary of the form {field: value}
     if there are no specific fields, a dictionary is returned only one key, None
     """
-    bare_re = re.compile(r'(\w*:\w*)|(\w*:"[\w ]*")|(\w+)')
-
-    matches = bare_re.findall(terms)
+    term_re = re.compile(r'(\w+:\w+)|(\w+:"[\w ]+")|(\w+)|("[\w ]+")')
+    matches = term_re.findall(terms)
+    logging.debug("Matches: %s" % matches)
     
-    d = {}
+    term_dict = {}
+    dict_add = lambda key, value: term_dict.setdefault(key, []).append(value)
     for match in matches:
-        if not match[0] == '':
-            toks = match[0].split(':')
-            if toks[0] in FIELD_ORDER:
-                dict_add(d, toks[0], toks[1])
-        elif not match[1] == '':
-            toks = match[1].split(':')
-            if toks[0] in FIELD_ORDER:
-                dict_add(d, toks[0], toks[1].strip('"'))
-        elif not match[2] == '':
-            for s in match[2].split():
-                dict_add(d, None, s)
-                
-    logging.info("Search terms are: " + repr(d))
+        if match[0]:
+            key, value = match[0].split(':')
+            if key in FIELD_ORDER:
+                dict_add(key, value)
+        elif match[1]:
+            key, value = match[1].split(':')
+            if key in FIELD_ORDER:
+                dict_add(key, value.strip('"'))
+        elif match[2]:
+            dict_add(None, match[2])
+        elif match[3]:
+            dict_add(None, match[3].strip('"'))
+
+    logging.info("Search terms are: " + repr(term_dict))
+    return term_dict
     
-    if d == {}:
-        return None
-    else:
-        return d
+#     d = {}
+#     for match in matches:
+#         if not match[0] == '':
+#             toks = match[0].split(':')
+#             if toks[0] in FIELD_ORDER:
+#                 dict_add(d, toks[0], toks[1])
+#         elif not match[1] == '':
+#             toks = match[1].split(':')
+#             if toks[0] in FIELD_ORDER:
+#                 dict_add(d, toks[0], toks[1].strip('"'))
+#         elif not match[2] == '':
+#             for s in match[2].split():
+#                 dict_add(d, None, s)
+                
 
 def get_matches(terms):
     """
     returns a list of matches (list of Record objects)
     that match the query represented by the search terms
     """
+    if not terms:
+        return []
+
+    recordtime()
+    try:
+        dirfile = open(DIRECTORY_FILE, 'r') 
+    except IOError:
+        logging.error("Cygnet file not found!")
+        exit(1)
+
     results = []
-
-    if terms is not None:
-
-        recordtime()
-        try:
-            dirfile = open(DIRECTORY_FILE, 'r') 
-        except IOError:
-            logging.error("Cygnet file not found!")
-            exit()
-        
+    with dirfile:
         for line in dirfile:
             line = line.strip()
             if len(line) == 0:
                 continue
-            r = Record(line)
+            record = Record.FromLine(line)
+            if record.filter_by_terms(terms):
+                results.append(record.toJSON())
 
-            # included is true only as long as all terms filter to true
-            included = True
-            for term, valuelist in terms.iteritems():
-                for value in valuelist:
-                    if not r.filter(term, value):
-                        included = False
-                        break
-            if included:
-                results.append(r.orig)
-
-        recordtime("Reading and searching directory file")
-
-        dirfile.close()
         logging.info("Found %i results." % len(results))
 
+    recordtime("Reading and searching directory file")
     return results
 
 def parse_form():
     """
-    Returns a list of separated search terms, or None if nothing
-    is entered
+    Returns a dictionary of search terms from the form.
     """
     form = cgi.FieldStorage()
-
     if 'terms' in form:
-        terms = terms_to_dict(form.getfirst('terms'))
-        return terms
-    else:
-        return None
+        return terms_to_dict(form.getfirst('terms'))
+    return {}
 
 
 def recordtime(taskname = None):

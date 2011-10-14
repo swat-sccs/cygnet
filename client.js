@@ -101,15 +101,7 @@ function displayResults(ajax) {
 
         var lines = results.split('\n');        
         for (var i = 0; i < lines.length; i++) {
-            var data = lines[i].split('\t');
-            var record = [];
-            
-            FIELDORDER = ["last","first","middle","class","phone","email","address"];
-            
-            for (var j = 0; j < FIELDORDER.length; j++) {
-                var field = FIELDORDER[j];
-                record[field] = data[j];
-            }
+	    var record = JSON.parse(lines[i]);
 
             var col = resultcount % 4;
             if (col == 0) {
@@ -117,12 +109,12 @@ function displayResults(ajax) {
             }
 
             newHTML += "<td>";
-            newHTML += '<img src="photos/' + record["class"] + '/' + record["email"] +
-                       '.jpg" alt="' + record["first"] + " " + record["last"] + '"/><br/>';
+            newHTML += '<img src="photos/' + record["photo"] +
+                       '" alt="' + record["first"] + " " + record["last"] + '"/><br/>';
             newHTML += record["first"] + " " + record["middle"] + " " + record["last"] + "<br/>";
             newHTML += '<span style="font-size:smaller">';
             newHTML += record["address"] + "<br/>";
-            newHTML += record["class"] + " / " + record["email"] + "<br/>";
+            newHTML += record["year"] + " / " + record["email"] + "<br/>";
             newHTML += "</span></td>";
             
             resultcount++;

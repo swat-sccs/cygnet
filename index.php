@@ -37,7 +37,7 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
 	<ul class="InlineList">
 	  <li>first</li>
 	  <li>last</li>
-	  <li>class</li>
+	  <li>year</li>
 	  <!-- <li>phone</li> -->
 	  <li>email</li>
 	  <li>address</li>

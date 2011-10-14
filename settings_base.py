@@ -13,7 +13,7 @@
 DIRECTORY_FILE = ''
 
 # This is the field order in that file.
-FIELD_ORDER = ['last','first','middle','class','phone','email','address']
+FIELD_ORDER = ['last','first','middle','year','phone','email','address']
 
 # Character used to delimit fields in the directory file.
 DELIMITING_CHAR = '\t'
@@ -27,6 +27,13 @@ CLASS_YEARS = []
 # removed from the Cygnet.
 #   Ex: EXCLUDED_USERS = ['nfelt1']
 EXCLUDED_USERS = []
+
+# The directory where photos are stored, in folders by class year.
+PHOTO_DIRECTORY = 'photos'
+
+# The path to the photo file to use for students with no photo (or a
+# hidden photo).  Should be relative to PHOTO_DIRECTORY.
+ALTERNATE_PHOTO = 'alternate.jpg'
 
 # Logging parameters
 class LOGPARAMS:
