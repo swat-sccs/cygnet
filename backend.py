@@ -51,12 +51,12 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
         super(Record, self).__init__(*args, **kwargs)
         self.excluded = self.email.lower() in EXCLUDED_USERS
 
-    def toJSON(self):
+    def _asdict(self):
         if self.excluded:
-            return ''
-        data = self._asdict()
+            return {}
+        data = super(Record, self)._asdict()
         data['photo'] = self.photo
-        return json.dumps(data)
+        return data
 
     @property
     def photo(self):
@@ -156,7 +156,9 @@ def get_matches(terms):
                 continue
             record = Record.FromLine(line)
             if record.filter_by_terms(terms):
-                results.append(record.toJSON())
+                # Eventually if we use the simplejson module we can skip this
+                # call to _asdict(), since it handles namedtuples nicely.
+                results.append(record._asdict())
 
         logging.info("Found %i results." % len(results))
 
@@ -222,8 +224,9 @@ if __name__ == "__main__":
     recordtime("Form parsing")
     
     results = get_matches(terms)
-    resultdata = "\n".join(results)
-    logging.debug("Size of data returned: %i chars or %g KB." % (len(resultdata), len(resultdata) / 1024.0))
+    resultdata = json.dumps(results)
+    logging.debug("Size of data returned: %i chars or %g KB." %
+                  (len(resultdata), len(resultdata) / 1024.0))
     
     print "Content-type: text/html;charset=utf-8\r\n"
     print resultdata

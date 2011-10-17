@@ -99,9 +99,9 @@ function displayResults(ajax) {
    
         var resultcount = 0;
 
-        var lines = results.split('\n');        
-        for (var i = 0; i < lines.length; i++) {
-	    var record = JSON.parse(lines[i]);
+	var data = JSON.parse(results);
+	for (var i = 0; i < data.length; i++) {
+	    var record = data[i];
 
             var col = resultcount % 4;
             if (col == 0) {

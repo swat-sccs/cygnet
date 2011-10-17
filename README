@@ -21,6 +21,10 @@ CHANGELOG
 Version 3.0
 
 Possible changes:
+- Fix cygnet to exclude phone and middle fields from searching/JSONifying
+- Find a way to speed up JSON processing for large queries
+- Migrate setup to Django instead of PHP?
+
 - Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
 - Display detailed execution time of query (for debugging, maybe as feature?) **
 + Make queries execute faster ***
