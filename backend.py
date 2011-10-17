@@ -175,45 +175,52 @@ def parse_form():
     return {}
 
 
-def recordtime(taskname = None):
+def recordtime(taskname=None):
     """
+    Stores the time this function was called, and if taskname is not None,
+    also logs the elapsed time since the function was last called.
+
     Logs the amount of time used since the last time this function was called, using
     'taskname' as the name of the task. If taskname is None, it just stores the time value.
     """
     now = time.clock()
+    if not hasattr(recordtime, 'first_mark'):
+        recordtime.first_mark = now
+        recordtime.last_mark = now
+    elapsedtime = now - recordtime.last_mark
+    recordtime.last_mark = now
     if taskname is not None:
-        try:
-            elapsedtime = now - recordtime.timemark
-        except NameError:
-            elapsedtime = now        
         logging.debug("%s took %f seconds." % (taskname, elapsedtime))
-    recordtime.timemark = now
-
+    return now - recordtime.first_mark
 
 def configureLogging():
     """
-    Configures logging for this script, using a rotating file handler
-    and the specified formatting string. Configuration parameters below.
+    Configures a rotating log file for this script based on the logging
+    parameters in settings.py.
     """
-    madelogdir = False
+    made_log_dir = False
     logdir = os.path.dirname(LOGPARAMS.FILENAME)
     if not os.path.exists(logdir):
         os.makedirs(logdir)
-        madelogdir = True
+        made_log_dir = True
 
     rootlogger = logging.getLogger()
     rootlogger.setLevel(logging.DEBUG)
     roothandler = logging.handlers.RotatingFileHandler(
-            LOGPARAMS.FILENAME,
-            maxBytes=1024*LOGPARAMS.FILESIZE_KB,
-            backupCount=LOGPARAMS.BACKUP_COUNT)
+        LOGPARAMS.FILENAME,
+        maxBytes=1024*LOGPARAMS.FILESIZE_KB,
+        backupCount=LOGPARAMS.BACKUP_COUNT)
     roothandler.setFormatter(logging.Formatter(LOGPARAMS.FORMAT))
     rootlogger.addHandler(roothandler)
-    logging.info("Made log directory at: './%s'." % logdir)
 
-if __name__ == "__main__":
+    if made_log_dir:
+        logging.info("Made log directory at: './%s'." % logdir)
+
+
+def serveResultsPage():
     """
-    Run the script with the provided terms, and print the results.
+    Run the script using terms passed in via CGI, and generate a page
+    of results to return via HTTP.
     """
     configureLogging()
     logging.debug("=== Running cygnetxml.py. ===")
@@ -231,6 +238,8 @@ if __name__ == "__main__":
     print "Content-type: text/html;charset=utf-8\r\n"
     print resultdata
 
-    logging.debug("Total time elapsed in backend.py: %.3g seconds" % (time.clock() - starttime))
+    logging.debug("Total time elapsed in backend.py: %.3g seconds" %
+                  recordtime())
 
-
+if __name__ == "__main__":
+    serveResultsPage()
