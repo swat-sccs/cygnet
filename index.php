@@ -8,16 +8,17 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
 ?>
 <html>
 <head>
-  <title>the cygnet (swarthmore college computer society)</title>
+  <title>The Cygnet (by SCCS)</title>
   <script type="text/javascript" language="javascript" src="client.js"></script>
   <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
 </head>
 
-<body<?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>>
+<body><?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>
 
   <div id="banner">
-    <img id="logo" src="media/cygnet-banner.png" />
+    <img id="logo" src="media/SCCS_Cygnet_logo.png" />
     <div id="banner-text">
+    <br/>
       The online cygnet is a service of the
       <a href="http://www.sccs.swarthmore.edu/">Swarthmore College Computer Society</a>.
       <!-- <br/>500 College Ave, Swarthmore, PA 19081-1397.-->
@@ -25,7 +26,7 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
       Send questions, bug reports, replacement pictures
       (please resize to 105 by 130 pixels), and removal requests to the SCCS Staff
       at <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a>.
-      Advanced options: <a id="toggle-advanced" href="#" onclick="javascript:toggleAdvanced()"
+      Advanced options: <a id="toggle-advanced" href="#" onClick="javascript:toggleAdvanced()"
 			   title="Show advanced search options">click to show</a>.
       <div id="advanced" style="display: none">
 	<br />
@@ -44,9 +45,9 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
 	</ul>
       </div>
     </div>
-  </div>
+</div>
 
-  <div id="searchbar">
+<div id="searchbar">
     <form method="get" action="index.php">
       <input id="terms" type="text" name="terms"
 	     onkeyup="javascript:callSearch()"
