@@ -21,6 +21,8 @@ CHANGELOG
 Version 3.0
 
 Possible changes:
+- Consider trying to move 403-stuff into the .htaccess file, though make
+      sure it doesn't keep Google from crawling us (so maybe use redirects)
 - Ensure that handling of names with apostrophes/hyphens works correctly
 - Fix cygnet to exclude phone and middle fields from searching/JSONifying
 - Find a way to speed up JSON processing for large queries

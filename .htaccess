@@ -1,0 +1,13 @@
+# Top-level .htaccess file for the Cygnet
+
+# Tell Apache to handle backend.py as a CGI script.
+<Files backend.py>
+       SetHandler cgi-script
+</Files>
+
+# Rewrite all URIs ending in .py[c] to get 404ed so that people can't see
+# the contents of settings.py or other private data in any python files.
+RewriteEngine On
+# (This skips the 404 if the URI ends in backend.py, so the main script runs.)
+RewriteRule backend.py$ - [skip=1]
+RewriteRule .*\.pyc? / [R=404]
