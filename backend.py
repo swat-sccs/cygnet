@@ -29,7 +29,9 @@ import logging.handlers
 import os
 import os.path
 import re
+import sys
 import time
+import traceback
 
 class Record(namedtuple('RawRecord', FIELD_ORDER)):
     """
@@ -214,24 +216,30 @@ def serveResultsPage():
     Run the script using terms passed in via CGI, and generate a page
     of results to return via HTTP.
     """
-    configureLogging()
-    logging.debug("=== Running cygnetxml.py. ===")
+    print "Content-type: application/json;\n"
+    payload = None
+    try:
+        configureLogging()
+        logging.debug("=== Running cygnetxml.py. ===")
+        recordtime()
+        terms = parse_form()
+        payload = {'data': get_matches(terms)}
+    except:
+        exception, value = sys.exc_info()[:2]
+        error_info = {
+            'exception': str(exception),
+            'value': str(value),
+            'traceback': traceback.format_exc(),
+            }
+        payload = {'error': error_info}
 
-    starttime = time.clock()
-    recordtime()
-    terms = parse_form()
-    recordtime("Form parsing")
-    
-    results = get_matches(terms)
-    resultdata = json.dumps(results)
+    output = json.dumps(payload)
+    print output
     logging.debug("Size of data returned: %i chars or %g KB." %
-                  (len(resultdata), len(resultdata) / 1024.0))
-    
-    print "Content-type: text/html;charset=utf-8\r\n"
-    print resultdata
-
+                  (len(output), len(output) / 1024.0))
     logging.debug("Total time elapsed in backend.py: %.3g seconds" %
                   recordtime())
+
 
 if __name__ == "__main__":
     serveResultsPage()
