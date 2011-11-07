@@ -29,7 +29,9 @@ import logging.handlers
 import os
 import os.path
 import re
+import sys
 import time
+import traceback
 
 class Record(namedtuple('RawRecord', FIELD_ORDER)):
     """
@@ -41,7 +43,12 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
 
     @classmethod
     def FromLine(cls, line):
-        return cls(*line.split(DELIMITING_CHAR))
+        fields = line.split(DELIMITING_CHAR)
+        if len(fields) > len(FIELD_ORDER):
+            fields = fields[:len(FIELD_ORDER)]
+        elif len(fields) < len(FIELD_ORDER):
+            fields += [''] * (len(FIELD_ORDER) - len(fields))
+        return cls(*fields)
 
     @classmethod
     def FromJSON(cls, json_obj):
@@ -95,7 +102,10 @@ def terms_to_dict(terms):
     this method returns a dictionary of the form {field: value}
     if there are no specific fields, a dictionary is returned only one key, None
     """
-    term_re = re.compile(r'(\w+:\w+)|(\w+:"[\w ]+")|(\w+)|("[\w ]+")')
+    term_re = re.compile(r'(\w+:\w+)|'
+                         r'(\w+:["\'][\w ]+["\'])|'
+                         r'(\w+)|'
+                         r'(["\'][\w ]+["\'])')
     matches = term_re.findall(terms)
     logging.debug("Matches: %s" % matches)
     
@@ -109,29 +119,15 @@ def terms_to_dict(terms):
         elif match[1]:
             key, value = match[1].split(':')
             if key in FIELD_ORDER:
-                dict_add(key, value.strip('"'))
+                dict_add(key, value.strip('"\''))
         elif match[2]:
             dict_add(None, match[2])
         elif match[3]:
-            dict_add(None, match[3].strip('"'))
+            dict_add(None, match[3].strip('"\''))
 
     logging.info("Search terms are: " + repr(term_dict))
     return term_dict
-    
-#     d = {}
-#     for match in matches:
-#         if not match[0] == '':
-#             toks = match[0].split(':')
-#             if toks[0] in FIELD_ORDER:
-#                 dict_add(d, toks[0], toks[1])
-#         elif not match[1] == '':
-#             toks = match[1].split(':')
-#             if toks[0] in FIELD_ORDER:
-#                 dict_add(d, toks[0], toks[1].strip('"'))
-#         elif not match[2] == '':
-#             for s in match[2].split():
-#                 dict_add(d, None, s)
-                
+
 
 def get_matches(terms):
     """
@@ -171,17 +167,16 @@ def parse_form():
     """
     form = cgi.FieldStorage()
     if 'terms' in form:
+        logging.debug("Raw terms: %s" % form.getfirst('terms'))
         return terms_to_dict(form.getfirst('terms'))
     return {}
 
-
 def recordtime(taskname=None):
     """
-    Stores the time this function was called, and if taskname is not None,
-    also logs the elapsed time since the function was last called.
-
-    Logs the amount of time used since the last time this function was called, using
-    'taskname' as the name of the task. If taskname is None, it just stores the time value.
+    Logs the amount of time used since the last time this function was
+    called, using 'taskname' as the name of the task. If taskname is None,
+    it just stores the time value.  Returns the total elapsed time since
+    this function was first called.
     """
     now = time.clock()
     if not hasattr(recordtime, 'first_mark'):
@@ -199,7 +194,7 @@ def configureLogging():
     parameters in settings.py.
     """
     made_log_dir = False
-    logdir = os.path.dirname(LOGPARAMS.FILENAME)
+    logdir = os.path.dirname(LOGPARAMS.FILENAME) or '.'
     if not os.path.exists(logdir):
         os.makedirs(logdir)
         made_log_dir = True
@@ -216,30 +211,35 @@ def configureLogging():
     if made_log_dir:
         logging.info("Made log directory at: './%s'." % logdir)
 
-
 def serveResultsPage():
     """
     Run the script using terms passed in via CGI, and generate a page
     of results to return via HTTP.
     """
-    configureLogging()
-    logging.debug("=== Running cygnetxml.py. ===")
+    print "Content-type: application/json;\n"
+    payload = None
+    try:
+        configureLogging()
+        logging.debug("=== Running cygnetxml.py. ===")
+        recordtime()
+        terms = parse_form()
+        payload = {'data': get_matches(terms)}
+    except:
+        exception, value = sys.exc_info()[:2]
+        error_info = {
+            'exception': str(exception),
+            'value': str(value),
+            'traceback': traceback.format_exc(),
+            }
+        payload = {'error': error_info}
 
-    starttime = time.clock()
-    recordtime()
-    terms = parse_form()
-    recordtime("Form parsing")
-    
-    results = get_matches(terms)
-    resultdata = json.dumps(results)
+    output = json.dumps(payload)
+    print output
     logging.debug("Size of data returned: %i chars or %g KB." %
-                  (len(resultdata), len(resultdata) / 1024.0))
-    
-    print "Content-type: text/html;charset=utf-8\r\n"
-    print resultdata
-
+                  (len(output), len(output) / 1024.0))
     logging.debug("Total time elapsed in backend.py: %.3g seconds" %
                   recordtime())
+
 
 if __name__ == "__main__":
     serveResultsPage()

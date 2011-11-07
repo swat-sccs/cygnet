@@ -51,7 +51,12 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
     <form method="get" action="index.php">
       <input id="terms" type="text" name="terms"
 	     onkeyup="javascript:callSearch()"
-	     value="<?php echo $_REQUEST['terms']; ?>"/>
+	     value="<?php
+                    $terms = get_magic_quotes_gpc() ?
+                             stripslashes($_REQUEST['terms']) :
+                             $_REQUEST['terms'];
+                    echo htmlspecialchars($terms, ENT_COMPAT);
+                    ?>"/>
       <div id="spinner-box">
 	<img id="spinner" src="media/spinner.gif" alt=""/>
       </div>

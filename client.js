@@ -58,6 +58,7 @@ function doSearch() {
     
     var searchterms = document.getElementById("terms").value;
     lastsearch = searchterms;
+    searchterms = encodeURIComponent(searchterms)
     
     updateBookmarkLink();
     
@@ -76,30 +77,38 @@ function doSearch() {
 function updateBookmarkLink() {
     var url = 'index.php';
     if (lastsearch != "") {
-        url += "?terms=" + lastsearch;
+        url += "?terms=" + encodeURIComponent(lastsearch);
     }
     document.getElementById("bookmarkurl").href = url;
 }
 
 function displayResults(ajax) {
-    if (ajax.status != 200) {
-		document.write("<!-- HTTP Status: " + ajax.status + " = " + ajax.statusText + "-->");
-		die();
-    }
-
-    var results = ajax.responseText.replace(/^\s+|\s+$/g, ''); // trims whitespace    
     var div = document.getElementById("results");
+    var results = JSON.parse(ajax.responseText)
     var newHTML = "";
-    var resultcount = 0;
 
-    div.innerHTML = "";
-
-    if (results.length > 0) {
+    var VALID_STATUS = 200;
+    if (ajax.status != VALID_STATUS || 'error' in results) {
+	var error_msg = "";
+	var error_diagnostics = "";
+	if (ajax.status != VALID_STATUS) {
+	    error_msg = "HTTP Status " + ajax.status + ": " + ajax.statusText;
+	} else {
+	    error_msg = results['error']['value'];
+	    error_diagnostics = results['error']['traceback'];
+	}
+	newHTML =
+	    "<em>Sorry! Results could not be retrieved (" + error_msg + ")." +
+	    "<br/ >" +
+	    "Please email staff@sccs.swarthmore.edu to let us know, " +
+	    "and include the above message.</em>" +
+	    "<!--\n" + error_diagnostics + "\n-->";
+    }
+    else if ('data' in results && results['data'].length > 0) {
         newHTML += '<table border="0" cellpadding="0" cellspacing="0"><tr>';
    
         var resultcount = 0;
-
-	var data = JSON.parse(results);
+	var data = results['data'];
 	for (var i = 0; i < data.length; i++) {
 	    var record = data[i];
 
@@ -129,7 +138,7 @@ function displayResults(ajax) {
         }
 
         newHTML += "</tr></table>";
-        newHTML = "Search for \"" + lastsearch + "\" returned " + resultcount + " result" + (resultcount == 1 ? '' : 's') +  ".<br/><br/>" + newHTML;
+        newHTML = "Search for \"" + lastsearch + "\" returned " + resultcount + " result" + (resultcount == 1 ? '' : 's') +  ".<br/><br/>" + newHTML + "<br /><br />";
     } else {
 	newHTML = "Search for \"" + lastsearch + "\" returned no matches."
     }
@@ -143,13 +152,11 @@ function displayResults(ajax) {
     document.getElementById("timevalue").innerHTML = timediff + " ms";
 }
 
-var TYPEDELAY = 500; // In milliseconds.
-
 function callSearch(noDelay) {
     if (timer != null) {
         clearTimeout(timer);
     }
-    var delay = noDelay ? 0 : TYPEDELAY;
+    var delay = noDelay ? 0 : 500; // In milliseconds.
     timer = setTimeout(doSearch, delay);
 }
 
