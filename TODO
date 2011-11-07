@@ -2,36 +2,42 @@
 TODO - SCCS Cygnet
 ==================
 
-- Find a way to minimize caching of cygnet photos (i.e. instant refresh when
-  we change a photo) without forcing a re-download every time
-- Actually remove all the old symlinks to alternate.jpg now that we're doing
-  the check to see if the file exists instead
+Chores
+- Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
+- Exclude phone and middle fields from searching/JSON-generation?
+- Ensure that handling of names with apostrophes/hyphens works correctly
 - Consider trying to move 403-stuff into the .htaccess file, though make
   sure it doesn't keep Google from crawling us (so maybe use redirects)
-- Ensure that handling of names with apostrophes/hyphens works correctly
-- Fix cygnet to exclude phone and middle fields from searching/JSONifying
-- Find a way to speed up JSON processing for large queries
-- Migrate setup to Django instead of PHP?
+- Actually remove all the old symlinks to alternate.jpg now that we're doing
+  the check to see if the file exists instead
+- Fix all the 2014 photos that use a different alternate image
+- Finish cleaning up the code (Python and JS), parcel out methods better
 
-- Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
-- Display detailed execution time of query (for debugging, maybe as feature?) **
-+ Make queries execute faster ***
-    * Avoid using XML? Or make it faster and lighter... ***
-	- Store data in a faster-to-read format? Database? cPickle?
-    - Only reread directory file when it's been updated since the last query (or when code is updated)
-    - Faster way to filter?
-- Don't use symbolic links for missing photos (allows caching of alternate.jpg, less confusing) **
-- Make results more compact somehow (text to right of photos, smaller text/photos?) **
-- Include directory of off-campus students and abroad students **
-- Use AJAXified URL updating (with hash component) to allow bookmarking of search terms *
-- Allow clicking on photos as "mailto:" links *
-- Show 7 digit phone numbers with a dash in them *
-- Sort into multiple columns intelligently (i.e. based on width of browser window) *
-- Predict size of image to prevent "jumping" as images load *
-* Collapse libXML.js & livecygnet.js into "cygnet.js"
-- PHP-ize frontend more (automate copyright logo, etc.)
-- Use JQuery to animate display of results
-- Offer multiple display options? E.g. photos vs. text-only
-- Standardize photo sizes more, lock sizes of grid contents more
+RFEs
+- Include directory of off-campus students and abroad students (requires some
+  degree of cooperation from housing)
+- Use AJAXified URL updating (with hash component) to allow bookmarking again
+- Allow clicking on photos as "mailto:" links
 - Indicate when housing data was last updated on front page?
 - Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
+- Predict sizes of images to prevent "jumping" as images load
+- Integrate new backend with cygnetadmin script, i.e. have cygnetadmin use
+  backend.py to query the directory file somehow
+
+Pipe dreams
+- Migrate setup to Django instead of PHP? For greater consistency with
+  other SCCS websites, easy settings/etc. management, possibility of allowing
+  off-campus access via SCCS account sign-in.
+- ...Allow off-campus access via SCCS account sign-in.
+- Make queries execute faster
+  - Find some way to speed up JSON parsing on the client side
+  - Store data in a faster-to-read format? Database? cPickle?
+  - Faster way to filter?
+- Make the results display area prettier
+  - Use JQuery to animate display of results
+  - Get table to be more compact somehow (text smaller, repositioned?)
+  - Offer multiple display options? E.g. photos vs. text-only
+  - Sort into multiple columns more fluidly based on window width
+  - Standardize photo sizes more, lock sizes of grid contents more
+- Find a way to minimize caching of cygnet photos (i.e. instant refresh when
+  we change a photo) without forcing a re-download every time

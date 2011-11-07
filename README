@@ -61,6 +61,10 @@ Other changes:
 - Added Cygnet-specific logging ability for debugging purposes, which
   on the server defaults to logging to /var/log/cygnet/cygnet.log.
 
+- Reduced dependence on a specific Apache virtual host configuration by
+  putting the directive that causes backend.py to be handled as a CGI script
+  into a local .htaccess instead of the virtual host file.
+
 - Minor cosmetic changes, e.g. using 'result' instead of 'results' when only
   one result is returned, etc.
 
