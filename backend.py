@@ -100,7 +100,10 @@ def terms_to_dict(terms):
     this method returns a dictionary of the form {field: value}
     if there are no specific fields, a dictionary is returned only one key, None
     """
-    term_re = re.compile(r'(\w+:\w+)|(\w+:"[\w ]+")|(\w+)|("[\w ]+")')
+    term_re = re.compile(r'(\w+:\w+)|'
+                         r'(\w+:["\'][\w ]+["\'])|'
+                         r'(\w+)|'
+                         r'(["\'][\w ]+["\'])')
     matches = term_re.findall(terms)
     logging.debug("Matches: %s" % matches)
     
@@ -114,29 +117,15 @@ def terms_to_dict(terms):
         elif match[1]:
             key, value = match[1].split(':')
             if key in FIELD_ORDER:
-                dict_add(key, value.strip('"'))
+                dict_add(key, value.strip('"\''))
         elif match[2]:
             dict_add(None, match[2])
         elif match[3]:
-            dict_add(None, match[3].strip('"'))
+            dict_add(None, match[3].strip('"\''))
 
     logging.info("Search terms are: " + repr(term_dict))
     return term_dict
-    
-#     d = {}
-#     for match in matches:
-#         if not match[0] == '':
-#             toks = match[0].split(':')
-#             if toks[0] in FIELD_ORDER:
-#                 dict_add(d, toks[0], toks[1])
-#         elif not match[1] == '':
-#             toks = match[1].split(':')
-#             if toks[0] in FIELD_ORDER:
-#                 dict_add(d, toks[0], toks[1].strip('"'))
-#         elif not match[2] == '':
-#             for s in match[2].split():
-#                 dict_add(d, None, s)
-                
+
 
 def get_matches(terms):
     """
