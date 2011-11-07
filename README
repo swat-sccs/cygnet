@@ -21,6 +21,7 @@ CHANGELOG
 Version 3.0
 
 Possible changes:
+- Ensure that handling of names with apostrophes/hyphens works correctly
 - Fix cygnet to exclude phone and middle fields from searching/JSONifying
 - Find a way to speed up JSON processing for large queries
 - Migrate setup to Django instead of PHP?

@@ -165,9 +165,9 @@ def parse_form():
     """
     form = cgi.FieldStorage()
     if 'terms' in form:
+        logging.debug("Raw terms: %s" % form.getfirst('terms'))
         return terms_to_dict(form.getfirst('terms'))
     return {}
-
 
 def recordtime(taskname=None):
     """

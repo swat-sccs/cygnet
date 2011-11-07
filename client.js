@@ -58,6 +58,7 @@ function doSearch() {
     
     var searchterms = document.getElementById("terms").value;
     lastsearch = searchterms;
+    searchterms = encodeURIComponent(searchterms)
     
     updateBookmarkLink();
     
@@ -76,7 +77,7 @@ function doSearch() {
 function updateBookmarkLink() {
     var url = 'index.php';
     if (lastsearch != "") {
-        url += "?terms=" + lastsearch;
+        url += "?terms=" + encodeURIComponent(lastsearch);
     }
     document.getElementById("bookmarkurl").href = url;
 }
