@@ -171,11 +171,10 @@ def parse_form():
 
 def recordtime(taskname=None):
     """
-    Stores the time this function was called, and if taskname is not None,
-    also logs the elapsed time since the function was last called.
-
-    Logs the amount of time used since the last time this function was called, using
-    'taskname' as the name of the task. If taskname is None, it just stores the time value.
+    Logs the amount of time used since the last time this function was
+    called, using 'taskname' as the name of the task. If taskname is None,
+    it just stores the time value.  Returns the total elapsed time since
+    this function was first called.
     """
     now = time.clock()
     if not hasattr(recordtime, 'first_mark'):
@@ -193,7 +192,7 @@ def configureLogging():
     parameters in settings.py.
     """
     made_log_dir = False
-    logdir = os.path.dirname(LOGPARAMS.FILENAME)
+    logdir = os.path.dirname(LOGPARAMS.FILENAME) or '.'
     if not os.path.exists(logdir):
         os.makedirs(logdir)
         made_log_dir = True
@@ -209,7 +208,6 @@ def configureLogging():
 
     if made_log_dir:
         logging.info("Made log directory at: './%s'." % logdir)
-
 
 def serveResultsPage():
     """
