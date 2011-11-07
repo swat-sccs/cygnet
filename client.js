@@ -100,7 +100,8 @@ function displayResults(ajax) {
 	newHTML =
 	    "<em>Sorry! Results could not be retrieved (" + error_msg + ")." +
 	    "<br/ >" +
-	    "Please email staff@sccs.swarthmore.edu to let us know.</em>" +
+	    "Please email staff@sccs.swarthmore.edu to let us know, " +
+	    "and include the above message.</em>" +
 	    "<!--\n" + error_diagnostics + "\n-->";
     }
     else if ('data' in results && results['data'].length > 0) {
