@@ -41,7 +41,12 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
 
     @classmethod
     def FromLine(cls, line):
-        return cls(*line.split(DELIMITING_CHAR))
+        fields = line.split(DELIMITING_CHAR)
+        if len(fields) > len(FIELD_ORDER):
+            fields = fields[:len(FIELD_ORDER)]
+        elif len(fields) < len(FIELD_ORDER):
+            fields += [''] * (len(FIELD_ORDER) - len(fields))
+        return cls(*fields)
 
     @classmethod
     def FromJSON(cls, json_obj):
