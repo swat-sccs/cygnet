@@ -18,7 +18,6 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
   <div id="banner">
     <img id="logo" src="media/cygnet-banner.png" />
     <div id="banner-text">
-    <br/>
       The online Cygnet is a service of the
       <a href="http://www.sccs.swarthmore.edu/">Swarthmore College Computer Society</a>.
       <!-- <br/>500 College Ave, Swarthmore, PA 19081-1397.-->
