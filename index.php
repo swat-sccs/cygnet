@@ -13,13 +13,13 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
   <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
 </head>
 
-<body><?php if (isset($_REQUEST['terms'])) { echo ' onload="javascript:callSearch(true)"'; } ?>
+<body onload="<?php if (isset($_REQUEST['terms'])) { echo 'javascript:callSearch(true)'; } ?>">
 
   <div id="banner">
     <img id="logo" src="media/SCCS_Cygnet_logo.png" />
     <div id="banner-text">
     <br/>
-      The online cygnet is a service of the
+      The online Cygnet is a service of the
       <a href="http://www.sccs.swarthmore.edu/">Swarthmore College Computer Society</a>.
       <!-- <br/>500 College Ave, Swarthmore, PA 19081-1397.-->
       Please use it responsibly or the site may be taken down.
@@ -45,9 +45,9 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
 	</ul>
       </div>
     </div>
-</div>
+  </div>
 
-<div id="searchbar">
+  <div id="searchbar">
     <form method="get" action="index.php">
       <input id="terms" type="text" name="terms"
 	     onkeyup="javascript:callSearch()"
