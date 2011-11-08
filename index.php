@@ -13,8 +13,7 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
   <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
 </head>
 
-<body onload="<?php if (isset($_REQUEST['terms'])) { echo 'javascript:callSearch(true)'; } ?>">
-
+<body>
   <div id="banner">
     <img id="logo" src="media/cygnet-banner.png" />
     <div id="banner-text">

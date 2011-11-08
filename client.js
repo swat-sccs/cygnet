@@ -46,6 +46,11 @@ function requestAJAX(webservice, callback, noXMLloc) {
 
 // =======================================
 
+window.onload = function() {
+    document.getElementById('terms').focus();
+    doSearch();
+}
+
 var timer = null;
 
 var starttime = 0;
@@ -53,7 +58,9 @@ var starttime = 0;
 var lastsearch = "";
 
 function doSearch() {
-    clearTimeout(timer);
+    if (timer != null) {
+        clearTimeout(timer);
+    }
     starttime = (new Date()).getTime();
     
     var searchterms = document.getElementById("terms").value;
@@ -152,12 +159,12 @@ function displayResults(ajax) {
     document.getElementById("timevalue").innerHTML = timediff + " ms";
 }
 
-function callSearch(noDelay) {
+function callSearch() {
     if (timer != null) {
         clearTimeout(timer);
     }
-    var delay = noDelay ? 0 : 500; // In milliseconds.
-    timer = setTimeout(doSearch, delay);
+    var DELAY = 500;  // In milliseconds.
+    timer = setTimeout(doSearch, DELAY);
 }
 
 var sameSearch = (function() {
