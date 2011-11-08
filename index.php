@@ -16,7 +16,7 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
 <body onload="<?php if (isset($_REQUEST['terms'])) { echo 'javascript:callSearch(true)'; } ?>">
 
   <div id="banner">
-    <img id="logo" src="media/SCCS_Cygnet_logo.png" />
+    <img id="logo" src="media/cygnet-banner.png" />
     <div id="banner-text">
     <br/>
       The online Cygnet is a service of the
