@@ -41,3 +41,7 @@ Pipe dreams
   - Standardize photo sizes more, lock sizes of grid contents more
 - Find a way to minimize caching of cygnet photos (i.e. instant refresh when
   we change a photo) without forcing a re-download every time
+- Build a mobile version of the Cygnet with larger logo/text field, less text,
+  results display optimized for small-width screens
+- Add a "did you mean?" feature that tries to find approximate results if the
+  search as entered returned 0 results.
