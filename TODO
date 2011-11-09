@@ -13,6 +13,7 @@ Chores
 - Fix all the 2014 photos that use a different alternate image
 - Finish cleaning up the code (Python and JS), parcel out methods better
 - Mention quoting features in the advanced help section
+- Fix XSS vulnerability in rendering unsanitized search terms in results
 
 RFEs
 - Include directory of off-campus students and abroad students (requires some
