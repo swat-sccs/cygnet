@@ -3,7 +3,7 @@ TODO - SCCS Cygnet
 ==================
 
 Chores
-- Test on: Safari 3+, Opera 9+, IE 7+, Firefox 3+, Chrome 5+ ***
+- Test on: recent Chrome, Safari, & Firefox (maybe IE 8+ and Opera too) ***
 - Exclude phone and middle fields from searching/JSON-generation?
 - Ensure that handling of names with apostrophes/hyphens works correctly
 - Consider trying to move 403-stuff into the .htaccess file, though make
@@ -12,6 +12,7 @@ Chores
   the check to see if the file exists instead
 - Fix all the 2014 photos that use a different alternate image
 - Finish cleaning up the code (Python and JS), parcel out methods better
+- Mention quoting features in the advanced help section
 
 RFEs
 - Include directory of off-campus students and abroad students (requires some
@@ -23,6 +24,7 @@ RFEs
 - Predict sizes of images to prevent "jumping" as images load
 - Integrate new backend with cygnetadmin script, i.e. have cygnetadmin use
   backend.py to query the directory file somehow
+- Add easter eggs, e.g. an embedded youtube video if you search 'rick astley'
 
 Pipe dreams
 - Migrate setup to Django instead of PHP? For greater consistency with
