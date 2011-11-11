@@ -14,6 +14,7 @@ Chores
 - Finish cleaning up the code (Python and JS), parcel out methods better
 - Mention quoting features in the advanced help section
 - Fix XSS vulnerability in rendering unsanitized search terms in results
+- Update cygnetadmin script to do the right thing w/ new photo management
 
 RFEs
 - Include directory of off-campus students and abroad students (requires some
