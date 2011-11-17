@@ -15,6 +15,9 @@ Chores
 - Mention quoting features in the advanced help section
 - Fix XSS vulnerability in rendering unsanitized search terms in results
 - Update cygnetadmin script to do the right thing w/ new photo management
+- Use json2.js or JQuery as a backup JSON parser in case we're in IE7
+- Fix search box rendering issues in Opera 10.5? Grid refering in FF 4?
+- Run HTML and CSS through the W3C validator service
 
 RFEs
 - Include directory of off-campus students and abroad students (requires some
@@ -27,6 +30,7 @@ RFEs
 - Integrate new backend with cygnetadmin script, i.e. have cygnetadmin use
   backend.py to query the directory file somehow
 - Add easter eggs, e.g. an embedded youtube video if you search 'rick astley'
+- Add query string to image file calls so we can avoid caching problems
 
 Pipe dreams
 - Migrate setup to Django instead of PHP? For greater consistency with
