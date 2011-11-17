@@ -6,16 +6,17 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
    die();
 }
 ?>
+<!DOCTYPE html>
 <html>
 <head>
   <title>The Cygnet (by SCCS)</title>
-  <script type="text/javascript" language="javascript" src="client.js"></script>
-  <link rel="stylesheet" href="cygnet.css" type="text/css" media="all"/>
+  <script type="text/javascript" src="client.js"></script>
+  <link rel="stylesheet" href="cygnet.css" type="text/css" media="all" />
 </head>
 
 <body>
   <div id="banner">
-    <img id="logo" src="media/cygnet-banner.png" />
+    <img id="logo" src="media/cygnet-banner.png" alt="The SCCS Cygnet" />
     <div id="banner-text">
       The online Cygnet is a service of the
       <a href="http://www.sccs.swarthmore.edu/">Swarthmore College Computer Society</a>.
@@ -56,7 +57,7 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
                     echo htmlspecialchars($terms, ENT_COMPAT);
                     ?>"/>
       <div id="spinner-box">
-	<img id="spinner" src="media/spinner.gif" alt=""/>
+	<img id="spinner" src="media/spinner.gif" alt="[spinner]"/>
       </div>
       <div class="clearer">&nbsp;</div>
     </form>
