@@ -3,6 +3,8 @@ TODO - SCCS Cygnet
 ==================
 
 Chores
+- Add an 'excluded fields' category in settings_base.py, which will determine
+  which fields a user wants not to show up.
 - Test on: recent Chrome, Safari, & Firefox (maybe IE 8+ and Opera too) ***
 - Exclude phone and middle fields from searching/JSON-generation?
 - Ensure that handling of names with apostrophes/hyphens works correctly
