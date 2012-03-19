@@ -4,9 +4,13 @@
 *.pyc
 *~
 .DS_Store
+*.swp
 
 # Ignore the actual deployment-specific settings.py file.
 settings.py
+
+# and the dev database
+/cygnet_dev.sqlite3
 
 # Ignore the actual data in /photos and /directories
 /photos
@@ -16,5 +20,9 @@ settings.py
 /logs
 /old
 
-
-
+# virtualenv
+/virtualenv/.Python
+/virtualenv/bin/
+/virtualenv/include/
+/virtualenv/lib/
+/virtualenv/Readline*.egg/
