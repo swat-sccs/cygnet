@@ -1,9 +1,73 @@
 from settings_base import *
 
+DEBUG = TEMPLATE_DEBUG = False
+LIBGUTS_USE_LDAP=True
+
+URL = 'https://cygnet.sccs.swarthmore.edu'
+FORCE_SCRIPT_NAME = '/' # for mod_wsgi
+ADMIN_MEDIA_PREFIX = '/admin_media/'
+STATIC_URL = '/static/'
+
 DIRECTORY_FILE = '/usr/sccs/pub/dir/current'
 
-# Disable logging on the server by default.
+# Disable logging on the server by default. TODO: Change to django logging
 LOGPARAMS.FILENAME = '/dev/null'
 #LOGPARAMS.FILENAME = '/var/log/cygnet/cygnet.log'
 LOGPARAMS.FILESIZE_KB = 1024
 LOGPARAMS.BACKUP_COUNT = 10
+
+
+# this gets overriden by the wsgi handler, but this fixes it from manage.py
+from django.core.urlresolvers import set_script_prefix
+set_script_prefix('/')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':   'gutsweb',
+        'USER':   'gutsweb',
+        'HOST':   'db.sccs',
+    } # set 'PASSWORD' in settings.py
+}
+
+LOGGING['handlers']['cygnet'] = {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': '/var/log/cygnet.log',
+}
+LOGGING['handlers']['cygnet_debug'] = {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': '/var/log/cygnet.log.debug',
+}
+
+
+handlers = ['cygnet', 'cygnet_debug']
+
+LOGGING['loggers']['cygnet']['handlers'] = handlers
+LOGGING['loggers']['django']['handlers'] = handlers
+
+# LDAP authentication stuff
+
+AUTHENTICATION_BACKENDS = (
+        'django_auth_ldap.backend.LDAPBackend',
+        'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_LDAP_SERVER_URI = 'ldap://ldap.sccs.swarthmore.edu'
+BASEDN = 'dc=sccs,dc=swarthmore,dc=edu'
+
+AUTH_LDAP_BIND_DN = ''
+AUTH_LDAP_BIND_PASSWORD = ''
+AUTH_LDAP_USER_SEARCH = LDAPSearch('ou=People,%s' % BASEDN, ldap.SCOPE_SUBTREE,
+                                           '(uid=%(user)s)')
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch('ou=Group,%s' % BASEDN, ldap.SCOPE_SUBTREE,
+                                            '(objectClass=posixGroup)')
+AUTH_LDAP_GROUP_TYPE = PosixGroupType()
+AUTH_LDAP_USER_ATTR_MAP = {'email': 'swatmail'}
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+        'is_staff': 'cn=staff,ou=Group,%s' % BASEDN,
+        'is_superuser': 'cn=staff,ou=Group,%s' % BASEDN
+}
