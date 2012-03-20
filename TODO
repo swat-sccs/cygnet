@@ -27,7 +27,6 @@ RFEs
 - Use AJAXified URL updating (with hash component) to allow bookmarking again
 - Allow clicking on photos as "mailto:" links
 - Indicate when housing data was last updated on front page?
-- Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
 - Predict sizes of images to prevent "jumping" as images load
 - Integrate new backend with cygnetadmin script, i.e. have cygnetadmin use
   backend.py to query the directory file somehow
