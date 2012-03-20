@@ -139,7 +139,7 @@ def get_matches(terms):
 
     recordtime()
     try:
-        dirfile = open(settings.DIRECTORY_FILE, 'r') 
+        dirfile = open(settings.DIRECTORY_FILE, 'r')
     except IOError:
         logging.error("Cygnet file not found!")
         exit(1)
