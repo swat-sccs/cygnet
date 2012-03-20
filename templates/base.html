@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load url from future %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Cygnet (by SCCS)</title>
+  <script type="text/javascript" src="{{STATIC_URL}}client.js"></script>
+  <link rel="stylesheet" href="{{STATIC_URL}}cygnet.css" type="text/css" media="all" />
+  <link rel="icon" type="image/png" href="{{STATIC_URL}}images/favicon.png" />
+</head>
+
+<body>
+  <div id="banner">
+    <img id="logo" src="{{STATIC_URL}}images/cygnet-banner.png" alt="The SCCS Cygnet" />
+    <div id="banner-text">
+      The online Cygnet is a service of the
+      <a href="http://www.sccs.swarthmore.edu/">Swarthmore College Computer Society</a>.
+      <!-- <br/>500 College Ave, Swarthmore, PA 19081-1397.-->
+      Please use it responsibly or the site may be taken down.
+      Send questions, bug reports, replacement pictures
+      (please resize to 105 by 130 pixels), and removal requests to the SCCS Staff
+      at <a href="mailto:staff@sccs.swarthmore.edu">staff@sccs.swarthmore.edu</a>.
+      Advanced options: <a id="toggle-advanced" href="#" onClick="javascript:toggleAdvanced()"
+			   title="Show advanced search options">click to show</a>.
+      <div id="advanced" style="display: none">
+	<br />
+	<strong>Advanced searching:</strong>
+	You can do a more specific search by using keywords in the search box.
+	An advanced search might look like, "first:matt address:lodges",
+	which would return everyone named Matt who lives in one of the lodges.
+	The accepted keywords are:
+	<ul class="InlineList">
+	  <li>first</li>
+	  <li>last</li>
+	  <li>year</li>
+	  <!-- <li>phone</li> -->
+	  <li>email</li>
+	  <li>address</li>
+	</ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="searchbar">
+  </div>
+  <div id="results">
+      {% block content %}
+      {% endblock %}
+  </div>
+
+  <div id="footer" style="display: none;">
+    <p>
+      <strong>Tip:</strong> you can bookmark
+      <a id="bookmarkurl" href="/">this link</a> to repeat this search.
+    </P>
+  </div>
+</body>
+</html>
+
+
