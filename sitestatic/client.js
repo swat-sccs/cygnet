@@ -77,7 +77,7 @@ function doSearch() {
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
         document.getElementById("spinner").style.display = "block";
-        requestAJAX("backend/?terms=" + searchterms, displayResults, "home");
+        requestAJAX("/backend/?terms=" + searchterms, displayResults, "home");
     }
 }
 
