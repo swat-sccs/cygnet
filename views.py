@@ -7,7 +7,10 @@ from backend import configureLogging, recordtime, terms_to_dict, get_matches
 import sys, json, logging, traceback
 
 def home(request):
-    return render(request, 'home.html', {})
+    params = {}
+    if request.GET.get('debug', None):
+        params['cygnet_debug'] = True
+    return render(request, 'home.html', params)
 
 def backend(request):
 
