@@ -35,10 +35,6 @@ RFEs
 - Add query string to image file calls so we can avoid caching problems
 
 Pipe dreams
-- Migrate setup to Django instead of PHP? For greater consistency with
-  other SCCS websites, easy settings/etc. management, possibility of allowing
-  off-campus access via SCCS account sign-in.
-- ...Allow off-campus access via SCCS account sign-in.
 - Make queries execute faster
   - Find some way to speed up JSON parsing on the client side
   - Store data in a faster-to-read format? Database? cPickle?
