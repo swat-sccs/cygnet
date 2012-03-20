@@ -11,6 +11,7 @@ settings.py
 
 # and the dev database
 /cygnet_dev.sqlite3
+/cygnet.log
 
 # Ignore the actual data in /photos and /directories
 /photos
