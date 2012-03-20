@@ -161,16 +161,6 @@ def get_matches(terms):
     recordtime("Reading and searching directory file")
     return results
 
-def parse_form():
-    """
-    Returns a dictionary of search terms from the form.
-    """
-    form = cgi.FieldStorage()
-    if 'terms' in form:
-        logging.debug("Raw terms: %s" % form.getfirst('terms'))
-        return terms_to_dict(form.getfirst('terms'))
-    return {}
-
 def recordtime(taskname=None):
     """
     Logs the amount of time used since the last time this function was
@@ -211,37 +201,3 @@ def configureLogging():
     if made_log_dir:
         logging.info("Made log directory at: './%s'." % logdir)
 
-def serveResultsPage():
-    """
-    Run the script using terms passed in via CGI, and generate a page
-    of results to return via HTTP.
-
-    as of djangoification this is now depricated and unused
-    """
-    print "Content-type: application/json;\n"
-    payload = None
-    try:
-        configureLogging()
-        logging.debug("=== Running cygnetxml.py. ===")
-        recordtime()
-        terms = parse_form()
-        payload = {'data': get_matches(terms)}
-    except:
-        exception, value = sys.exc_info()[:2]
-        error_info = {
-            'exception': str(exception),
-            'value': str(value),
-            'traceback': traceback.format_exc(),
-            }
-        payload = {'error': error_info}
-
-    output = json.dumps(payload)
-    print output
-    logging.debug("Size of data returned: %i chars or %g KB." %
-                  (len(output), len(output) / 1024.0))
-    logging.debug("Total time elapsed in backend.py: %.3g seconds" %
-                  recordtime())
-
-
-if __name__ == "__main__":
-    serveResultsPage()
