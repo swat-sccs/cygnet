@@ -82,6 +82,8 @@ def home(request):
     params = {}
     if request.GET.get('debug', None):
         params['cygnet_debug'] = True
+
+    params['search_terms'] = request.GET.get('terms', '')
     return render(request, 'home.html', params)
 
 @checks_user_auth
