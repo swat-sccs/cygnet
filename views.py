@@ -3,28 +3,18 @@ from django.http import Http404, HttpResponse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-from backend import configureLogging, recordtime, parse_form, get_matches
-import sys, json, logging
+from backend import configureLogging, recordtime, terms_to_dict, get_matches
+import sys, json, logging, traceback
 
 def home(request):
     return render(request, 'home.html', {})
 
 def backend(request):
-    payload = None
-    try:
-        configureLogging()
-        logging.debug("=== Running cygnetxml.py. ===")
-        recordtime()
-        terms = parse_form()
-        payload = {'data': get_matches(terms)}
-    except:
-        exception, value = sys.exc_info()[:2]
-        error_info = {
-            'exception': str(exception),
-            'value': str(value),
-            'traceback': traceback.format_exc(),
-            }
-        payload = {'error': error_info}
+
+    configureLogging()
+    recordtime()
+    terms = terms_to_dict(request.GET.get('terms', ''))
+    payload = {'data': get_matches(terms)}
 
     output = json.dumps(payload)
     logging.debug("Size of data returned: %i chars or %g KB." %
