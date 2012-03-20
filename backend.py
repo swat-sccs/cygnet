@@ -142,7 +142,7 @@ def get_matches(terms):
         dirfile = open(settings.DIRECTORY_FILE, 'r')
     except IOError:
         logging.error("Cygnet file not found!")
-        exit(1)
+        raise
 
     results = []
     with dirfile:
