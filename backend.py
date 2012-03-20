@@ -51,7 +51,8 @@ class Record(namedtuple('RawRecord', settings.FIELD_ORDER)):
 
         try:
             index = settings.FIELD_ORDER.index('address')
-            fields[index] = readable_dorms[fields[index]]
+            dorm, room = fields[index].split(' ', 1)
+            fields[index] = ' '.join([readable_dorms[dorm], room])
         except ValueError:
             pass
         except KeyError:
