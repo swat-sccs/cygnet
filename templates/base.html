@@ -40,14 +40,24 @@
 	</ul>
       </div>
     </div>
+    <div id="login_details">
+        {% if user.is_authenticated %}
+            logged in as {{user}}
+            (<a href="{% url "logout" %}">Log Out</a>)
+        {% endif %}
+    </div>
   </div>
 
   <div id="searchbar">
+    {% block searchbar %}
+    {% endblock %}
   </div>
+{% block content %}
   <div id="results">
-      {% block content %}
+      {% block results %}
       {% endblock %}
   </div>
+  {% endblock %}
 
   <div id="footer" style="display: none;">
     <p>

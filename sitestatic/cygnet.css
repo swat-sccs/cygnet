@@ -40,6 +40,13 @@ a:hover {
     display: none;
 }
 
+#login_details {
+    float: right;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    margin-top: 1px;
+}
+
 /* SEARCH BAR SECTION */
 
 #searchbar {
