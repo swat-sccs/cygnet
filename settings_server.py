@@ -10,8 +10,9 @@ STATIC_URL = '/static/'
 
 DIRECTORY_FILE = '/usr/sccs/pub/dir/current'
 
-# this gets overriden by the wsgi handler, but this fixes it from manage.py
 from django.core.urlresolvers import set_script_prefix
+
+# this gets overriden by the wsgi handler, but this fixes it from manage.py
 set_script_prefix('/')
 
 DATABASES = {
@@ -43,6 +44,8 @@ LOGGING['loggers']['cygnet']['handlers'] = handlers
 LOGGING['loggers']['django']['handlers'] = handlers
 
 # LDAP authentication stuff
+import ldap
+from django_auth_ldap.config import LDAPSearch, PosixGroupType
 
 AUTHENTICATION_BACKENDS = (
         'django_auth_ldap.backend.LDAPBackend',
