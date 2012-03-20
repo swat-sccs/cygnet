@@ -20,7 +20,8 @@
 # - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
 from django.conf import settings
 
-import cgi
+from dorms import readable_dorms
+
 from collections import namedtuple
 import json
 import logging
@@ -47,6 +48,15 @@ class Record(namedtuple('RawRecord', settings.FIELD_ORDER)):
             fields = fields[:len(settings.FIELD_ORDER)]
         elif len(fields) < len(settings.FIELD_ORDER):
             fields += [''] * (len(settings.FIELD_ORDER) - len(fields))
+
+        try:
+            index = settings.FIELD_ORDER.index('address')
+            fields[index] = readable_dorms[fields[index]]
+        except ValueError:
+            pass
+        except KeyError:
+            pass
+
         return cls(*fields)
 
     @classmethod
