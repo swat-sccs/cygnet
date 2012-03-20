@@ -18,7 +18,6 @@
 # - EXCLUDED_USERS     List of users to completely exclude from the Cygnet
 # - PHOTO_DIRECTORY    The path to the directory that stores all the photos
 # - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
-# - LOGPARAMS          Container for several logging paramters used below
 from django.conf import settings
 
 import cgi
@@ -177,27 +176,3 @@ def recordtime(taskname=None):
     if taskname is not None:
         logging.debug("%s took %f seconds." % (taskname, elapsedtime))
     return now - recordtime.first_mark
-
-def configureLogging():
-    """
-    Configures a rotating log file for this script based on the logging
-    parameters in settings.py.
-    """
-    made_log_dir = False
-    logdir = os.path.dirname(settings.LOGPARAMS.FILENAME) or '.'
-    if not os.path.exists(logdir):
-        os.makedirs(logdir)
-        made_log_dir = True
-
-    rootlogger = logging.getLogger()
-    rootlogger.setLevel(logging.DEBUG)
-    roothandler = logging.handlers.RotatingFileHandler(
-        settings.LOGPARAMS.FILENAME,
-        maxBytes=1024*settings.LOGPARAMS.FILESIZE_KB,
-        backupCount=settings.LOGPARAMS.BACKUP_COUNT)
-    roothandler.setFormatter(logging.Formatter(settings.LOGPARAMS.FORMAT))
-    rootlogger.addHandler(roothandler)
-
-    if made_log_dir:
-        logging.info("Made log directory at: './%s'." % logdir)
-

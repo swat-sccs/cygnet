@@ -9,7 +9,7 @@ from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators   import available_attrs
 
-from backend import configureLogging, recordtime, terms_to_dict, get_matches
+from backend import recordtime, terms_to_dict, get_matches
 import sys, json, logging, traceback
 
 import urlparse
@@ -89,7 +89,6 @@ def home(request):
 @checks_user_auth
 def backend(request):
 
-    configureLogging()
     recordtime()
     terms = terms_to_dict(request.GET.get('terms', ''))
     payload = {'data': get_matches(terms)}

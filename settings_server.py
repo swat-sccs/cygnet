@@ -10,13 +10,6 @@ STATIC_URL = '/static/'
 
 DIRECTORY_FILE = '/usr/sccs/pub/dir/current'
 
-# Disable logging on the server by default. TODO: Change to django logging
-LOGPARAMS.FILENAME = '/dev/null'
-#LOGPARAMS.FILENAME = '/var/log/cygnet/cygnet.log'
-LOGPARAMS.FILESIZE_KB = 1024
-LOGPARAMS.BACKUP_COUNT = 10
-
-
 # this gets overriden by the wsgi handler, but this fixes it from manage.py
 from django.core.urlresolvers import set_script_prefix
 set_script_prefix('/')

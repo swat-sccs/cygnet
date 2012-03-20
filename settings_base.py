@@ -201,11 +201,4 @@ PHOTO_DIRECTORY = 'photos'
 # hidden photo).  Should be relative to PHOTO_DIRECTORY.
 ALTERNATE_PHOTO = 'alternate.jpg'
 
-# Logging parameters
-class LOGPARAMS:
-    FILENAME = 'cygnet.log'
-    FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-    FILESIZE_KB = 50
-    BACKUP_COUNT = 1
-
 CAMPUS_IPS="130.58."
