@@ -77,12 +77,12 @@ function doSearch() {
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
         document.getElementById("spinner").style.display = "block";
-        requestAJAX("backend.py?terms=" + searchterms, displayResults, "index.php");
+        requestAJAX("backend/?terms=" + searchterms, displayResults, "home");
     }
 }
 
 function updateBookmarkLink() {
-    var url = 'index.php';
+    var url = 'home';
     if (lastsearch != "") {
         url += "?terms=" + encodeURIComponent(lastsearch);
     }

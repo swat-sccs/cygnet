@@ -19,7 +19,7 @@
 # - PHOTO_DIRECTORY    The path to the directory that stores all the photos
 # - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
 # - LOGPARAMS          Container for several logging paramters used below
-from settings import *
+from django.conf import settings
 
 import cgi
 from collections import namedtuple
@@ -33,7 +33,7 @@ import sys
 import time
 import traceback
 
-class Record(namedtuple('RawRecord', FIELD_ORDER)):
+class Record(namedtuple('RawRecord', settings.FIELD_ORDER)):
     """
     Record handles reading and parsing a line from the directory
     file into a more handy format for searching. It also provides
@@ -43,11 +43,11 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
 
     @classmethod
     def FromLine(cls, line):
-        fields = line.split(DELIMITING_CHAR)
-        if len(fields) > len(FIELD_ORDER):
-            fields = fields[:len(FIELD_ORDER)]
-        elif len(fields) < len(FIELD_ORDER):
-            fields += [''] * (len(FIELD_ORDER) - len(fields))
+        fields = line.split(settings.DELIMITING_CHAR)
+        if len(fields) > len(settings.FIELD_ORDER):
+            fields = fields[:len(settings.FIELD_ORDER)]
+        elif len(fields) < len(settings.FIELD_ORDER):
+            fields += [''] * (len(settings.FIELD_ORDER) - len(fields))
         return cls(*fields)
 
     @classmethod
@@ -56,7 +56,7 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
 
     def __init__(self, *args, **kwargs):
         super(Record, self).__init__(*args, **kwargs)
-        self.excluded = self.email.lower() in EXCLUDED_USERS
+        self.excluded = self.email.lower() in settings.EXCLUDED_USERS
 
     def _asdict(self):
         if self.excluded:
@@ -69,10 +69,10 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
     def photo(self):
         location = "%s/%s.jpg" % (self.year, self.email)
         try:
-            open(PHOTO_DIRECTORY + "/" + location)
+            open(settings.PHOTO_DIRECTORY + "/" + location)
             return location
         except IOError:
-            return ALTERNATE_PHOTO
+            return settings.ALTERNATE_PHOTO
 
     def filter(self, search_field, search_val):
         """
@@ -114,11 +114,11 @@ def terms_to_dict(terms):
     for match in matches:
         if match[0]:
             key, value = match[0].split(':')
-            if key in FIELD_ORDER:
+            if key in settings.FIELD_ORDER:
                 dict_add(key, value)
         elif match[1]:
             key, value = match[1].split(':')
-            if key in FIELD_ORDER:
+            if key in settings.FIELD_ORDER:
                 dict_add(key, value.strip('"\''))
         elif match[2]:
             dict_add(None, match[2])
@@ -139,7 +139,7 @@ def get_matches(terms):
 
     recordtime()
     try:
-        dirfile = open(DIRECTORY_FILE, 'r') 
+        dirfile = open(settings.DIRECTORY_FILE, 'r') 
     except IOError:
         logging.error("Cygnet file not found!")
         exit(1)
@@ -194,7 +194,7 @@ def configureLogging():
     parameters in settings.py.
     """
     made_log_dir = False
-    logdir = os.path.dirname(LOGPARAMS.FILENAME) or '.'
+    logdir = os.path.dirname(settings.LOGPARAMS.FILENAME) or '.'
     if not os.path.exists(logdir):
         os.makedirs(logdir)
         made_log_dir = True
@@ -202,10 +202,10 @@ def configureLogging():
     rootlogger = logging.getLogger()
     rootlogger.setLevel(logging.DEBUG)
     roothandler = logging.handlers.RotatingFileHandler(
-        LOGPARAMS.FILENAME,
-        maxBytes=1024*LOGPARAMS.FILESIZE_KB,
-        backupCount=LOGPARAMS.BACKUP_COUNT)
-    roothandler.setFormatter(logging.Formatter(LOGPARAMS.FORMAT))
+        settings.LOGPARAMS.FILENAME,
+        maxBytes=1024*settings.LOGPARAMS.FILESIZE_KB,
+        backupCount=settings.LOGPARAMS.BACKUP_COUNT)
+    roothandler.setFormatter(logging.Formatter(settings.LOGPARAMS.FORMAT))
     rootlogger.addHandler(roothandler)
 
     if made_log_dir:
@@ -215,6 +215,8 @@ def serveResultsPage():
     """
     Run the script using terms passed in via CGI, and generate a page
     of results to return via HTTP.
+
+    as of djangoification this is now depricated and unused
     """
     print "Content-type: application/json;\n"
     payload = None
