@@ -100,3 +100,28 @@ def backend(request):
                   recordtime())
 
     return HttpResponse(output, content_type='application/json')
+
+from django.contrib.auth.views import login as native_login
+from django.core.context_processors import csrf
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+
+@csrf_exempt
+def login(request, *args, **kwargs):
+    print request.method, request.GET
+    if request.method == 'GET' and 'csrf' in request.GET:
+        csrf_token = csrf(request)['csrf_token']
+        return HttpResponse(csrf_token, content_type='text/plain')
+
+    if request.method == 'POST' and 'api' in request.POST:
+        print "using api login"
+        user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
+        if user is not None and user.is_active:
+            auth_login(request, user)
+            return HttpResponse('authenticated', content_type='text/plain')
+        else:
+            return HttpResponse('not authenticated', content_type='text/plain', status_code=403)
+
+    return native_login(request, *args, **kwargs)
+

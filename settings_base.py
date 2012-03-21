@@ -14,6 +14,8 @@
 import os
 BASE_PATH = os.path.dirname(__file__)
 
+LOGIN_REDIRECT_URL="/"
+
 ADMINS = MANAGERS = (
     ('SCCS Staff', 'staff@sccs.swarthmore.edu'),
 )
