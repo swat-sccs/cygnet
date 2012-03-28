@@ -3,7 +3,6 @@ from settings_base import *
 TEMPLATE_DEBUG = DEBUG = True
 
 FORCE_SCRIPT_NAME = ''
-ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 DATABASES = {
     'default': {

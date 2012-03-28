@@ -5,7 +5,6 @@ LIBGUTS_USE_LDAP=True
 
 URL = 'https://cygnet.sccs.swarthmore.edu'
 FORCE_SCRIPT_NAME = '/' # for mod_wsgi
-ADMIN_MEDIA_PREFIX = '/admin_media/'
 STATIC_URL = '/static/'
 
 DIRECTORY_FILE = '/usr/sccs/pub/dir/current'
