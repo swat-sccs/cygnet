@@ -125,7 +125,7 @@ function displayResults(ajax) {
             }
 
             newHTML += "<td>";
-            newHTML += '<img src="/static/photos/' + record["photo"] +
+            newHTML += '<img src="/media/photos/' + record["photo"] +
                        '" alt="' + record["first"] + " " + record["last"] + '"/><br/>';
             newHTML += record["first"] + " " + record["middle"] + " " + record["last"] + "<br/>";
             newHTML += '<span style="font-size:smaller">';
