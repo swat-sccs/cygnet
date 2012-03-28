@@ -1,7 +1,6 @@
 from settings_base import *
 
 DEBUG = TEMPLATE_DEBUG = False
-LIBGUTS_USE_LDAP=True
 
 URL = 'https://cygnet.sccs.swarthmore.edu'
 FORCE_SCRIPT_NAME = '/' # for mod_wsgi
@@ -17,8 +16,8 @@ set_script_prefix('/')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':   'gutsweb',
-        'USER':   'gutsweb',
+        'NAME':   'cygnet',
+        'USER':   'cygnet',
         'HOST':   'db.sccs',
     } # set 'PASSWORD' in settings.py
 }
