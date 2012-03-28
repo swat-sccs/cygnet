@@ -16,9 +16,8 @@ settings.py
 /cygnet_dev.sqlite3
 /cygnet.log
 
-# Ignore the actual data in /photos and /directories as well as the copied static files
-/photos
-/directories
+# Ignore the actual data in /media as well as the copied static files
+/media
 /static
 
 # Ignore logs and old stuff, if they're there
