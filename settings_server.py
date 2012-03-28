@@ -28,13 +28,13 @@ LOGGING['handlers']['cygnet'] = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'formatter': 'verbose',
-            'filename': '/var/log/cygnet.log',
+            'filename': '/var/log/cygnet/cygnet.log',
 }
 LOGGING['handlers']['cygnet_debug'] = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'verbose',
-            'filename': '/var/log/cygnet.log.debug',
+            'filename': '/var/log/cygnet/cygnet.log.debug',
 }
 
 
