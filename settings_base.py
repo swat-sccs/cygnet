@@ -192,7 +192,7 @@ CLASS_YEARS = []
 EXCLUDED_USERS = []
 
 # The directory where photos are stored, in folders by class year.
-PHOTO_DIRECTORY = 'photos'
+PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/'
 
 # The path to the photo file to use for students with no photo (or a
 # hidden photo).  Should be relative to PHOTO_DIRECTORY.
