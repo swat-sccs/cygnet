@@ -8,6 +8,8 @@
 
 # since the server is using ~ as the checkout we need to ignore some things that typically go in ~
 .viminfo
+.bash_history
+.ipython/
 
 # Ignore the actual deployment-specific settings.py file.
 settings.py
