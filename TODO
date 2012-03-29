@@ -3,6 +3,7 @@ TODO - SCCS Cygnet
 ==================
 
 Chores
+- On logout redirect to homepage with a message via the messages framework saying that the logout happened.
 - Add an 'excluded fields' category in settings_base.py, which will determine
   which fields a user wants not to show up.
 - Test on: recent Chrome, Safari, & Firefox (maybe IE 8+ and Opera too) ***
