@@ -88,7 +88,9 @@ def home(request):
 
 def backend(request):
     if not user_authenticated(request):
-        return HttpResponse('you must be logged in to access the backend.', content_type='text/plain', status_code=403)
+        response = HttpResponse('you must be logged in to access the backend.', content_type='text/plain')
+        response.status_code=403
+        return response
 
     recordtime()
     terms = terms_to_dict(request.GET.get('terms', ''))
