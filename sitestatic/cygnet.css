@@ -96,6 +96,20 @@ a:hover {
 	color: #425b86;
 }
 
+/* CONTENT */
+
+#content {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left:  auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#content table {
+  margin-left:  auto;
+  margin-right: auto;
+}
 
 /* RESULTS SECTION */
 

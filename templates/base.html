@@ -52,12 +52,14 @@
     {% block searchbar %}
     {% endblock %}
   </div>
-{% block content %}
-  <div id="results">
-      {% block results %}
-      {% endblock %}
+  <div id="content">
+    {% block content %}
+    <div id="results">
+        {% block results %}
+        {% endblock %}
+    </div>
+    {% endblock %}
   </div>
-  {% endblock %}
 
   <div id="footer" style="display: none;">
     <p>
