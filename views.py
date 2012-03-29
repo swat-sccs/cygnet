@@ -86,8 +86,9 @@ def home(request):
     params['search_terms'] = request.GET.get('terms', '')
     return render(request, 'home.html', params)
 
-@checks_user_auth
 def backend(request):
+    if not user_authenticated(request):
+        return HttpResponse('you must be logged in to access the backend.', content_type='text/plain', status_code=403)
 
     recordtime()
     terms = terms_to_dict(request.GET.get('terms', ''))
