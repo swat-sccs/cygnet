@@ -124,7 +124,9 @@ def login(request, *args, **kwargs):
             auth_login(request, user)
             return HttpResponse('authenticated', content_type='text/plain')
         else:
-            return HttpResponse('not authenticated', content_type='text/plain', status_code=403)
+            response = HttpResponse('not authenticated', content_type='text/plain')
+            response.status_code=403
+            return response
 
     return native_login(request, *args, **kwargs)
 
