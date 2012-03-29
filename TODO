@@ -27,7 +27,7 @@ RFEs
 - Use AJAXified URL updating (with hash component) to allow bookmarking again
 - Allow clicking on photos as "mailto:" links
 - Indicate when housing data was last updated on front page?
-- Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
+* Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
 - Predict sizes of images to prevent "jumping" as images load
 - Integrate new backend with cygnetadmin script, i.e. have cygnetadmin use
   backend.py to query the directory file somehow
@@ -35,10 +35,10 @@ RFEs
 - Add query string to image file calls so we can avoid caching problems
 
 Pipe dreams
-- Migrate setup to Django instead of PHP? For greater consistency with
+* Migrate setup to Django instead of PHP? For greater consistency with
   other SCCS websites, easy settings/etc. management, possibility of allowing
   off-campus access via SCCS account sign-in.
-- ...Allow off-campus access via SCCS account sign-in.
+* ...Allow off-campus access via SCCS account sign-in.
 - Make queries execute faster
   - Find some way to speed up JSON parsing on the client side
   - Store data in a faster-to-read format? Database? cPickle?
@@ -51,7 +51,10 @@ Pipe dreams
   - Standardize photo sizes more, lock sizes of grid contents more
 - Find a way to minimize caching of cygnet photos (i.e. instant refresh when
   we change a photo) without forcing a re-download every time
-- Build a mobile version of the Cygnet with larger logo/text field, less text,
++ Build a mobile version of the Cygnet with larger logo/text field, less text,
   results display optimized for small-width screens
++ Build platform-specific Cygnet apps (iOS, Android)
 - Add a "did you mean?" feature that tries to find approximate results if the
   search as entered returned 0 results.
+- Implement a suggestions feature for Chrome tab-to-search
+  - See: http://www.chromium.org/tab-to-search
