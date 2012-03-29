@@ -18,10 +18,10 @@
 # - EXCLUDED_USERS     List of users to completely exclude from the Cygnet
 # - PHOTO_DIRECTORY    The path to the directory that stores all the photos
 # - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
-# - LOGPARAMS          Container for several logging paramters used below
-from settings import *
+from django.conf import settings
 
-import cgi
+from dorms import readable_dorms
+
 from collections import namedtuple
 import json
 import logging
@@ -33,7 +33,7 @@ import sys
 import time
 import traceback
 
-class Record(namedtuple('RawRecord', FIELD_ORDER)):
+class Record(namedtuple('RawRecord', settings.FIELD_ORDER)):
     """
     Record handles reading and parsing a line from the directory
     file into a more handy format for searching. It also provides
@@ -43,11 +43,21 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
 
     @classmethod
     def FromLine(cls, line):
-        fields = line.split(DELIMITING_CHAR)
-        if len(fields) > len(FIELD_ORDER):
-            fields = fields[:len(FIELD_ORDER)]
-        elif len(fields) < len(FIELD_ORDER):
-            fields += [''] * (len(FIELD_ORDER) - len(fields))
+        fields = line.split(settings.DELIMITING_CHAR)
+        if len(fields) > len(settings.FIELD_ORDER):
+            fields = fields[:len(settings.FIELD_ORDER)]
+        elif len(fields) < len(settings.FIELD_ORDER):
+            fields += [''] * (len(settings.FIELD_ORDER) - len(fields))
+
+        try:
+            index = settings.FIELD_ORDER.index('address')
+            dorm, room = fields[index].split(' ', 1)
+            fields[index] = ' '.join([readable_dorms[dorm], room])
+        except ValueError:
+            pass
+        except KeyError:
+            pass
+
         return cls(*fields)
 
     @classmethod
@@ -56,7 +66,7 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
 
     def __init__(self, *args, **kwargs):
         super(Record, self).__init__(*args, **kwargs)
-        self.excluded = self.email.lower() in EXCLUDED_USERS
+        self.excluded = self.email.lower() in settings.EXCLUDED_USERS
 
     def _asdict(self):
         if self.excluded:
@@ -69,10 +79,10 @@ class Record(namedtuple('RawRecord', FIELD_ORDER)):
     def photo(self):
         location = "%s/%s.jpg" % (self.year, self.email)
         try:
-            open(PHOTO_DIRECTORY + "/" + location)
+            open(settings.PHOTO_DIRECTORY + "/" + location)
             return location
         except IOError:
-            return ALTERNATE_PHOTO
+            return settings.ALTERNATE_PHOTO
 
     def filter(self, search_field, search_val):
         """
@@ -114,11 +124,11 @@ def terms_to_dict(terms):
     for match in matches:
         if match[0]:
             key, value = match[0].split(':')
-            if key in FIELD_ORDER:
+            if key in settings.FIELD_ORDER:
                 dict_add(key, value)
         elif match[1]:
             key, value = match[1].split(':')
-            if key in FIELD_ORDER:
+            if key in settings.FIELD_ORDER:
                 dict_add(key, value.strip('"\''))
         elif match[2]:
             dict_add(None, match[2])
@@ -139,10 +149,10 @@ def get_matches(terms):
 
     recordtime()
     try:
-        dirfile = open(DIRECTORY_FILE, 'r') 
+        dirfile = open(settings.DIRECTORY_FILE, 'r')
     except IOError:
         logging.error("Cygnet file not found!")
-        exit(1)
+        raise
 
     results = []
     with dirfile:
@@ -161,16 +171,6 @@ def get_matches(terms):
     recordtime("Reading and searching directory file")
     return results
 
-def parse_form():
-    """
-    Returns a dictionary of search terms from the form.
-    """
-    form = cgi.FieldStorage()
-    if 'terms' in form:
-        logging.debug("Raw terms: %s" % form.getfirst('terms'))
-        return terms_to_dict(form.getfirst('terms'))
-    return {}
-
 def recordtime(taskname=None):
     """
     Logs the amount of time used since the last time this function was
@@ -187,59 +187,3 @@ def recordtime(taskname=None):
     if taskname is not None:
         logging.debug("%s took %f seconds." % (taskname, elapsedtime))
     return now - recordtime.first_mark
-
-def configureLogging():
-    """
-    Configures a rotating log file for this script based on the logging
-    parameters in settings.py.
-    """
-    made_log_dir = False
-    logdir = os.path.dirname(LOGPARAMS.FILENAME) or '.'
-    if not os.path.exists(logdir):
-        os.makedirs(logdir)
-        made_log_dir = True
-
-    rootlogger = logging.getLogger()
-    rootlogger.setLevel(logging.DEBUG)
-    roothandler = logging.handlers.RotatingFileHandler(
-        LOGPARAMS.FILENAME,
-        maxBytes=1024*LOGPARAMS.FILESIZE_KB,
-        backupCount=LOGPARAMS.BACKUP_COUNT)
-    roothandler.setFormatter(logging.Formatter(LOGPARAMS.FORMAT))
-    rootlogger.addHandler(roothandler)
-
-    if made_log_dir:
-        logging.info("Made log directory at: './%s'." % logdir)
-
-def serveResultsPage():
-    """
-    Run the script using terms passed in via CGI, and generate a page
-    of results to return via HTTP.
-    """
-    print "Content-type: application/json;\n"
-    payload = None
-    try:
-        configureLogging()
-        logging.debug("=== Running cygnetxml.py. ===")
-        recordtime()
-        terms = parse_form()
-        payload = {'data': get_matches(terms)}
-    except:
-        exception, value = sys.exc_info()[:2]
-        error_info = {
-            'exception': str(exception),
-            'value': str(value),
-            'traceback': traceback.format_exc(),
-            }
-        payload = {'error': error_info}
-
-    output = json.dumps(payload)
-    print output
-    logging.debug("Size of data returned: %i chars or %g KB." %
-                  (len(output), len(output) / 1024.0))
-    logging.debug("Total time elapsed in backend.py: %.3g seconds" %
-                  recordtime())
-
-
-if __name__ == "__main__":
-    serveResultsPage()

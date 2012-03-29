@@ -1,0 +1,3 @@
+Django
+django-auth-ldap
+decorator # included in 2.7 but not in 2.6

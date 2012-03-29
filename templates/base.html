@@ -1,22 +1,18 @@
-<?php
-// Redirect to the cygnet.sccs virtual host.
-if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
-   $termstring = (isset($_REQUEST['terms']) ? '?terms='.$_REQUEST['terms'] : '');
-   header('Location: http://cygnet.sccs.swarthmore.edu' . $termstring);
-   die();
-}
-?>
+<!DOCTYPE html>
+{% load url from future %}
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>The Cygnet (by SCCS)</title>
-  <script type="text/javascript" src="client.js"></script>
-  <link rel="stylesheet" href="cygnet.css" type="text/css" media="all" />
+  <script type="text/javascript" src="{{STATIC_URL}}client.js"></script>
+  <link rel="stylesheet" href="{{STATIC_URL}}cygnet.css" type="text/css" media="all" />
+  <link rel="icon" type="image/png" href="{{STATIC_URL}}images/favicon.png" />
 </head>
 
 <body>
   <div id="banner">
-    <img id="logo" src="media/cygnet-banner.png" alt="The SCCS Cygnet" />
+    <img id="logo" src="{{STATIC_URL}}images/cygnet-banner.png" alt="The SCCS Cygnet" />
     <div id="banner-text">
       The online Cygnet is a service of the
       <a href="http://www.sccs.swarthmore.edu/">Swarthmore College Computer Society</a>.
@@ -44,40 +40,34 @@ if ($_SERVER['SERVER_NAME'] === 'www.sccs.swarthmore.edu') {
 	</ul>
       </div>
     </div>
-  </div>
-
-  <div id="searchbar">
-    <form method="get" action="index.php">
-      <input id="terms" type="text" name="terms"
-	     onkeyup="javascript:callSearch()"
-	     value="<?php
-                    $terms = get_magic_quotes_gpc() ?
-                             stripslashes($_REQUEST['terms']) :
-                             $_REQUEST['terms'];
-                    echo htmlspecialchars($terms, ENT_COMPAT);
-                    ?>"/>
-      <div id="spinner-box">
-	<img id="spinner" src="media/spinner.gif" alt="[spinner]"/>
-      </div>
-      <div class="clearer">&nbsp;</div>
-    </form>
-    <div id="responsetime"
-	 style="display: <?php echo (isset($_REQUEST['debug']) ? 'block' : 'none') ?>;">
-      <span id="timelabel">Query took: </span>
-      <span id="timevalue"></span>
+    <div id="login_details">
+        {% if user.is_authenticated %}
+            logged in as {{user}}
+            (<a href="{% url "logout" %}">log out</a>)
+        {% endif %}
     </div>
   </div>
 
-  <div id="results">
-    <!-- RESULTS GET INSERTED HERE -->
+  <div id="searchbar">
+    {% block searchbar %}
+    {% endblock %}
+  </div>
+  <div id="content">
+    {% block content %}
+    <div id="results">
+        {% block results %}
+        {% endblock %}
+    </div>
+    {% endblock %}
   </div>
 
   <div id="footer" style="display: none;">
     <p>
       <strong>Tip:</strong> you can bookmark
-      <a id="bookmarkurl" href="index.php">this link</a> to repeat this search.
+      <a id="bookmarkurl" href="/">this link</a> to repeat this search.
     </P>
   </div>
 </body>
 </html>
+
 

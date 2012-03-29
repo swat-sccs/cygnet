@@ -3,6 +3,7 @@ TODO - SCCS Cygnet
 ==================
 
 Chores
+- On logout redirect to homepage with a message via the messages framework saying that the logout happened.
 - Add an 'excluded fields' category in settings_base.py, which will determine
   which fields a user wants not to show up.
 - Test on: recent Chrome, Safari, & Firefox (maybe IE 8+ and Opera too) ***
@@ -27,7 +28,6 @@ RFEs
 - Use AJAXified URL updating (with hash component) to allow bookmarking again
 - Allow clicking on photos as "mailto:" links
 - Indicate when housing data was last updated on front page?
-* Expand housing abbreviations to full names? (e.g. WHARTN -> WHARTON or Wharton)
 - Predict sizes of images to prevent "jumping" as images load
 - Integrate new backend with cygnetadmin script, i.e. have cygnetadmin use
   backend.py to query the directory file somehow
@@ -35,10 +35,6 @@ RFEs
 - Add query string to image file calls so we can avoid caching problems
 
 Pipe dreams
-* Migrate setup to Django instead of PHP? For greater consistency with
-  other SCCS websites, easy settings/etc. management, possibility of allowing
-  off-campus access via SCCS account sign-in.
-* ...Allow off-campus access via SCCS account sign-in.
 - Make queries execute faster
   - Find some way to speed up JSON parsing on the client side
   - Store data in a faster-to-read format? Database? cPickle?

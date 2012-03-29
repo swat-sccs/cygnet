@@ -77,12 +77,12 @@ function doSearch() {
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
         document.getElementById("spinner").style.display = "block";
-        requestAJAX("backend.py?terms=" + searchterms, displayResults, "index.php");
+        requestAJAX("/backend/?terms=" + searchterms, displayResults, "home");
     }
 }
 
 function updateBookmarkLink() {
-    var url = 'index.php';
+    var url = 'home';
     if (lastsearch != "") {
         url += "?terms=" + encodeURIComponent(lastsearch);
     }
@@ -125,7 +125,7 @@ function displayResults(ajax) {
             }
 
             newHTML += "<td>";
-            newHTML += '<img src="photos/' + record["photo"] +
+            newHTML += '<img src="/media/photos/' + record["photo"] +
                        '" alt="' + record["first"] + " " + record["last"] + '"/><br/>';
             newHTML += record["first"] + " " + record["middle"] + " " + record["last"] + "<br/>";
             newHTML += '<span style="font-size:smaller">';

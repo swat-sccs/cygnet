@@ -4,17 +4,31 @@
 *.pyc
 *~
 .DS_Store
+*.swp
+
+# since the server is using ~ as the checkout we need to ignore some things that typically go in ~
+.viminfo
+.bash_history
+.ipython/
 
 # Ignore the actual deployment-specific settings.py file.
 settings.py
 
-# Ignore the actual data in /photos and /directories
-/photos
-/directories
+# and the dev database
+/cygnet_dev.sqlite3
+/cygnet.log
+
+# Ignore the actual data in /media as well as the copied static files
+/media
+/static
 
 # Ignore logs and old stuff, if they're there
 /logs
 /old
 
-
-
+# virtualenv
+/virtualenv/.Python
+/virtualenv/bin/
+/virtualenv/include/
+/virtualenv/lib/
+/virtualenv/Readline*.egg/
