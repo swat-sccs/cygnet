@@ -3,7 +3,7 @@ from settings_base import *
 DEBUG = TEMPLATE_DEBUG = False
 
 URL = 'https://cygnet.sccs.swarthmore.edu'
-FORCE_SCRIPT_NAME = '/' # for mod_wsgi
+FORCE_SCRIPT_NAME = '' # for mod_wsgi
 STATIC_URL = '/static/'
 
 DIRECTORY_FILE = '/usr/sccs/pub/dir/current'
