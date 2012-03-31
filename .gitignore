@@ -19,6 +19,7 @@ settings.py
 /cygnet.log
 
 # Ignore the actual data in /media as well as the copied static files
+/photos
 /media
 /static
 
