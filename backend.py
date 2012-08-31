@@ -23,6 +23,7 @@ from django.conf import settings
 from dorms import readable_dorms
 
 from collections import namedtuple
+import codecs
 import json
 import logging
 import logging.handlers
@@ -149,7 +150,10 @@ def get_matches(terms):
 
     recordtime()
     try:
-        dirfile = open(settings.DIRECTORY_FILE, 'r')
+        dirfile = codecs.open(settings.DIRECTORY_FILE, 'r', 'utf-8')
+    except UnicodeDecodeError:
+        logging.error("Cygnet directory file not UTF-8 or ASCII!")
+        raise
     except IOError:
         logging.error("Cygnet file not found!")
         raise
