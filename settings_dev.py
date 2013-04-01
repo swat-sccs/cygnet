@@ -18,3 +18,5 @@ LOGGING['loggers']['django']['handlers'] = handlers
 STATICFILES_DIRS = (
     BASE_PATH + '/sitestatic/',
 )
+
+SECRET_KEY = 'development'
