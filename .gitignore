@@ -26,6 +26,7 @@ settings.py
 # Ignore logs and old stuff, if they're there
 /logs
 /old
+/directories
 
 # virtualenv
 /virtualenv/.Python
