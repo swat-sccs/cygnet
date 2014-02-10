@@ -178,7 +178,10 @@ def get_matches(terms):
         d['year'] = row[3]
         d['phone'] = row[4]
         d['email'] = row [5]
-        d['address'] = row[6]+row[7]
+        if row[6] != None and row[7] != None:
+            d['address'] = row[6]+row[7]
+        else:
+            d['address'] = "None"
         results.append(d)
         
     logging.info("Found %i results." % len(results))
