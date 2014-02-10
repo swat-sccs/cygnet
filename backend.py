@@ -95,7 +95,7 @@ class Student_Record(object):
                 if not os.path.isfile(path_to_mod):
                     #get the raw image
                     img_cur = self.db.cursor()
-                    img_rset = img_cur.execute(generate_SQL_Photo_Query(self.email))
+                    img_rset = img_cur.execute(self.generate_SQL_Photo_Query(self.email))
                     raw_img = img_cur.fetchone()[0]
 
                     with open(path_to_tmp, "wb") as output_file:
