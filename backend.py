@@ -196,6 +196,7 @@ def get_matches(terms):
 
         path_to_photo = "/media/photos/{0}.jpg".format(row[5])
         path_to_clean_photo = "/media/photos/{0}_c.jpg".format(row[5])
+        abs_path_to_clean_photo = abs_path_to_photo + path_to_clean_photo
         abs_path_to_photo = os.path.dirname(os.path.abspath(__file__))
         abs_path_to_photo += path_to_photo
 
@@ -211,7 +212,7 @@ def get_matches(terms):
         size = 105, 130
         im = Image.open(abs_path_to_photo,)
         im.thumbnail(size, Image.ANTIALIAS)
-        im.save(path_to_clean_photo, "JPEG")
+        im.save(abs_path_to_clean_photo, "JPEG")
         
         os.system("rm {0}".format(abs_path_to_photo))
 
