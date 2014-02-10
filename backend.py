@@ -214,7 +214,7 @@ def get_matches(terms):
             if not os.path.isfile(abs_path_to_mod_photo):
                 #get the raw image
                 img_cur = db.cursor()
-                img_rset = img_cur.execute(generate_SQL_Photo_Query(d['first']))
+                img_rset = img_cur.execute(generate_SQL_Photo_Query(d['email']))
                 raw_img = img_rset.fetchone()
 
 
