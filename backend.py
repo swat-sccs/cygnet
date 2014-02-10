@@ -34,77 +34,6 @@ import sys
 import time
 import traceback
 
-class Record(namedtuple('RawRecord', settings.FIELD_ORDER)):
-    """
-    Record handles reading and parsing a line from the directory
-    file into a more handy format for searching. It also provides
-    a boolean filter() function, which tells whether the given
-    requirements are matched by the Record.
-    """
-
-    @classmethod
-    def FromLine(cls, line):
-        fields = line.split(settings.DELIMITING_CHAR)
-        if len(fields) > len(settings.FIELD_ORDER):
-            fields = fields[:len(settings.FIELD_ORDER)]
-        elif len(fields) < len(settings.FIELD_ORDER):
-            fields += [''] * (len(settings.FIELD_ORDER) - len(fields))
-
-        try:
-            index = settings.FIELD_ORDER.index('address')
-            dorm, room = fields[index].split(' ', 1)
-            fields[index] = ' '.join([readable_dorms[dorm], room])
-        except ValueError:
-            pass
-        except KeyError:
-            pass
-
-        return cls(*fields)
-
-    @classmethod
-    def FromJSON(cls, json_obj):
-        raise NotImplementedError
-
-    def __init__(self, *args, **kwargs):
-        super(Record, self).__init__(*args, **kwargs)
-        self.excluded = self.email.lower() in settings.EXCLUDED_USERS
-
-    def _asdict(self):
-        if self.excluded:
-            return {}
-        data = super(Record, self)._asdict()
-        data['photo'] = self.photo
-        return data
-
-    @property
-    def photo(self):
-        location = "%s/%s.jpg" % (self.year, self.email)
-        try:
-            open(settings.PHOTO_DIRECTORY + "/" + location)
-            return location
-        except IOError:
-            return settings.ALTERNATE_PHOTO
-
-    def filter(self, search_field, search_val):
-        """
-        Returns true if the search value appears in the corresponding
-        search field, or if the search value appears in ANY field if
-        the search field is 'bare'.
-        """
-        if self.excluded:
-            return False
-        if search_field == None:
-            return any([search_val.lower() in getattr(self, field).lower()
-                        for field in self._fields])
-        elif search_val.lower() in getattr(self, search_field).lower():
-            return True
-        return False
-
-    def filter_by_terms(self, terms):
-        return all(self.filter(term, value)
-                   for term, valuelist in terms.iteritems()
-                   for value in valuelist)
-
 
 def terms_to_dict(terms):
     """
@@ -176,6 +105,11 @@ def get_matches(terms):
     rset = cur.fetchall()
 
     for row in rset:
+
+        # Check for Excluded Users
+        if row[5] in settings.EXCLUDED_USERS:
+            continue
+
         d = {}
         d['last'] = row[0]
         d['first'] = row[1]
@@ -200,47 +134,53 @@ def get_matches(terms):
         rel_path_to_photo = "/media/photos/{0}.jpg".format(row[5])
         rel_path_to_mod_photo = "/media/photos/{0}_m.jpg".format(row[5])
         rel_path_to_clean_photo = "/media/photos/{0}_c.jpg".format(row[5])
+        rel_path_to_alt_photo = "/media/alternate.jpg"
+
 
         ## Build Image paths
         abs_path_to_photo = abs_path + rel_path_to_photo
         abs_path_to_clean_photo = abs_path + rel_path_to_clean_photo
         abs_path_to_mod_photo = abs_path + rel_path_to_mod_photo
+        abs_rel_path_to_alt_photo = abs_path + rel_path_to_alt_photo
 
 
-        ## If no local image  exists
-        if not os.path.isfile(abs_path_to_clean_photo):
-            
-            # And if we don't have a modified image
-            if not os.path.isfile(abs_path_to_mod_photo):
-                #get the raw image
-                img_cur = db.cursor()
-                img_rset = img_cur.execute(generate_SQL_Photo_Query(d['email']))
-                raw_img = img_cur.fetchone()[0]
-
-
-                with open(abs_path_to_photo, "wb") as output_file:
-                    output_file.write(raw_img)
-                    output_file.close()
-
-                size = 105, 130
-                im = Image.open(abs_path_to_photo)
-                im.thumbnail(size, Image.ANTIALIAS)
-                im.save(abs_path_to_clean_photo, "JPEG")
-
-                img_cur.close()
+        if d['email'] not in settings.PICTURE_HIDDEN:
+            ## If no local image  exists
+            if not os.path.isfile(abs_path_to_clean_photo):
                 
-                os.system("rm {0}".format(abs_path_to_photo))
+                # And if we don't have a modified image
+                if not os.path.isfile(abs_path_to_mod_photo):
+                    #get the raw image
+                    img_cur = db.cursor()
+                    img_rset = img_cur.execute(generate_SQL_Photo_Query(d['email']))
+                    raw_img = img_cur.fetchone()[0]
 
-                d['photo'] = rel_path_to_clean_photo
-            
-            # Else there is a modified picture and we want to show that
+
+                    with open(abs_path_to_photo, "wb") as output_file:
+                        output_file.write(raw_img)
+                        output_file.close()
+
+                    size = 105, 130
+                    im = Image.open(abs_path_to_photo)
+                    im.thumbnail(size, Image.ANTIALIAS)
+                    im.save(abs_path_to_clean_photo, "JPEG")
+
+                    img_cur.close()
+                    
+                    os.system("rm {0}".format(abs_path_to_photo))
+
+                    d['photo'] = rel_path_to_clean_photo
+                
+                # Else there is a modified picture and we want to show that
+                else:
+                    d['photo'] = rel_path_to_mod_photo
+
+
+            # We have a clean copy in our image folder
             else:
-                d['photo'] = rel_path_to_mod_photo
-
-
-        # We have a clean copy in our image folder
+                d['photo'] = rel_path_to_clean_photo
         else:
-            d['photo'] = rel_path_to_clean_photo
+            d['photo'] = rel_path_to_alt_photo
 
         results.append(d)
 
