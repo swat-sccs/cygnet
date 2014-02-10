@@ -298,7 +298,7 @@ def generate_SQL_Photo_Query(uname):
     search_string = ""
     query = ""
 
-    query += "SELECT PHOTO FROM student_data WHERE\n" 
-    query += "USER_ID={0};".format(uname)
+    query += "SELECT PHOTO FROM student_data WHERE " 
+    query += "USER_ID='{0}';".format(uname)
 
     return query
