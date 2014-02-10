@@ -151,6 +151,9 @@ def get_matches(terms):
     recordtime()
 
     ##### HACKYHACKYYYY  ######
+    import Image
+    import base64
+    from io import BytesIO
 
     import MySQLdb
     db = MySQLdb.connect(host="redbay.swarthmore.edu", # your host, usually localhost
@@ -189,17 +192,17 @@ def get_matches(terms):
         else:
             d['address'] = ""
 
-        
+
+
         path_to_photo = "/media/photos/{0}.jpg".format(row[5])
         abs_path_to_photo = os.path.dirname(os.path.abspath(__file__))
         abs_path_to_photo += path_to_photo
-        try:
-            with open(abs_path_to_photo):
-                process()
-        except:
-            with open(abs_path_to_photo, "wb") as output_file:
-                output_file.write(row[8])
-            output_file.close()
+
+        size = 105, 130
+        with open(abs_path_to_photo, "wb") as output_file:        
+            im = Image.open(BytesIO(base64.b64decode(row[8])))
+            im.thumbnail(size, Image.ANTIALIAS)
+            im.save(outfile, "JPEG")
         
         d['photo'] = path_to_photo
 
