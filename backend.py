@@ -45,7 +45,7 @@ class Student_Record(object):
         # initalize user data from row
         self.last = row[0]
         self.first = row[1]
-        # self.middle = row[2] # We don't care about middle names
+        # middle name is ommitted
         self.year = row[3]
         self.phone = row[4]
         self.email = row[5]
