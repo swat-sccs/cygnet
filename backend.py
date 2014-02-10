@@ -233,7 +233,7 @@ def generate_SQL_Query(terms):
     search_string = ""
     query = ""
 
-    query_prot = "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, DORM_ROOM FROM student_data WHERE\n" 
+    query_prot = "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, DORM_ROOM, PHOTO FROM student_data WHERE\n" 
     term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
     term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
     
