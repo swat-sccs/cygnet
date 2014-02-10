@@ -151,6 +151,7 @@ def get_matches(terms):
     recordtime()
 
     ##### HACKYHACKYYYY  ######
+    
     import Image
     import base64
     from io import BytesIO
@@ -193,32 +194,56 @@ def get_matches(terms):
             d['address'] = ""
 
 
-        abs_path_to_photo = os.path.dirname(os.path.abspath(__file__))
-        path_to_photo = "/media/photos/{0}.jpg".format(row[5])
-        path_to_clean_photo = "/media/photos/{0}_c.jpg".format(row[5])
-        abs_path_to_clean_photo = abs_path_to_photo + path_to_clean_photo
-        abs_path_to_photo += path_to_photo
+
+        abs_path = os.path.dirname(os.path.abspath(__file__))
+
+        rel_path_to_photo = "/media/photos/{0}.jpg".format(row[5])
+        rel_path_to_mod_photo = "/media/photos/{0}_m.jpg".format(row[5])
+        rel_path_to_clean_photo = "/media/photos/{0}_c.jpg".format(row[5])
+
+        ## Build Image paths
+        abs_path_to_photo = abs_path + rel_path_to_photo
+        abs_path_to_clean_photo = abs_path + rel_path_to_clean_photo
+        abs_path_to_mod_photo = abs_path + rel_path_to_mod_photo
 
 
-        try:
-            with open(abs_path_to_photo):
-                process()
-        except:
-            with open(abs_path_to_photo, "wb") as output_file:
-                output_file.write(row[8])
-                output_file.close()
+        ## If no local image  exists
+        if not os.path.isfile(abs_path_to_clean_photo):
+            
+            # And if we don't have a modified image
+            if not os.path.isfile(abs_path_to_mod_photo):
+                #get the raw image
+                img_cur = db.cursor()
+                img_rset = local_cur.execute(generate_SQL_Photo_Query(d['first']))
+                raw_img = local_r.fetchone()
 
 
-        size = 105, 130
-        im = Image.open(abs_path_to_photo,)
-        im.thumbnail(size, Image.ANTIALIAS)
-        im.save(abs_path_to_clean_photo, "JPEG")
-        
-        os.system("rm {0}".format(abs_path_to_photo))
+                with open(abs_path_to_photo, "wb") as output_file:
+                    output_file.write(raw_img)
+                    output_file.close()
 
-        d['photo'] = path_to_clean_photo
+                size = 105, 130
+                im = Image.open(abs_path_to_photo)
+                im.thumbnail(size, Image.ANTIALIAS)
+                im.save(abs_path_to_clean_photo, "JPEG")
+
+                img_cur.close()
+                
+                os.system("rm {0}".format(abs_path_to_photo))
+
+                d['photo'] = rel_path_to_clean_photo
+            
+            # Else there is a modified picture and we want to show that
+            else:
+                d['photo'] = rel_path_to_mod_photo
+
+
+        # We have a clean copy in our image folder
+        else:
+            d['photo'] = rel_path_to_clean_photo
 
         results.append(d)
+
         
     logging.info("Found %i results." % len(results))
 
@@ -227,6 +252,7 @@ def get_matches(terms):
 
 
     recordtime("Reading and searching directory file")
+    
     return results
 
 def recordtime(taskname=None):
@@ -264,5 +290,15 @@ def generate_SQL_Query(terms):
         i+=1
 
     query = query_prot + "(" + search_string + ");"
+
+    return query
+
+def generate_SQL_Photo_Query(uname):
+
+    search_string = ""
+    query = ""
+
+    query += "SELECT PHOTO FROM student_data WHERE\n" 
+    query += "USER_ID={0};".format(uname)
 
     return query
