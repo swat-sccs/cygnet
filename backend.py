@@ -193,12 +193,12 @@ def get_matches(terms):
             d['address'] = ""
 
 
-
+        abs_path_to_photo = os.path.dirname(os.path.abspath(__file__))
         path_to_photo = "/media/photos/{0}.jpg".format(row[5])
         path_to_clean_photo = "/media/photos/{0}_c.jpg".format(row[5])
         abs_path_to_clean_photo = abs_path_to_photo + path_to_clean_photo
-        abs_path_to_photo = os.path.dirname(os.path.abspath(__file__))
         abs_path_to_photo += path_to_photo
+
 
         try:
             with open(abs_path_to_photo):
