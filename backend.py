@@ -125,14 +125,13 @@ class Student_Record(object):
     a query to the SQL db for the field that contains that 
     user's ID photo.
     """
+        search_string = ""
+        query = ""
 
-    search_string = ""
-    query = ""
+        query += "SELECT PHOTO FROM student_data WHERE " 
+        query += "USER_ID='{0}';".format(uname)
 
-    query += "SELECT PHOTO FROM student_data WHERE " 
-    query += "USER_ID='{0}';".format(uname)
-
-    return query
+        return query
 
 
     def as_dict(self):
