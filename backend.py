@@ -4,23 +4,22 @@
 ###       backend.py
 ### ========================
 ###
-### This is the main python code that parses the housing directory file
+### Revision 4.0 Alpha, February 2014:
+### This is the backend that queries the ITS housing data database and parses it
 ### into a Python data structure.  The data can then be filtered based on the
 ### search terms entered by the user, and the results are returned via
 ### AJAX as a tab-delimited document.
 ###
+###
 
 # Import configuration information, variables defined include:
-# - DIRECTORY_FILE     String pointing to file to parse for directory information
 # - FIELD_ORDER        List of names of fields, in the order they are in the file
-# - DELIMITING_CHAR    Character used to delimit fields in DIRECTORY_FILE
-# - CLASS_YEARS        List of class years to include
+# - CLASS_YEARS        List of class years to include (Obsolote due to ITS maintaining data)
 # - EXCLUDED_USERS     List of users to completely exclude from the Cygnet
 # - PHOTO_DIRECTORY    The path to the directory that stores all the photos
 # - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
+# - PHOTO_HIDDEN       List of users that requested to have their photo hidden
 from django.conf import settings
-
-from dorms import readable_dorms
 
 from collections import namedtuple
 import codecs
@@ -38,13 +37,12 @@ import Image
 import MySQLdb
 
 
-
 def terms_to_dict(terms):
     """
     the online cygnet accepts input in the form 'field:value' to allow for specific searches
     this method takes a string of terms
     this method returns a dictionary of the form {field: value}
-    if there are no specific fields, a dictionary is returned only one key, None
+    if there are no specific fields, a dictionary is returned with only one key, None
     """
     term_re = re.compile(r'(\w+:\w+)|'
                          r'(\w+:["\'][\w ]+["\'])|'
@@ -147,7 +145,7 @@ def get_matches(terms):
         abs_rel_path_to_alt_photo = abs_path + rel_path_to_alt_photo
 
 
-        if d['email'] not in settings.PICTURE_HIDDEN:
+        if d['email'] not in settings.PHOTO_HIDDEN:
             ## If no local image  exists
             if not os.path.isfile(abs_path_to_clean_photo):
                 
@@ -198,6 +196,7 @@ def get_matches(terms):
     
     return results
 
+
 def recordtime(taskname=None):
     """
     Logs the amount of time used since the last time this function was
@@ -215,7 +214,14 @@ def recordtime(taskname=None):
         logging.debug("%s took %f seconds." % (taskname, elapsedtime))
     return now - recordtime.first_mark
 
+
 def generate_SQL_Query(terms):
+    """
+    Generates a SQL Query string from a list of terms that all must 
+    be present in the row (as substrings of different fields), by 
+    ANDing SQL LIKE statements together.
+    This is used since ITS's MariaDB doesn't support Fulltext search.
+    """
 
     search_string = ""
     query = ""
@@ -237,6 +243,11 @@ def generate_SQL_Query(terms):
     return query
 
 def generate_SQL_Photo_Query(uname):
+    """
+    Simple helper function that given a swat username builds
+    a query to the SQL db for the field that contains that 
+    user's ID photo.
+    """
 
     search_string = ""
     query = ""
