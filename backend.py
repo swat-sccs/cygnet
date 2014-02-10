@@ -34,6 +34,10 @@ import sys
 import time
 import traceback
 
+import Image
+import MySQLdb
+
+
 
 def terms_to_dict(terms):
     """
@@ -73,43 +77,44 @@ def get_matches(terms):
     """
     returns a list of matches (list of Record objects)
     that match the query represented by the search terms
+    now querying the ITS housing db
     """
     if not terms:
         return []
 
     recordtime()
 
-    ##### HACKYHACKYYYY  ######
+    # get credentials from settings file
+    its_dbc = settings.ITS_DB_DATA
 
-    import Image
-    import base64
-    from io import BytesIO
+    # establish a MySQLdb
+    db = MySQLdb.connect(host=its_dbc['host'], 
+                     user=its_dbc['user'], 
+                      passwd=its_dbc['passwd'] 
+                      db=its_dbc['db']) 
 
-    import MySQLdb
-    db = MySQLdb.connect(host="redbay.swarthmore.edu", # your host, usually localhost
-                     user="cygnet", # your username
-                      passwd="JovTaFlyds", # your password
-                      db="user_directory_data") # name of the data base
 
-    # you must create a Cursor object. It will let
-    #  you execute all the query you need
+
+    ### TODO: Advanced Filtering
+
+    # construct cursor, query, then poll db
     cur = db.cursor() 
-
     q = generate_SQL_Query(terms[None])
-
-    # Use all the SQL you like
     cur.execute(q)
 
     results = []
-
     rset = cur.fetchall()
 
     for row in rset:
+
+        ### TODO: Remove hardcoded row indexing, and replace with
+        ### indexing based on settings.FIELD_ORDER
 
         # Check for Excluded Users
         if row[5] in settings.EXCLUDED_USERS:
             continue
 
+        # If not excluded populate user dict
         d = {}
         d['last'] = row[0]
         d['first'] = row[1]
@@ -126,7 +131,6 @@ def get_matches(terms):
             d['address'] = row[6]+ " " + row[7]
         else:
             d['address'] = ""
-
 
 
         abs_path = os.path.dirname(os.path.abspath(__file__))
