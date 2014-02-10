@@ -172,7 +172,7 @@ def get_matches(terms):
 
     for row in rset:
         d = {}
-        d['first'] = row[0]
+        d['last'] = row[0]
         d['first'] = row[1]
         d['middle'] = row[2]
         d['year'] = row[3]
