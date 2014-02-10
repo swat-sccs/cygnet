@@ -74,6 +74,8 @@ class Student_Record(object):
         if self.phone == None:
             self.phone = ''
 
+        return
+
 
     def set_student_photo(self):
         path_to_vanilla = settings.PHOTO_DIRECTORY + self.email
@@ -118,13 +120,15 @@ class Student_Record(object):
             else:
                 self.photo = path_to_vanilla
 
+        return
+
 
     def generate_SQL_Photo_Query(self):
-    """
-    Simple helper function that given a swat username builds
-    a query to the SQL db for the field that contains that 
-    user's ID photo.
-    """
+        """
+         Simple helper function that given a swat username builds
+        a query to the SQL db for the field that contains that 
+        user's ID photo.
+        """
         search_string = ""
         query = ""
 
