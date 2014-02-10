@@ -90,8 +90,8 @@ def get_matches(terms):
     # establish a MySQLdb
     db = MySQLdb.connect(host=its_dbc['host'], 
                      user=its_dbc['user'], 
-                      passwd=its_dbc['passwd'] 
-                      db=its_dbc['db']) 
+                      passwd=its_dbc['passwd'],
+                      db=its_dbc['db'],) 
 
 
 
