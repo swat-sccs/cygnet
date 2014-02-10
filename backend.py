@@ -194,10 +194,10 @@ def get_matches(terms):
         abs_path_to_photo = os.path.dirname(os.path.abspath(__file__))
         abs_path_to_photo += path_to_photo
         try:
-            with open(path_to_photo):
+            with open(abs_path_to_photo):
                 process()
         except:
-            with open(path_to_photo, "wb") as output_file:
+            with open(abs_path_to_photo, "wb") as output_file:
                 output_file.write(row[8])
             output_file.close()
         
@@ -209,6 +209,7 @@ def get_matches(terms):
 
     db.close()
     cur.close()
+
 
     recordtime("Reading and searching directory file")
     return results
