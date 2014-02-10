@@ -124,7 +124,7 @@ class Student_Record(object):
         return
 
 
-    def generate_SQL_Photo_Query(self):
+    def generate_SQL_Photo_Query(self, uname):
         """
          Simple helper function that given a swat username builds
         a query to the SQL db for the field that contains that 
