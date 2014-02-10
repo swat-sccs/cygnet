@@ -189,8 +189,10 @@ def get_matches(terms):
         else:
             d['address'] = ""
 
-        path_to_photo = os.path.dirname(os.path.abspath(__file__))
-        path_to_photo += "/media/photos/{0}.jpg".format(row[5])
+        
+        path_to_photo = "/media/photos/{0}.jpg".format(row[5])
+        abs_path_to_photo = os.path.dirname(os.path.abspath(__file__))
+        abs_path_to_photo += path_to_photo
         try:
             with open(path_to_photo):
                 process()
