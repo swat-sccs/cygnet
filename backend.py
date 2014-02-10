@@ -174,12 +174,17 @@ def get_matches(terms):
         d = {}
         d['last'] = row[0]
         d['first'] = row[1]
-        d['middle'] = row[2]
+        
+        if row[2] == None:
+            d['middle'] = ''
+        else:
+            d['middle'] = row[2]
+        
         d['year'] = row[3]
         d['phone'] = row[4]
         d['email'] = row [5]
         if row[6] != None and row[7] != None:
-            d['address'] = row[6]+row[7]
+            d['address'] = row[6]+ " " + row[7]
         else:
             d['address'] = "None"
         results.append(d)
