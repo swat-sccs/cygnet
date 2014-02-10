@@ -151,7 +151,7 @@ def get_matches(terms):
     recordtime()
 
     ##### HACKYHACKYYYY  ######
-    
+
     import Image
     import base64
     from io import BytesIO
@@ -214,8 +214,8 @@ def get_matches(terms):
             if not os.path.isfile(abs_path_to_mod_photo):
                 #get the raw image
                 img_cur = db.cursor()
-                img_rset = local_cur.execute(generate_SQL_Photo_Query(d['first']))
-                raw_img = local_r.fetchone()
+                img_rset = img_cur.execute(generate_SQL_Photo_Query(d['first']))
+                raw_img = img_rset.fetchone()
 
 
                 with open(abs_path_to_photo, "wb") as output_file:
