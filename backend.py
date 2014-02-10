@@ -19,6 +19,7 @@
 # - PHOTO_DIRECTORY    The path to the directory that stores all the photos
 # - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
 # - PHOTO_HIDDEN       List of users that requested to have their photo hidden
+
 from django.conf import settings
 
 from collections import namedtuple
@@ -35,6 +36,123 @@ import traceback
 
 import Image
 import MySQLdb
+
+
+class Student_Record(object):
+
+    def __init__(self, db_conn, row):
+        
+        # initalize user data from row
+        self.last = row[0]
+        self.first = row[1]
+        # self.middle = row[2] # We don't care about middle names
+        self.year = row[3]
+        self.phone = row[4]
+        self.email = row[5]
+        self.dorm = row[6]
+        self.dorm_room = row[7]
+
+        # initialize vars for later use 
+        self.address = ''
+        self.photo = ''
+
+        # set user attributes
+        self.photo_hidden = (self.email in settings.PHOTO_HIDDEN)
+        self.on_leave = False
+        self.off_campus = False
+
+    def set_student_address(self):
+        self.off_campus = (self.dorm_room && self.dorm == None)
+        self.on_leave = (self.dorm == 'On Leave')
+
+        if self.off_campus:
+            self.address = 'Off Campus'
+            self.phone = ''
+        else:
+            self.address = self.dorm + " " + self.dorm_room
+
+        if self.phone = None:
+            self.phone = ''
+
+
+    def set_student_photo(self):
+        path_to_vanilla = settings.PHOTO_DIRECTORY + self.email
+        path_to_vanilla += settings.VANILLA_PHOTO_POSTFIX + '.jpg'
+
+        path_to_mod = settings.MOD_PHOTO_DIRECTORY + self.email
+        path_to_mod += settings.MOD_PHOTO_POSTFIX + '.jpg'
+
+        path_to_tmp = settings.TEMP_DIR + self.email + '.jpg'
+
+        if self.photo_hidden:
+            self.photo = settings.MEDIA_ROOT + setting.ALTERNATE_PHOTO
+        else:
+            if not os.path.isfile(path_to_vanilla):
+                # And if we don't have a modified image
+                if not os.path.isfile(path_to_mod):
+                    #get the raw image
+                    img_cur = db_conn.cursor()
+                    img_rset = img_cur.execute(generate_SQL_Photo_Query(self.email))
+                    raw_img = img_cur.fetchone()[0]
+
+                    with open(path_to_tmp, "wb") as output_file:
+                        output_file.write(raw_img)
+                        output_file.close()
+
+                    size = 105, 130
+                    im = Image.open(path_to_tmp)
+                    im.thumbnail(size, Image.ANTIALIAS)
+                    im.save(path_to_vanilla, "JPEG")
+
+                    img_cur.close()
+                    
+                    os.system("rm {0}".format(path_to_tmp))
+
+                    self.photo = rel_path_to_clean_photo
+                
+                # Else there is a modified picture and we want to show that
+                else:
+                    self.photo = path_to_mod
+
+            # We have a clean copy in our image folder
+            else:
+                self.photo = path_to_vanilla
+
+
+    def generate_SQL_Photo_Query(self):
+    """
+    Simple helper function that given a swat username builds
+    a query to the SQL db for the field that contains that 
+    user's ID photo.
+    """
+
+    search_string = ""
+    query = ""
+
+    query += "SELECT PHOTO FROM student_data WHERE " 
+    query += "USER_ID='{0}';".format(uname)
+
+    return query
+
+
+    def as_dict(self):
+        self.set_student_address()
+        self.set_student_photo()
+
+        ajax_dict = {
+            'first':self.first,
+            'middle':'',
+            'last':self.last,
+            'year':self.year,
+            'phone':self.phone,
+            'email':self.email,
+            'address':self.address,
+            'photo':self.photo_path,
+        }
+
+        return ajax_dict
+
+
 
 
 def terms_to_dict(terms):
@@ -92,7 +210,6 @@ def get_matches(terms):
                       db=its_dbc['db'],) 
 
 
-
     ### TODO: Advanced Filtering
 
     # construct cursor, query, then poll db
@@ -110,87 +227,14 @@ def get_matches(terms):
         # Check for Excluded Users
         if row[5] in settings.EXCLUDED_USERS:
             continue
-
-        # If not excluded populate user dict
-        d = {}
-        d['last'] = row[0]
-        d['first'] = row[1]
-        
-        if row[2] == None:
-            d['middle'] = ''
         else:
-            d['middle'] = row[2]
-        
-        d['year'] = row[3]
-        d['phone'] = row[4]
-        d['email'] = row[5]
-        if row[6] != None and row[7] != None:
-            d['address'] = row[6]+ " " + row[7]
-        else:
-            d['address'] = ""
-
-
-        abs_path = os.path.dirname(os.path.abspath(__file__))
-
-        rel_path_to_photo = "/media/photos/{0}.jpg".format(row[5])
-        rel_path_to_mod_photo = "/media/photos/{0}_m.jpg".format(row[5])
-        rel_path_to_clean_photo = "/media/photos/{0}_c.jpg".format(row[5])
-        rel_path_to_alt_photo = "/media/alternate.jpg"
-
-
-        ## Build Image paths
-        abs_path_to_photo = abs_path + rel_path_to_photo
-        abs_path_to_clean_photo = abs_path + rel_path_to_clean_photo
-        abs_path_to_mod_photo = abs_path + rel_path_to_mod_photo
-        abs_rel_path_to_alt_photo = abs_path + rel_path_to_alt_photo
-
-
-        if d['email'] not in settings.PHOTO_HIDDEN:
-            ## If no local image  exists
-            if not os.path.isfile(abs_path_to_clean_photo):
-                
-                # And if we don't have a modified image
-                if not os.path.isfile(abs_path_to_mod_photo):
-                    #get the raw image
-                    img_cur = db.cursor()
-                    img_rset = img_cur.execute(generate_SQL_Photo_Query(d['email']))
-                    raw_img = img_cur.fetchone()[0]
-
-
-                    with open(abs_path_to_photo, "wb") as output_file:
-                        output_file.write(raw_img)
-                        output_file.close()
-
-                    size = 105, 130
-                    im = Image.open(abs_path_to_photo)
-                    im.thumbnail(size, Image.ANTIALIAS)
-                    im.save(abs_path_to_clean_photo, "JPEG")
-
-                    img_cur.close()
-                    
-                    os.system("rm {0}".format(abs_path_to_photo))
-
-                    d['photo'] = rel_path_to_clean_photo
-                
-                # Else there is a modified picture and we want to show that
-                else:
-                    d['photo'] = rel_path_to_mod_photo
-
-
-            # We have a clean copy in our image folder
-            else:
-                d['photo'] = rel_path_to_clean_photo
-        else:
-            d['photo'] = rel_path_to_alt_photo
-
-        results.append(d)
+            results.append(Student_Record(db, row).as_dict())
 
         
     logging.info("Found %i results." % len(results))
 
     db.close()
     cur.close()
-
 
     recordtime("Reading and searching directory file")
     
@@ -226,7 +270,9 @@ def generate_SQL_Query(terms):
     search_string = ""
     query = ""
 
-    query_prot = "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, DORM_ROOM, PHOTO FROM student_data WHERE\n" 
+    query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
+    query_prot += "DORM_ROOM, PHOTO FROM student_data WHERE\n" 
+
     term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
     term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
     
@@ -242,17 +288,4 @@ def generate_SQL_Query(terms):
 
     return query
 
-def generate_SQL_Photo_Query(uname):
-    """
-    Simple helper function that given a swat username builds
-    a query to the SQL db for the field that contains that 
-    user's ID photo.
-    """
 
-    search_string = ""
-    query = ""
-
-    query += "SELECT PHOTO FROM student_data WHERE " 
-    query += "USER_ID='{0}';".format(uname)
-
-    return query

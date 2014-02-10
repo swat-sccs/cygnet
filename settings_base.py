@@ -170,32 +170,39 @@ LOGGING = {
 
 #### CYGNET Specific Settings ####
 
-# This is the file (or symlink) that contains the tab-separated data
-# for the housing directory.
-#   Ex: DIRECTORY_FILE = '/usr/sccs/pub/dir/current'
-DIRECTORY_FILE = ''
 
 # This is the field order in that file.
 FIELD_ORDER = ['last','first','middle','year','phone','email','address']
-
-# Character used to delimit fields in the directory file.
-DELIMITING_CHAR = '\t'
-
-# This is a list of class years to show, as strings.  Typically the usual
-# four, which means we have to update this every fall for the freshmen.
-#   Ex: CLASS_YEARS = ['2011', '2012', '2013', '2014']
-CLASS_YEARS = []
 
 # A list of email usernames of students who have asked to be entirely
 # removed from the Cygnet.
 #   Ex: EXCLUDED_USERS = ['nfelt1']
 EXCLUDED_USERS = []
 
-# The directory where photos are stored, in folders by class year.
-PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/'
+# A list of email usernames of students who have asked to have their
+# pictures hidden on the cygnet
+#   Ex: EXCLUDED_USERS = ['dfeista1']
+PHOTO_HIDDEN = []
+
+# The directory where photos are stored.
+PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/vanilla/'
+
+# The directory where modified pictures of users are stored.
+MOD_PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/mod/'
 
 # The path to the photo file to use for students with no photo (or a
 # hidden photo).  Should be relative to PHOTO_DIRECTORY.
 ALTERNATE_PHOTO = 'alternate.jpg'
+
+# The postfix for modified pictures.
+MOD_PHOTO_POSTFIX = '_m'
+
+# The postfix for vanilla pictures (i.e. from ITS DB)
+VANILLA_PHOTO_POSTFIX = '_c'
+
+# temporary directory
+TEMP_DIR = '/tmp/'
+
+
 
 CAMPUS_IPS="130.58."
