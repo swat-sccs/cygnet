@@ -107,8 +107,7 @@ def get_matches(terms):
 
     for row in rset:
 
-        ### TODO: Remove hardcoded row indexing, and replace with
-        ### indexing based on settings.FIELD_ORDER
+        # TODO Check fields based on FIELD_ORDER outlined in settings
 
         # Check for Excluded Users
         if row[5] in settings.EXCLUDED_USERS:
