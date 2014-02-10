@@ -158,19 +158,30 @@ def get_matches(terms):
         logging.error("Cygnet file not found!")
         raise
 
-    results = []
-    with dirfile:
-        for line in dirfile:
-            line = line.strip()
-            if len(line) == 0:
-                continue
-            record = Record.FromLine(line)
-            if record.filter_by_terms(terms):
-                # Eventually if we use the simplejson module we can skip this
-                # call to _asdict(), since it handles namedtuples nicely.
-                results.append(record._asdict())
 
-        logging.info("Found %i results." % len(results))
+    ##### HACKYHACKYYYY  ######
+
+    import MySQLdb
+    db = MySQLdb.connect(host="redbay.swarthmore.edu", # your host, usually localhost
+                     user="cygnet", # your username
+                      passwd="JovTaFlyds", # your password
+                      db="user_directory_data") # name of the data base
+
+    # you must create a Cursor object. It will let
+    #  you execute all the query you need
+    cur = db.cursor() 
+
+    q = generate_SQL_Query(terms[None][0])
+
+    # Use all the SQL you like
+    cur.execute(q)
+
+    results = []
+
+    for row in cur.fetchall():
+        results.append(row)
+        
+    logging.info("Found %i results." % len(results))
 
     recordtime("Reading and searching directory file")
     return results
@@ -191,3 +202,24 @@ def recordtime(taskname=None):
     if taskname is not None:
         logging.debug("%s took %f seconds." % (taskname, elapsedtime))
     return now - recordtime.first_mark
+
+def generate_SQL_Query(terms):
+
+    search_string = ""
+    query = ""
+
+    query_prot = "SELECT USER_ID, GRAD_YEAR, FIRST_NAME, LAST_NAME, MIDDLE_NAME, DORM, DORM_ROOM, EMAIL_ADDRESS FROM student_data WHERE\n" 
+    term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
+    term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (EMAIL_ADDRESS LIKE '%{0}%'))\n"
+    
+    i = 0
+    j = len(terms)-1
+    for term in terms:
+        search_string += term_query.format(term)
+        if i != j:
+            search_string += "AND\n"
+        i+=1
+
+    query = query_prot + "(" + search_string + ");"
+
+    return query
