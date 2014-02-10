@@ -71,7 +71,7 @@ class Student_Record(object):
         else:
             self.address = self.dorm + " " + self.dorm_room
 
-        if self.phone = None:
+        if self.phone == None:
             self.phone = ''
 
 
