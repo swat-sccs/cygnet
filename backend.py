@@ -53,6 +53,7 @@ class Student_Record(object):
         self.dorm_room = row[7]
 
         # initialize vars for later use 
+        self.db = db_conn
         self.address = ''
         self.photo = ''
 
@@ -93,7 +94,7 @@ class Student_Record(object):
                 # And if we don't have a modified image
                 if not os.path.isfile(path_to_mod):
                     #get the raw image
-                    img_cur = db_conn.cursor()
+                    img_cur = self.db.cursor()
                     img_rset = img_cur.execute(generate_SQL_Photo_Query(self.email))
                     raw_img = img_cur.fetchone()[0]
 
