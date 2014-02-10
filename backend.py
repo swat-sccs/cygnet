@@ -171,15 +171,24 @@ def get_matches(terms):
     #  you execute all the query you need
     cur = db.cursor() 
 
-    q = generate_SQL_Query(terms[None][0])
+    q = generate_SQL_Query(terms[None])
 
     # Use all the SQL you like
     cur.execute(q)
 
     results = []
+    rset = cur.fetchall()
 
-    for row in cur.fetchall():
-        results.append(row)
+    for row in rset:
+        d = {}
+        d['first'] = row[0]
+        d['first'] = row[1]
+        d['middle'] = row[2]
+        d['year'] = row[3]
+        d['phone'] = row[4]
+        d['email'] = row [5]
+        d['address'] = row[6]+row[7]
+        results.append(d)
         
     logging.info("Found %i results." % len(results))
 
@@ -208,9 +217,9 @@ def generate_SQL_Query(terms):
     search_string = ""
     query = ""
 
-    query_prot = "SELECT USER_ID, GRAD_YEAR, FIRST_NAME, LAST_NAME, MIDDLE_NAME, DORM, DORM_ROOM, EMAIL_ADDRESS FROM student_data WHERE\n" 
+    query_prot = "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, DORM_ROOM FROM student_data WHERE\n" 
     term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
-    term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (EMAIL_ADDRESS LIKE '%{0}%'))\n"
+    term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
     
     i = 0
     j = len(terms)-1

@@ -16,9 +16,7 @@ import urlparse
 from functools import wraps
 
 
-#####
-#New Cygnet in progrsess
-#####
+
 ################################################################################
 ### Helpers for authentication
 
