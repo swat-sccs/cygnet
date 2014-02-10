@@ -201,7 +201,7 @@ def get_matches(terms):
 
         try:
             with open(abs_path_to_photo):
-            process()
+                process()
         except:
             with open(abs_path_to_photo, "wb") as output_file:
                 output_file.write(row[8])
