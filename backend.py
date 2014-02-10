@@ -62,7 +62,7 @@ class Student_Record(object):
         self.off_campus = False
 
     def set_student_address(self):
-        self.off_campus = (self.dorm_room && self.dorm == None)
+        self.off_campus = (self.dorm_room and self.dorm == None)
         self.on_leave = (self.dorm == 'On Leave')
 
         if self.off_campus:
