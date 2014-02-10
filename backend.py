@@ -215,7 +215,7 @@ def get_matches(terms):
                 #get the raw image
                 img_cur = db.cursor()
                 img_rset = img_cur.execute(generate_SQL_Photo_Query(d['email']))
-                raw_img = img_rset.fetchone()
+                raw_img = img_rset
 
 
                 with open(abs_path_to_photo, "wb") as output_file:
