@@ -168,6 +168,7 @@ def get_matches(terms):
     cur.execute(q)
 
     results = []
+
     rset = cur.fetchall()
 
     for row in rset:
@@ -182,14 +183,29 @@ def get_matches(terms):
         
         d['year'] = row[3]
         d['phone'] = row[4]
-        d['email'] = row [5]
+        d['email'] = row[5]
         if row[6] != None and row[7] != None:
             d['address'] = row[6]+ " " + row[7]
         else:
-            d['address'] = "None"
+            d['address'] = ""
+
+        path_to_photo = "/media/photos/{0}.jpg".format(row[5])
+        try:
+            with open(path_to_photo):
+                process()
+        except:
+            with open(path_to_photo, "wb") as output_file:
+                output_file.write(row[8])
+            output_file.close()
+        
+        d['photo'] = path_to_photo
+
         results.append(d)
         
     logging.info("Found %i results." % len(results))
+
+    db.close()
+    cur.close()
 
     recordtime("Reading and searching directory file")
     return results
