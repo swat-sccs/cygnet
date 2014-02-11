@@ -63,13 +63,18 @@ class Student_Record(object):
         self.off_campus = False
 
     def set_student_address(self):
-        self.off_campus = (self.dorm_room and self.dorm == None)
+        self.off_campus = (self.dorm_room == None and self.dorm == None)
         self.on_leave = (self.dorm == 'On Leave')
 
         if self.off_campus:
             self.address = 'Off Campus'
             self.phone = ''
         else:
+            if self.dorm == None:
+                self.dorm = ''
+            if self.dorm_room ==None:
+                self.dorm_room = ''
+
             self.address = self.dorm + " " + self.dorm_room
 
         if self.phone == None:
@@ -81,18 +86,18 @@ class Student_Record(object):
     def set_student_photo(self):
         
 
-        mod_photo = self.email + self.MOD_PHOTO_POSTFIX + '.jpg'
+        mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
         mod_photo_path = settings.MOD_PHOTO_DIRECTORY + mod_photo 
         
         tmp_photo_path = settings.TMP_DIR + self.email + '.jpg'
 
-        vanilla_photo = + self.email + self.VANILLA_PHOTO_POSTFIX + '.jpg'
+        vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
         vanilla_photo_path = settings.VANILLA_PHOTO_DIRECTORY + vanilla_photo
 
         if self.photo_hidden:
             self.photo = settings.MEDIA_ROOT + settings.ALTERNATE_PHOTO
         else:
-            if not os.path.isfile(vanilla_photo_path:
+            if not os.path.isfile(vanilla_photo_path):
                 # And if we don't have a modified image
                 if not os.path.isfile(mod_photo_path):
                     #get the raw image
@@ -113,15 +118,15 @@ class Student_Record(object):
                     
                     os.system("rm {0}".format(tmp_photo_path))
 
-                    self.photo = vanilla_photo
+                    self.photo = 'media/photos/vanilla/' + vanilla_photo
                 
                 # Else there is a modified picture and we want to show that
                 else:
-                    self.photo = mod_photo
+                    self.photo = 'media/photos/mod/' +  mod_photo
 
             # We have a clean copy in our image folder
             else:
-                self.photo = vanilla_photo
+                self.photo = 'media/photos/vanilla/' + vanilla_photo
 
         return
 
@@ -153,7 +158,7 @@ class Student_Record(object):
             'phone':self.phone,
             'email':self.email,
             'address':self.address,
-            'photo':self.photo_path,
+            'photo':self.photo,
         }
 
         return ajax_dict

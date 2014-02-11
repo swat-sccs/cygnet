@@ -185,7 +185,7 @@ EXCLUDED_USERS = []
 PHOTO_HIDDEN = []
 
 # The directory where photos are stored.
-PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/vanilla/'
+VANILLA_PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/vanilla/'
 
 # The directory where modified pictures of users are stored.
 MOD_PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/mod/'
