@@ -12,7 +12,7 @@
 #   email settings
 
 import os
-BASE_PATH = os.path.dirname(__file__)
+BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 
 LOGIN_REDIRECT_URL="/"
 
@@ -201,7 +201,7 @@ MOD_PHOTO_POSTFIX = '_m'
 VANILLA_PHOTO_POSTFIX = '_c'
 
 # temporary directory
-TEMP_DIR = '/tmp/'
+TMP_DIR = '/tmp/'
 
 
 

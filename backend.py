@@ -80,46 +80,48 @@ class Student_Record(object):
 
     def set_student_photo(self):
         
+
+        mod_photo = self.email + self.MOD_PHOTO_POSTFIX + '.jpg'
+        mod_photo_path = settings.MOD_PHOTO_DIRECTORY + mod_photo 
         
-        path_to_vanilla = os.path.dirname(__file__) + '/media/vanilla/'+ self.email
-        path_to_mod = os.path.dirname(__file__) + '/media/mod/' + self.email
-        path_to_tmp = os.path.dirname(__file__) + '/media/tmp/' + self.email
+        tmp_photo_path = settings.TMP_DIR + self.email + '.jpg'
+
+        vanilla_photo = + self.email + self.VANILLA_PHOTO_POSTFIX + '.jpg'
+        vanilla_photo_path = settings.VANILLA_PHOTO_DIRECTORY + vanilla_photo
 
         if self.photo_hidden:
             self.photo = settings.MEDIA_ROOT + settings.ALTERNATE_PHOTO
         else:
-            if not os.path.isfile(path_to_vanilla):
+            if not os.path.isfile(vanilla_photo_path:
                 # And if we don't have a modified image
-                if not os.path.isfile(path_to_mod):
+                if not os.path.isfile(mod_photo_path):
                     #get the raw image
                     img_cur = self.db.cursor()
                     img_rset = img_cur.execute(self.generate_SQL_Photo_Query(self.email))
                     raw_img = img_cur.fetchone()[0]
 
-                    with open(path_to_tmp, "wb") as output_file:
+                    with open(tmp_photo_path, "wb") as output_file:
                         output_file.write(raw_img)
                         output_file.close()
 
                     size = 105, 130
-                    im = Image.open(path_to_tmp)
+                    im = Image.open(tmp_photo_path)
                     im.thumbnail(size, Image.ANTIALIAS)
-                    im.save(
-                        path_to_vanilla + settings.VANILLA_PHOTO_POSTFIX + '.jpg',
-                        "JPEG")
+                    im.save(vanilla_photo_path, "JPEG")
 
                     img_cur.close()
                     
-                    os.system("rm {0}".format(path_to_tmp))
+                    os.system("rm {0}".format(tmp_photo_path))
 
-                    self.photo = rel_path_to_clean_photo
+                    self.photo = vanilla_photo
                 
                 # Else there is a modified picture and we want to show that
                 else:
-                    self.photo = path_to_mod
+                    self.photo = mod_photo
 
             # We have a clean copy in our image folder
             else:
-                self.photo = path_to_vanilla
+                self.photo = vanilla_photo
 
         return
 
