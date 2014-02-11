@@ -79,16 +79,14 @@ class Student_Record(object):
 
 
     def set_student_photo(self):
-        path_to_vanilla = settings.PHOTO_DIRECTORY + self.email
-        path_to_vanilla += settings.VANILLA_PHOTO_POSTFIX + '.jpg'
-
-        path_to_mod = settings.MOD_PHOTO_DIRECTORY + self.email
-        path_to_mod += settings.MOD_PHOTO_POSTFIX + '.jpg'
-
-        path_to_tmp = settings.TEMP_DIR + self.email + '.jpg'
+        
+        
+        path_to_vanilla = os.path.dirname(__file__) + '/media/vanilla/'+ self.email
+        path_to_mod = os.path.dirname(__file__) + '/media/mod/' + self.email
+        path_to_tmp = os.path.dirname(__file__) + '/media/tmp/' + self.email
 
         if self.photo_hidden:
-            self.photo = settings.MEDIA_ROOT + setting.ALTERNATE_PHOTO
+            self.photo = settings.MEDIA_ROOT + settings.ALTERNATE_PHOTO
         else:
             if not os.path.isfile(path_to_vanilla):
                 # And if we don't have a modified image
@@ -105,7 +103,9 @@ class Student_Record(object):
                     size = 105, 130
                     im = Image.open(path_to_tmp)
                     im.thumbnail(size, Image.ANTIALIAS)
-                    im.save(path_to_vanilla, "JPEG")
+                    im.save(
+                        path_to_vanilla + settings.VANILLA_PHOTO_POSTFIX + '.jpg',
+                        "JPEG")
 
                     img_cur.close()
                     
