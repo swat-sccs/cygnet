@@ -147,13 +147,15 @@ class Student_Record(object):
 
 
     def as_dict(self):
+        # check student status and set vars
         self.set_student_vars()
         if self.on_leave or self.off_campus:
             return {}
         
+        # if student will show up set photo
         self.set_student_photo()
 
-        ajax_dict = {
+        json_dict = {
             'first':self.first,
             'middle':'',
             'last':self.last,
@@ -164,7 +166,7 @@ class Student_Record(object):
             'photo':self.photo,
         }
 
-        return ajax_dict
+        return json_dict
 
 
 
@@ -224,11 +226,13 @@ def get_matches(terms):
                       db=its_dbc['db'],) 
 
 
-    ### TODO: Advanced Filtering
 
     # construct cursor, query, then poll db
     cur = db.cursor() 
+
+    ### TODO: Advanced Filtering!
     q = generate_SQL_Query(terms[None])
+
     cur.execute(q)
 
     results = []
@@ -236,7 +240,8 @@ def get_matches(terms):
 
     for row in rset:
 
-        # TODO Check fields based on FIELD_ORDER outlined in settings
+        # TODO: Check fields based on FIELD_ORDER outlined in settings
+        # to make all this more pluggable
 
         # Check for Excluded Users
         if row[5] in settings.EXCLUDED_USERS:
