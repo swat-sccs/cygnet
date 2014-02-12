@@ -316,7 +316,7 @@ def generate_SQL_Query(term_dict):
 
     else:
         #fail
-    
+        pass
     
     
     
