@@ -97,33 +97,31 @@ class Student_Record(object):
         if self.photo_hidden:
             self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
         else:
-            if not os.path.isfile(vanilla_photo_path):
-                # And if we don't have a modified image
-                if not os.path.isfile(mod_photo_path):
-                    #get the raw image
-                    img_cur = self.db.cursor()
-                    img_rset = img_cur.execute(self.generate_SQL_Photo_Query(self.email))
-                    raw_img = img_cur.fetchone()[0]
+            if not os.path.isfile(vanilla_photo_path) and not os.path.isfile(mod_photo_path):
+                #get the raw image
+                img_cur = self.db.cursor()
+                img_rset = img_cur.execute(self.generate_SQL_Photo_Query(self.email))
+                raw_img = img_cur.fetchone()[0]
 
-                    with open(tmp_photo_path, "wb") as output_file:
-                        output_file.write(raw_img)
-                        output_file.close()
+                with open(tmp_photo_path, "wb") as output_file:
+                    output_file.write(raw_img)
+                    output_file.close()
 
-                    size = 105, 130
-                    im = Image.open(settings.MEDIA_ROOT + settings.TMP_DIR)
-                    im.thumbnail(size, Image.ANTIALIAS)
-                    im.save(vanilla_photo_path, "JPEG")
+                size = 105, 130
+                im = Image.open(settings.MEDIA_ROOT + settings.TMP_DIR)
+                im.thumbnail(size, Image.ANTIALIAS)
+                im.save(vanilla_photo_path, "JPEG")
 
-                    img_cur.close()
-                    
-                    os.system("rm {0}".format(settings.MEDIA_ROOT + settings.TMP_DIR))
-
-                    self.photo = 'media/photos/vanilla/' + vanilla_photo
+                img_cur.close()
                 
-                # Else there is a modified picture and we want to show that
-                else:
-                    self.photo = 'media/photos/mod/' +  mod_photo
+                os.system("rm {0}".format(settings.MEDIA_ROOT + settings.TMP_DIR))
 
+                self.photo = 'media/photos/vanilla/' + vanilla_photo
+            
+            # Else there is a modified picture and we want to show that
+            else if os.path.isfile(mod_photo_path):
+                self.photo = 'media/photos/mod/' + mod_photo
+            
             # We have a clean copy in our image folder
             else:
                 self.photo = 'media/photos/vanilla/' + vanilla_photo
