@@ -62,7 +62,7 @@ class Student_Record(object):
         self.on_leave = False
         self.off_campus = False
 
-    def set_student_address(self):
+    def set_student_vars(self):
         self.off_campus = (self.dorm_room == None and self.dorm == None)
         self.on_leave = (self.dorm == 'On Leave')
 
@@ -95,7 +95,7 @@ class Student_Record(object):
         vanilla_photo_path = settings.VANILLA_PHOTO_DIRECTORY + vanilla_photo
 
         if self.photo_hidden:
-            self.photo = settings.MEDIA_ROOT + settings.ALTERNATE_PHOTO
+            self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
         else:
             if not os.path.isfile(vanilla_photo_path):
                 # And if we don't have a modified image
@@ -147,7 +147,10 @@ class Student_Record(object):
 
 
     def as_dict(self):
-        self.set_student_address()
+        self.set_student_vars()
+        if self.on_leave or self.off_campus:
+            return {}
+        
         self.set_student_photo()
 
         ajax_dict = {
@@ -239,7 +242,9 @@ def get_matches(terms):
         if row[5] in settings.EXCLUDED_USERS:
             continue
         else:
-            results.append(Student_Record(db, row).as_dict())
+            student = Student_Record(db, row).as_dict()
+            if student:
+                results.append(student)
 
         
     logging.info("Found %i results." % len(results))
