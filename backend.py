@@ -4,7 +4,7 @@
 ###       backend.py
 ### ========================
 ###
-### Revision 4.0 Alpha, February 2014:
+### Revision 3.5 Beta, February 2014:
 ### This is the backend that queries the ITS housing data database and parses it
 ### into a Python data structure.  The data can then be filtered based on the
 ### search terms entered by the user, and the results are returned via
@@ -85,6 +85,8 @@ class Student_Record(object):
 
     def set_student_photo(self):
         
+        ## TODO: Add real exception handling and logging when manipulating
+        # the database
 
         mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
         mod_photo_path = settings.MOD_PHOTO_DIRECTORY + mod_photo 
@@ -214,6 +216,10 @@ def get_matches(terms):
 
     recordtime()
 
+    ## TODO: Add real exception handling and logging when manipulating
+    #        the database
+
+
     # get credentials from settings file
     its_dbc = settings.ITS_DB_DATA
 
@@ -296,8 +302,13 @@ def generate_SQL_Query(terms_dict):
     term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
     term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
 
-
-
+    term_dict_thesaurus  ={
+        'first': "(FIRST_NAME = '{0}')"
+        'last': "(LAST_NAME = '{0}')"
+        'year': "(GRAD_YEAR = '{0}')"
+        'email': "(USER_ID = '{0}')"
+        'address': "((DORM_ROOM='{0}') or (DORM LIKE='{0}'))"
+    }
 
     # if no specific terms are present:
     if len(terms_dict) and not terms_dict.keys()[0]:
@@ -311,12 +322,19 @@ def generate_SQL_Query(terms_dict):
                 search_string += "AND\n"
             i+=1
 
-        query = query_prot + "(" + search_string + ");"
-
     else:
-        #fail
-        pass
-    
+        dict_keys = terms.keys()
+        i = 0
+        j = len(dict_keys)-1
+        for key in dict_keys:
+            if terms[key]:
+                search_string += term_dict_thesaurus[key].format(terms[key])
+                if i!=j:
+                    search_string += " AND\n"
+                i+=1
+
+
+    query = query_prot + "(" + search_string + ");"
     
     
 
