@@ -1,7 +1,7 @@
 ====================
 README - SCCS Cygnet
 ====================
-Last modified 11/07/11.
+Last modified 02/12/2014.
 
 This is an information file for the codebase running the SCCS online cygnet.
 
@@ -11,7 +11,6 @@ Files:
 - cygnet.css
 - client.js
 - backend.py
-- directories/
 - photos/
 - media/
 - settings_base.py
@@ -19,6 +18,48 @@ Files:
 
 ===============================
 CHANGELOG
+
+Version 3.5 - The Never-quite-done Cygnet 
+
+Another substantial overhaul of the cygnet as a late consequence of the 
+campus wide ****-storm of spring 2013. Now more FERPA-compliant than ever.
+
+Major changes:
+
+- Eliminated the directory file altogether. The directory is now an extension
+  of the Banner database in the form of a MariaDB view supplied to us by ITS.
+
+- The get_matches function now generates a big-a** SQL query using the terms 
+  from terms_to_dict and passes each row into a Student_Record object.
+
+- Added the Student_Record classs which handles parsing the user row data for 
+  use by the frontend by:
+    - checking if a picture locally exists or the user requested it be hidden
+    - pulls the image from the ITS db if it doesn't exist.
+    - checking if user is off-campus/on leave
+    - constructing a dict to be passed as a JSON object to the frontend
+
+- settings.py now needs and has more variables:
+  - PHOTO_HIDDEN : a list of users (by user_id) that have asked for the picture to be hidden
+  - ITS_DB_DATA : a dictionary with credentials to authenticate agains the ITS database
+
+
+Other changes:
+
+- changed BASE_DIR in settings_base.py to os.path.dirname(os.path.realpath(__file__))
+  - didn't seem to always work before
+
+- separated picutres out into /photos/vanilla and /photos/mod directories for 
+  unchanged and changed cygnet pictures respectively.
+
+- added MOD_PHOTO_POSTFIX and VANILLA_PHOTO_POSTFIX constants to mark each type
+  of picture respectively in settings_base.py
+
+- added VANILLA_PHOTO_DIRECTORY, MOD_PHOTO_DIRECTORY, TMP_DIR, as the paths where
+  the pictures are saved/cached
+
+
+
 
 ---------------------------------------------------
 Version 3.0 - The Never-quite-done Cygnet (pending)
