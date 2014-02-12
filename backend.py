@@ -280,7 +280,7 @@ def recordtime(taskname=None):
     return now - recordtime.first_mark
 
 
-def generate_SQL_Query(term_dict):
+def generate_SQL_Query(terms):
     """
     Generates a SQL Query string from a dict of terms that all must 
     be present in the row (as substrings of different fields), by 
