@@ -231,7 +231,7 @@ def get_matches(terms):
     cur = db.cursor() 
 
     ### TODO: Advanced Filtering!
-    q = generate_SQL_Query(terms[None])
+    q = generate_SQL_Query(terms)
 
     cur.execute(q)
 
@@ -280,11 +280,12 @@ def recordtime(taskname=None):
     return now - recordtime.first_mark
 
 
-def generate_SQL_Query(terms):
+def generate_SQL_Query(term_dict):
     """
-    Generates a SQL Query string from a list of terms that all must 
+    Generates a SQL Query string from a dict of terms that all must 
     be present in the row (as substrings of different fields), by 
     ANDing SQL LIKE statements together.
+
     This is used since ITS's MariaDB doesn't support Fulltext search.
     """
 
@@ -296,16 +297,29 @@ def generate_SQL_Query(terms):
 
     term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
     term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
-    
-    i = 0
-    j = len(terms)-1
-    for term in terms:
-        search_string += term_query.format(term)
-        if i != j:
-            search_string += "AND\n"
-        i+=1
 
-    query = query_prot + "(" + search_string + ");"
+
+
+
+    # if no specific terms are present:
+    if len(terms) and not terms.keys()[0]:
+
+        i = 0
+        j = len(terms)-1
+        for term in terms:
+            search_string += term_query.format(term)
+            if i != j:
+                search_string += "AND\n"
+            i+=1
+
+        query = query_prot + "(" + search_string + ");"
+
+    else:
+        #fail
+    
+    
+    
+    
 
     return query
 
