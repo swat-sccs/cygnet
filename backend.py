@@ -119,7 +119,7 @@ class Student_Record(object):
                 self.photo = 'media/photos/vanilla/' + vanilla_photo
             
             # Else there is a modified picture and we want to show that
-            else if os.path.isfile(mod_photo_path):
+            elif os.path.isfile(mod_photo_path):
                 self.photo = 'media/photos/mod/' + mod_photo
             
             # We have a clean copy in our image folder
