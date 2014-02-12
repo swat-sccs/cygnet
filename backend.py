@@ -110,13 +110,13 @@ class Student_Record(object):
                         output_file.close()
 
                     size = 105, 130
-                    im = Image.open(tmp_photo_path)
+                    im = Image.open(settings.MEDIA_ROOT + settings.TMP_DIR)
                     im.thumbnail(size, Image.ANTIALIAS)
                     im.save(vanilla_photo_path, "JPEG")
 
                     img_cur.close()
                     
-                    os.system("rm {0}".format(tmp_photo_path))
+                    os.system("rm {0}".format(settings.MEDIA_ROOT + settings.TMP_DIR))
 
                     self.photo = 'media/photos/vanilla/' + vanilla_photo
                 
