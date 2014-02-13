@@ -303,11 +303,11 @@ def generate_SQL_Query(terms_dict):
     term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
 
     term_dict_thesaurus  ={
-        'first': "(FIRST_NAME = '{0}')"
-        'last': "(LAST_NAME = '{0}')"
-        'year': "(GRAD_YEAR = '{0}')"
-        'email': "(USER_ID = '{0}')"
-        'address': "((DORM_ROOM='{0}') or (DORM LIKE='{0}'))"
+        'first': "(FIRST_NAME = '{0}')",
+        'last': "(LAST_NAME = '{0}')",
+        'year': "(GRAD_YEAR = '{0}')",
+        'email': "(USER_ID = '{0}')",
+        'address': "((DORM_ROOM='{0}') or (DORM LIKE='{0}'))",
     }
 
     # if no specific terms are present:
