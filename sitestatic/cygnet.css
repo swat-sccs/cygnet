@@ -19,6 +19,22 @@ a:hover {
 
 /* HEADER SECTION */
 
+#top_spacer {
+    height:300px;
+    animation:anim 1s;
+    -webkit-animation:anim 1s;
+}
+
+@keyframes anim
+{
+from {height:300px;}
+to {background:10px;}
+}
+
+
+
+
+
 #banner {
     margin: 10px;
 }
