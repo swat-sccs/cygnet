@@ -329,7 +329,7 @@ def generate_SQL_Query(terms_dict):
         j = len(dict_keys)-1
         for key in dict_keys:
             if terms_dict[key]:
-                search_string += term_dict_thesaurus[key].format(terms_dict[key])
+                search_string += term_dict_thesaurus[key].format(terms_dict[key][0])
                 if i!=j:
                     search_string += " AND\n"
                 i+=1
