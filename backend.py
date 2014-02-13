@@ -302,7 +302,7 @@ def generate_SQL_Query(terms_dict):
     term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
     term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
 
-    term_dict_thesaurus  ={
+    term_dict_thesaurus  = {
         'first': " FIRST_NAME = '{0}' ",
         'last': "  LAST_NAME = '{0}' ",
         'year': " GRAD_YEAR = '{0}' ",
@@ -335,7 +335,7 @@ def generate_SQL_Query(terms_dict):
                 i+=1
 
 
-    query = query_prot + "(" + search_string + ");"
+    query = query_prot + " ( " + search_string + " );"
     
     
 
