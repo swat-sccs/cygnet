@@ -172,7 +172,7 @@ LOGGING = {
 
 
 # This is the field order in that file.
-FIELD_ORDER = ['last','first','middle','year','phone','email','address']
+FIELD_ORDER = ['last','first','middle','year','phone','email','dorm', 'dorm_room']
 
 # A list of email usernames of students who have asked to be entirely
 # removed from the Cygnet.
