@@ -323,12 +323,12 @@ def generate_SQL_Query(terms_dict):
             i+=1
 
     else:
-        dict_keys = terms.keys()
+        dict_keys = terms_dict.keys()
         i = 0
         j = len(dict_keys)-1
         for key in dict_keys:
-            if terms[key]:
-                search_string += term_dict_thesaurus[key].format(terms[key])
+            if terms_dict[key]:
+                search_string += term_dict_thesaurus[key].format(terms_dict[key])
                 if i!=j:
                     search_string += " AND\n"
                 i+=1
