@@ -47,8 +47,25 @@ function requestAJAX(webservice, callback, noXMLloc) {
 // =======================================
 
 window.onload = function() {
+    // Center the searchbar vertically
+    var $window = $(window).on('resize', function(){
+	var height =( ($(this).height()/2) - 
+		      $('#banner').height() -  
+		      $('#searchbar').height() );
+	$('#top_spacer').height(height);
+    }).trigger('resize'); //on page load
+
+    // Do the search
     document.getElementById('terms').focus();
     doSearch();
+
+    // Surpress the Enter key to make the 
+    // fancy effects work
+    $('#searchbar').keypress(function(event){
+	if (event.keyCode == 10 || event.keyCode == 13) 
+            event.preventDefault();
+    });
+    
 }
 
 var timer = null;
@@ -67,19 +84,27 @@ function doSearch() {
     lastsearch = searchterms;
     searchterms = encodeURIComponent(searchterms)
     
+    
+    
     updateBookmarkLink();
     
     // Ignore empty searches, instead clear the results area
     if (searchterms == "") {
         document.getElementById("results").innerHTML = "";
-        sameSearch(searchterms); // to register empty search
-            
+        sameSearch(searchterms); // to register empty search    
     // Do search if different from search just performed
     } else if (!sameSearch(searchterms)) {
         document.getElementById("spinner").style.display = "block";
-        requestAJAX("/backend/?terms=" + searchterms, displayResults, "home");
+        
+	// Slide the searchbar up
+	if ( $('#top_spacer').height() > 20 ) {
+	    $('#top_spacer').animate({height:'20px'}, 500);      
+	}
+
+	requestAJAX("/backend/?terms=" + searchterms, displayResults, "home");
     }
 }
+
 
 function updateBookmarkLink() {
     var url = 'home';
@@ -95,9 +120,7 @@ function displayResults(ajax) {
     var newHTML = "";
     var topdiv = document.getElementById("top_spacer");
 
-    $('#top_spacer').animate({height:'50px'}, 500);
-      //this method increases the height to 72px
-
+    
 
     var VALID_STATUS = 200;
     if (ajax.status != VALID_STATUS || 'error' in results) {
