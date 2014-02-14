@@ -93,6 +93,11 @@ function displayResults(ajax) {
     var div = document.getElementById("results");
     var results = JSON.parse(ajax.responseText)
     var newHTML = "";
+    var topdiv = document.getElementById("top_spacer");
+
+    $('#top_spacer').animate({height:'50px'}, 500);
+      //this method increases the height to 72px
+
 
     var VALID_STATUS = 200;
     if (ajax.status != VALID_STATUS || 'error' in results) {
