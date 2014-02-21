@@ -114,7 +114,7 @@ class Student_Record(object):
                     output_file.close()
 
                 size = 105, 130
-                im = Image.open(settings.MEDIA_ROOT + settings.TMP_DIR)
+                im = Image.open(tmp_photo_path)
                 im.thumbnail(size, Image.ANTIALIAS)
                 im.save(vanilla_photo_path, "JPEG")
 
@@ -145,7 +145,7 @@ class Student_Record(object):
         query = ""
 
         query += "SELECT PHOTO FROM student_data WHERE " 
-        query += "USER_ID='%s';"
+        query += "USER_ID= %s ;"
 
         return query
 
