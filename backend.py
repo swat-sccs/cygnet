@@ -132,17 +132,24 @@ class Student_Record(object):
             else:
                 im1 = Image.open(vanilla_photo_path)
                 im2 = Image.open(settings.MEDIA_ROOT + '/its_alternate.jpg')
-
+                same = self.compare_images(im1, im2)
                 # replace ITS alternvative picture with James Bond
-                if ImageChops.difference(im1, im2).getbbox() is None:
+                if same:
                     self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
                 else:
                     self.photo = 'media/photos/vanilla/' + vanilla_photo
 
-                im1.close()
-                im2.close()
+                
 
         return
+
+    def compare_images(self, im1, im2):
+        try:
+            ImageChops.difference(im1, im2).getbbox() is None
+            return True
+        except ValueError:
+            return False
+
 
 
     def generate_SQL_Photo_Query(self):
