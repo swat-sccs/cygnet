@@ -34,7 +34,7 @@ import sys
 import time
 import traceback
 
-import Image
+import Image, ImageChops
 import MySQLdb
 
 
@@ -130,7 +130,17 @@ class Student_Record(object):
             
             # We have a clean copy in our image folder
             else:
-                self.photo = 'media/photos/vanilla/' + vanilla_photo
+                im1 = Image.open(vanilla_photo_path)
+                im2 = Image.open(settings.MEDIA_ROOT + '/its_alternate.jpg')
+
+                # replace ITS alternvative picture with James Bond
+                if ImageChops.difference(im1, im2).getbbox() is None:
+                    self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
+                else:
+                    self.photo = 'media/photos/vanilla/' + vanilla_photo
+
+                im1.close()
+                im2.close()
 
         return
 
