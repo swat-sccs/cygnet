@@ -240,14 +240,12 @@ def get_matches(terms):
     # construct cursor, query, then poll db
     cur = db.cursor() 
 
-    ### TODO: Advanced Filtering!
-    q = generate_SQL_Query(terms)
+    # generate the SQL query
+    query, qterms = generate_SQL_Query(terms)
 
-    ## escape the query string
-    # q = db.escape_string(q)
-
-    ## pass in the literal sql query plus format tuple
-    cur.execute(q, (term for term in terms))
+    # pass in the literal sql query plus format tuple
+    # this automatically escapes the qterms
+    cur.execute(query, qterms)
 
     results = []
     rset = cur.fetchall()
@@ -305,20 +303,21 @@ def generate_SQL_Query(terms_dict):
 
     search_string = ""
     query = ""
+    qt = []
 
     query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
-    query_prot += "DORM_ROOM, PHOTO FROM student_data WHERE\n" 
+    query_prot += "DORM_ROOM FROM student_data WHERE\n" 
 
-    term_query = "((FIRST_NAME LIKE %s ) or (LAST_NAME LIKE %s ) or (GRAD_YEAR LIKE %s ) or "
-    term_query += "(DORM LIKE %s ) or (DORM_ROOM LIKE %s ) or (USER_ID LIKE %s ))\n"
+    term_query = "((FIRST_NAME LIKE '%s' ) or (LAST_NAME LIKE '%s' ) or (GRAD_YEAR LIKE '%s' ) or "
+    term_query += "(DORM LIKE '%s' ) or (DORM_ROOM LIKE '%s' ) or (USER_ID LIKE '%s' ))\n"
     
     term_dict_thesaurus  = {
-        'first': " FIRST_NAME = '{0}' ",
-        'last': "  LAST_NAME = '{0}' ",
-        'year': " GRAD_YEAR = '{0}' ",
-        'email': " USER_ID = '{0}' ",
-        'dorm_room': " DORM_ROOM = '{0}' ",
-        'dorm': " DORM = '{0}' ",
+        'first': " FIRST_NAME = '%s' ",
+        'last': "  LAST_NAME = '%s' ",
+        'year': " GRAD_YEAR = '%s' ",
+        'email': " USER_ID = '%s' ",
+        'dorm_room': " DORM_ROOM = '%s' ",
+        'dorm': " DORM = '%s' ",
     }
 
     # if no specific terms are present:
@@ -333,7 +332,12 @@ def generate_SQL_Query(terms_dict):
                 search_string += "AND\n"
             i+=1
 
-    """
+        # return the qterms to main for formatting the sql query
+        qt = [[e, e, e, e, e, e] for e in terms]
+        qterms = tuple([e for subl in qt for e in subl])
+
+
+
     else:
         dict_keys = terms_dict.keys()
         i = 0
@@ -341,15 +345,19 @@ def generate_SQL_Query(terms_dict):
         for key in dict_keys:
             if terms_dict[key]:
                 search_string += term_dict_thesaurus[key].format(terms_dict[key][0])
+                qt.append(terms_dict[key][0])
                 if i!=j:
                     search_string += " AND\n"
                 i+=1
 
-    """
+        qterms = tuple(qt)
+
+
+
+
     query = query_prot + " ( " + search_string + " );"
     
-    
 
-    return query
+    return query, qterms
 
 
