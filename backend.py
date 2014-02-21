@@ -95,6 +95,8 @@ class Student_Record(object):
         # make tmp photo path
         tmp_photo_path = settings.MEDIA_ROOT + settings.TMP_DIR + self.email + '.jpg'
 
+        its_alternate = settings.MEDIA_ROOT + 'its_alternate.jpg'
+
         vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
         vanilla_photo_path = settings.VANILLA_PHOTO_DIRECTORY + vanilla_photo
 
@@ -127,12 +129,15 @@ class Student_Record(object):
             
             # Else there is a modified picture and we want to show that
             elif os.path.isfile(mod_photo_path):
-                self.photo = 'media/photos/mod/' + mod_photo
+                if filecmp.cmp(mod_photo_path, its_alternate):
+                    self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
+                else:
+                    self.photo = 'media/photos/mod/' + mod_photo
             
             # We have a clean copy in our image folder
             else:
-                its_alternate = settings.MEDIA_ROOT + 'its_alternate.jpg'
-                if filecmp(vanilla_photo_path, its_alternate:
+
+                if filecmp.cmp(vanilla_photo_path, its_alternate):
                     self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
                 else:
                     self.photo = 'media/photos/vanilla/' + vanilla_photo
