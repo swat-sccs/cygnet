@@ -175,7 +175,7 @@ class Student_Record(object):
 
 
 
-def terms_to_dict(vterms, db_conn):
+def terms_to_dict(terms):
     """
     the online cygnet accepts input in the form 'field:value' to allow for specific searches
     this method takes a string of terms
@@ -187,7 +187,7 @@ def terms_to_dict(vterms, db_conn):
                          r'(\w+)|'
                          r'(["\'][\w ]+["\'])')
     
-    terms = db_conn.escape_string(vterms)
+
     matches = term_re.findall(terms)
     logging.debug("Matches: %s" % matches)
     
@@ -308,16 +308,16 @@ def generate_SQL_Query(terms_dict):
     query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
     query_prot += "DORM_ROOM FROM student_data WHERE\n" 
 
-    term_query = "((FIRST_NAME LIKE '%s' ) or (LAST_NAME LIKE '%s' ) or (GRAD_YEAR LIKE '%s' ) or "
-    term_query += "(DORM LIKE '%s' ) or (DORM_ROOM LIKE '%s' ) or (USER_ID LIKE '%s' ))\n"
+    term_query = "((FIRST_NAME LIKE %s ) or (LAST_NAME LIKE %s ) or (GRAD_YEAR LIKE %s ) or "
+    term_query += "(DORM LIKE %s ) or (DORM_ROOM LIKE %s ) or (USER_ID LIKE %s ))\n"
     
     term_dict_thesaurus  = {
-        'first': " FIRST_NAME = '%s' ",
-        'last': "  LAST_NAME = '%s' ",
-        'year': " GRAD_YEAR = '%s' ",
-        'email': " USER_ID = '%s' ",
-        'dorm_room': " DORM_ROOM = '%s' ",
-        'dorm': " DORM = '%s' ",
+        'first': " FIRST_NAME = %s ",
+        'last': "  LAST_NAME = %s ",
+        'year': " GRAD_YEAR = %s ",
+        'email': " USER_ID = %s ",
+        'dorm_room': " DORM_ROOM = %s ",
+        'dorm': " DORM = %s ",
     }
 
     # if no specific terms are present:
