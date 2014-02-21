@@ -105,8 +105,8 @@ class Student_Record(object):
         else:
             if not os.path.isfile(vanilla_photo_path) and not os.path.isfile(mod_photo_path):
                 #get the raw image
-                img_cur = self.db.cursor()
-                query = self.generate_SQL_Photo_Query()
+                img_cur = self.db.cursor()              
+                query = "SELECT PHOTO FROM student_data WHERE USER_ID= %s ;"
 
                 # queries the database while escaping the string
                 img_rset = img_cur.execute(query, (self.email))
@@ -129,55 +129,22 @@ class Student_Record(object):
             
             # Else there is a modified picture and we want to show that
             elif os.path.isfile(mod_photo_path):
+                # check if the pic is the ITS placeholder
                 if filecmp.cmp(mod_photo_path, its_alternate):
-                    self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
+                    self.photo = 'media/photos/' + settings.ALTERNATE_PHOTO
                 else:
                     self.photo = 'media/photos/mod/' + mod_photo
             
             # We have a clean copy in our image folder
             else:
-
+                # check if the pic is the ITS placeholder
                 if filecmp.cmp(vanilla_photo_path, its_alternate):
-                    self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
+                    self.photo = 'media/photos/' + settings.ALTERNATE_PHOTO
                 else:
                     self.photo = 'media/photos/vanilla/' + vanilla_photo
 
-                """
-                im1 = Image.open(vanilla_photo_path)
-                im2 = Image.open(settings.MEDIA_ROOT + '/its_alternate.jpg')
-                same = self.compare_images(im1, im2)
-                # replace ITS alternvative picture with James Bond
-                if same:
-                    self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
-                else:
-                    self.photo = 'media/photos/vanilla/' + vanilla_photo
-                """
-                
 
         return
-
-    def compare_images(self, im1, im2):
-        try:
-            ImageChops.difference(im1, im2).getbbox() is None
-            return True
-        except ValueError:
-            return False
-
-
-
-    def generate_SQL_Photo_Query(self):
-        """
-         Simple helper function that given a swat username builds
-        a query to the SQL db for the field that contains that 
-        user's ID photo.
-        """
-
-        query = ""
-
-        query += "SELECT PHOTO FROM student_data WHERE " 
-        query += "USER_ID= %s ;"
-
-        return query
 
 
     def as_dict(self):
@@ -327,12 +294,12 @@ def generate_SQL_Query(terms_dict):
     Generates a SQL Query string from a dict of terms that all must 
     be present in the row (as substrings of different fields), by 
     ANDing SQL LIKE statements together.
-
     This is used since ITS's MariaDB doesn't support Fulltext search.
+    Also generates the format tuple that is passed in to the database
+    curser execution, which automatically escapes input.
     """
 
     search_string = ""
-    query = ""
     qt = []
 
     query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
@@ -363,6 +330,8 @@ def generate_SQL_Query(terms_dict):
             i+=1
 
         # return the qterms to main for formatting the sql query
+        # qt step is needed since for every term we need to format
+        # five placeholders (see term_query) with the term.
         qt = [[e, e, e, e, e, e] for e in terms]
         qterms = tuple([e for subl in qt for e in subl])
 
@@ -381,8 +350,6 @@ def generate_SQL_Query(terms_dict):
                 i+=1
 
         qterms = tuple(qt)
-
-
 
 
     query = query_prot + " ( " + search_string + " );"
