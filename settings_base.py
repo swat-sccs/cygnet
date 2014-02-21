@@ -201,7 +201,7 @@ MOD_PHOTO_POSTFIX = '_m'
 VANILLA_PHOTO_POSTFIX = '_c'
 
 # temporary directory
-TMP_DIR = '/tmp/'
+TMP_DIR = 'tmp/'
 
 
 

@@ -91,7 +91,8 @@ class Student_Record(object):
         mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
         mod_photo_path = settings.MOD_PHOTO_DIRECTORY + mod_photo 
         
-        tmp_photo_path = settings.TMP_DIR + self.email + '.jpg'
+        # make tmp photo path
+        tmp_photo_path = settings.MEDIA_ROOT + settings.TMP_DIR + self.email + '.jpg'
 
         vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
         vanilla_photo_path = settings.VANILLA_PHOTO_DIRECTORY + vanilla_photo
@@ -102,7 +103,10 @@ class Student_Record(object):
             if not os.path.isfile(vanilla_photo_path) and not os.path.isfile(mod_photo_path):
                 #get the raw image
                 img_cur = self.db.cursor()
-                img_rset = img_cur.execute(self.generate_SQL_Photo_Query(self.email))
+                query = self.generate_SQL_Photo_Query()
+
+                # queries the database while escaping the string
+                img_rset = img_cur.execute(query, (self.email))
                 raw_img = img_cur.fetchone()[0]
 
                 with open(tmp_photo_path, "wb") as output_file:
@@ -116,7 +120,7 @@ class Student_Record(object):
 
                 img_cur.close()
                 
-                os.system("rm {0}".format(settings.MEDIA_ROOT + settings.TMP_DIR))
+                os.system("rm {0}".format(tmp_photo_path))
 
                 self.photo = 'media/photos/vanilla/' + vanilla_photo
             
@@ -131,17 +135,17 @@ class Student_Record(object):
         return
 
 
-    def generate_SQL_Photo_Query(self, uname):
+    def generate_SQL_Photo_Query(self):
         """
          Simple helper function that given a swat username builds
         a query to the SQL db for the field that contains that 
         user's ID photo.
         """
-        search_string = ""
+
         query = ""
 
         query += "SELECT PHOTO FROM student_data WHERE " 
-        query += "USER_ID='{0}';".format(uname)
+        query += "USER_ID='%s';"
 
         return query
 
@@ -171,7 +175,7 @@ class Student_Record(object):
 
 
 
-def terms_to_dict(terms):
+def terms_to_dict(vterms, db_conn):
     """
     the online cygnet accepts input in the form 'field:value' to allow for specific searches
     this method takes a string of terms
@@ -182,6 +186,8 @@ def terms_to_dict(terms):
                          r'(\w+:["\'][\w ]+["\'])|'
                          r'(\w+)|'
                          r'(["\'][\w ]+["\'])')
+    
+    terms = db_conn.escape_string(vterms)
     matches = term_re.findall(terms)
     logging.debug("Matches: %s" % matches)
     
@@ -237,7 +243,11 @@ def get_matches(terms):
     ### TODO: Advanced Filtering!
     q = generate_SQL_Query(terms)
 
-    cur.execute(q)
+    ## escape the query string
+    # q = db.escape_string(q)
+
+    ## pass in the literal sql query plus format tuple
+    cur.execute(q, (term for term in terms))
 
     results = []
     rset = cur.fetchall()
@@ -299,9 +309,9 @@ def generate_SQL_Query(terms_dict):
     query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
     query_prot += "DORM_ROOM, PHOTO FROM student_data WHERE\n" 
 
-    term_query = "((FIRST_NAME LIKE '%{0}%') or (LAST_NAME LIKE '%{0}%') or (GRAD_YEAR LIKE '%{0}%') or "
-    term_query += "(DORM LIKE '%{0}%') or (DORM_ROOM LIKE '%{0}%') or (USER_ID LIKE '%{0}%'))\n"
-
+    term_query = "((FIRST_NAME LIKE %s ) or (LAST_NAME LIKE %s ) or (GRAD_YEAR LIKE %s ) or "
+    term_query += "(DORM LIKE %s ) or (DORM_ROOM LIKE %s ) or (USER_ID LIKE %s ))\n"
+    
     term_dict_thesaurus  = {
         'first': " FIRST_NAME = '{0}' ",
         'last': "  LAST_NAME = '{0}' ",
@@ -323,6 +333,7 @@ def generate_SQL_Query(terms_dict):
                 search_string += "AND\n"
             i+=1
 
+    """
     else:
         dict_keys = terms_dict.keys()
         i = 0
@@ -334,7 +345,7 @@ def generate_SQL_Query(terms_dict):
                     search_string += " AND\n"
                 i+=1
 
-
+    """
     query = query_prot + " ( " + search_string + " );"
     
     

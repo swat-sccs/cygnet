@@ -20,7 +20,7 @@ a:hover {
 /* HEADER SECTION */
 
 #top_spacer {
-    height:200px;
+    height:0px;
     animation:anim 1s;
     -webkit-animation:anim 1s;
 }
