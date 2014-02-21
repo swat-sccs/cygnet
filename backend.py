@@ -34,7 +34,8 @@ import sys
 import time
 import traceback
 
-import Image, ImageChops
+
+import Image, ImageChops, filecmp
 import MySQLdb
 
 
@@ -130,6 +131,13 @@ class Student_Record(object):
             
             # We have a clean copy in our image folder
             else:
+                its_alternate = settings.MEDIA_ROOT + 'its_alternate.jpg'
+                if filecmp(vanilla_photo_path, its_alternate:
+                    self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
+                else:
+                    self.photo = 'media/photos/vanilla/' + vanilla_photo
+
+                """
                 im1 = Image.open(vanilla_photo_path)
                 im2 = Image.open(settings.MEDIA_ROOT + '/its_alternate.jpg')
                 same = self.compare_images(im1, im2)
@@ -138,7 +146,7 @@ class Student_Record(object):
                     self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
                 else:
                     self.photo = 'media/photos/vanilla/' + vanilla_photo
-
+                """
                 
 
         return
