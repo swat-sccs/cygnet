@@ -14,11 +14,13 @@
 
 # Import configuration information, variables defined include:
 # - FIELD_ORDER        List of names of fields, in the order they are in the file
-# - CLASS_YEARS        List of class years to include (Obsolote due to ITS maintaining data)
 # - EXCLUDED_USERS     List of users to completely exclude from the Cygnet
-# - PHOTO_DIRECTORY    The path to the directory that stores all the photos
 # - ALTERNATE_PHOTO    The path to the alternate photo if one is missing
 # - PHOTO_HIDDEN       List of users that requested to have their photo hidden
+# - VANILLA_PHOTO_DIR  relative path to unchanged user pictures
+# - MOD_PHOTO_DIR      Relative path to modified user pictures
+
+
 
 from django.conf import settings
 
@@ -90,18 +92,18 @@ class Student_Record(object):
         # the database
 
         mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
-        mod_photo_path = settings.MOD_PHOTO_DIRECTORY + mod_photo 
+        mod_photo_path = settings.MOD_PHOTO_DIR + mod_photo 
         
         # make tmp photo path
-        tmp_photo_path = settings.MEDIA_ROOT + settings.TMP_DIR + self.email + '.jpg'
+        tmp_photo_path = settings.TMP_DIR + self.email + '.jpg'
 
-        its_alternate = settings.MEDIA_ROOT + 'its_alternate.jpg'
+        its_alternate = settings.ASSET_DIR + 'its_alternate.jpg'
 
         vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
-        vanilla_photo_path = settings.VANILLA_PHOTO_DIRECTORY + vanilla_photo
+        vanilla_photo_path = settings.VANILLA_PHOTO_DIR + vanilla_photo
 
         if self.photo_hidden:
-            self.photo = '/media/photos/' + settings.ALTERNATE_PHOTO
+            self.photo = settings.ASSET_DIR + settings.ALTERNATE_PHOTO
         else:
             if not os.path.isfile(vanilla_photo_path) and not os.path.isfile(mod_photo_path):
                 #get the raw image
@@ -125,23 +127,23 @@ class Student_Record(object):
                 
                 os.system("rm {0}".format(tmp_photo_path))
 
-                self.photo = 'media/photos/vanilla/' + vanilla_photo
+                self.photo = settings.VANILLA_PHOTO_PATH
             
             # Else there is a modified picture and we want to show that
             elif os.path.isfile(mod_photo_path):
                 # check if the pic is the ITS placeholder
                 if filecmp.cmp(mod_photo_path, its_alternate):
-                    self.photo = 'media/photos/' + settings.ALTERNATE_PHOTO
+                    self.photo = settings.ASSET_DIR + settings.ALTERNATE_PHOTO
                 else:
-                    self.photo = 'media/photos/mod/' + mod_photo
+                    self.photo = mod_photo_path
             
             # We have a clean copy in our image folder
             else:
                 # check if the pic is the ITS placeholder
                 if filecmp.cmp(vanilla_photo_path, its_alternate):
-                    self.photo = 'media/photos/' + settings.ALTERNATE_PHOTO
+                    self.photo = settings.ASSET_DIR + settings.ALTERNATE_PHOTO
                 else:
-                    self.photo = 'media/photos/vanilla/' + vanilla_photo
+                    self.photo = vanilla_photo_path
 
 
         return

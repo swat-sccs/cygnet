@@ -185,10 +185,10 @@ EXCLUDED_USERS = []
 PHOTO_HIDDEN = []
 
 # The directory where photos are stored.
-VANILLA_PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/vanilla/'
+VANILLA_PHOTO_DIR =  'photos/vanilla/'
 
 # The directory where modified pictures of users are stored.
-MOD_PHOTO_DIRECTORY = MEDIA_ROOT + 'photos/mod/'
+MOD_PHOTO_DIR =  'photos/mod/'
 
 # The path to the photo file to use for students with no photo (or a
 # hidden photo).  Should be relative to PHOTO_DIRECTORY.
@@ -203,6 +203,8 @@ VANILLA_PHOTO_POSTFIX = '_c'
 # temporary directory
 TMP_DIR = 'tmp/'
 
+# asset directroy
+ASSET_DIR = 'assets/'
 
 
 CAMPUS_IPS="130.58."
