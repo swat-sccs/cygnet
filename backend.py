@@ -91,26 +91,33 @@ class Student_Record(object):
         ## TODO: Add real exception handling and logging when manipulating
         # the database
 
-        mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
-        mod_photo_path = settings.MOD_PHOTO_DIR + mod_photo 
-        
-        # make tmp photo path
-        tmp_photo_path = settings.TMP_DIR + self.email + '.jpg'
 
-        its_alternate = settings.ASSET_DIR + 'its_alternate.jpg'
+        # relative paths to potential user pic locations
+        mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
+        mod_photo_path = os.path.join(settings.MOD_PHOTO_DIR, mod_photo)
 
         vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
-        vanilla_photo_path = settings.VANILLA_PHOTO_DIR + vanilla_photo
+        vanilla_photo_path = os.path.join(settings.VANILLA_PHOTO_DIR, vanilla_photo)
+
+        its_alternate_path = os.path.join(settings.ASSET_DIR, 'its_alternate.jpg')
+        alternate_path = os.path.join(settings.ASSET_DIR, 'alternate.jpg')
+
+        # make absolute tmp photo path
+        tmp_photo_path = os.path.join(settings.BASE_DIR, settings.TMP_DIR, self.email + '.jpg')
+
 
         if self.photo_hidden:
-            self.photo = settings.ASSET_DIR + settings.ALTERNATE_PHOTO
+            self.photo = alternate_path
         else:
-            if not os.path.isfile(vanilla_photo_path) and not os.path.isfile(mod_photo_path):
+            # if we have no picture locally
+            if not os.path.isfile(os.path.join(settings.BASE_DIR,vanilla_photo_path)) \
+            and not os.path.isfile(os.path.join(settings.BASE_DIR, mod_photo_path)):
+                
                 #get the raw image
                 img_cur = self.db.cursor()              
-                query = "SELECT PHOTO FROM student_data WHERE USER_ID= %s ;"
 
                 # queries the database while escaping the string
+                query = "SELECT PHOTO FROM student_data WHERE USER_ID= %s ;"
                 img_rset = img_cur.execute(query, (self.email))
                 raw_img = img_cur.fetchone()[0]
 
@@ -121,27 +128,29 @@ class Student_Record(object):
                 size = 105, 130
                 im = Image.open(tmp_photo_path)
                 im.thumbnail(size, Image.ANTIALIAS)
-                im.save(vanilla_photo_path, "JPEG")
+                im.save(os.path.join(settings.BASE_DIR, vanilla_photo_path), "JPEG")
 
                 img_cur.close()
                 
-                os.system("rm {0}".format(tmp_photo_path))
+                os.system("rm {0}".format(tmp_photo_path)
 
-                self.photo = settings.VANILLA_PHOTO_PATH
+                self.photo = vanilla_photo_path
             
             # Else there is a modified picture and we want to show that
-            elif os.path.isfile(mod_photo_path):
+            elif os.path.isfile(os.path.join(settings.BASE_DIR, mod_photo_path)):
                 # check if the pic is the ITS placeholder
-                if filecmp.cmp(mod_photo_path, its_alternate):
-                    self.photo = settings.ASSET_DIR + settings.ALTERNATE_PHOTO
+                if filecmp.cmp(os.path.join(settings.BASE_DIR, mod_photo_path), \
+                    os.path.join(settings.BASE_DIR, its_alternate)):
+                    self.photo = alternate_path
                 else:
                     self.photo = mod_photo_path
             
             # We have a clean copy in our image folder
             else:
                 # check if the pic is the ITS placeholder
-                if filecmp.cmp(vanilla_photo_path, its_alternate):
-                    self.photo = settings.ASSET_DIR + settings.ALTERNATE_PHOTO
+                if filecmp.cmp(os.path.join(settings.BASE_DIR, vanilla_photo_path), \
+                    os.path.join(settings.BASE_DIR, its_alternate)):
+                    self.photo = alternate_path
                 else:
                     self.photo = vanilla_photo_path
 
