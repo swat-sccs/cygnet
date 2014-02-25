@@ -12,7 +12,7 @@
 #   email settings
 
 import os
-BASE_PATH = os.path.dirname(os.path.realpath(__file__))
+BASE_PATH = os.path.dirname(__file__)
 
 LOGIN_REDIRECT_URL="/"
 
@@ -41,7 +41,8 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(BASE_PATH, '/media/')
+MEDIA_ROOT = os.path.join(BASE_PATH, 'media')
+
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -52,7 +53,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(BASE_PATH, '/static/')
+STATIC_ROOT = os.path.join(BASE_PATH, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -60,7 +61,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(BASE_PATH, '/sitestatic/'),
+    os.path.join(BASE_PATH, 'sitestatic'),
 )
 
 # List of finder classes that know how to find static files in
@@ -102,7 +103,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_PATH + '/templates/'),
+    os.path.join(BASE_PATH + '/templates'),
 )
 
 INSTALLED_APPS = (
@@ -185,14 +186,14 @@ EXCLUDED_USERS = []
 PHOTO_HIDDEN = []
 
 # The directory where photos are stored.
-VANILLA_PHOTO_DIR =  'media/photos/vanilla/'
+VANILLA_PHOTO_DIR =  'photos/vanilla/'
 
 # The directory where modified pictures of users are stored.
-MOD_PHOTO_DIR =  'media/photos/mod/'
+MOD_PHOTO_DIR =  'photos/mod/'
 
 # The path to the photo file to use for students with no photo (or a
 # hidden photo).  Should be relative to PHOTO_DIRECTORY.
-ALTERNATE_PHOTO = 'media/alternate.jpg'
+ALTERNATE_PHOTO = 'alternate.jpg'
 
 # The postfix for modified pictures.
 MOD_PHOTO_POSTFIX = '_m'
@@ -201,10 +202,10 @@ MOD_PHOTO_POSTFIX = '_m'
 VANILLA_PHOTO_POSTFIX = '_c'
 
 # temporary directory for picture processing
-TMP_DIR = 'media/tmp/'
+TMP_DIR = '/tmp/'
 
 # directory for useful assets
-ASSET_DIR = 'media/assets'
+ASSET_DIR = '/assets/'
 
 
 CAMPUS_IPS="130.58."
