@@ -92,27 +92,31 @@ class Student_Record(object):
         # the database
 
 
-        # relative paths to potential user pic locations
-        mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
-        mod_photo_path = os.path.join(settings.MOD_PHOTO_DIR, mod_photo)
-
-        vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
-        vanilla_photo_path = os.path.join(settings.VANILLA_PHOTO_DIR, vanilla_photo)
-
-        its_alternate = os.path.join(settings.ASSET_DIR, 'its_alternate.jpg')
-        alternate_path = os.path.join(settings.ASSET_DIR, 'alternate.jpg')
-
-        # make absolute tmp photo path
-        tmp_photo_path = os.path.join(settings.BASE_PATH, settings.MEDIA_ROOT, settings.TMP_DIR, self.email + '.jpg')
-
-
         if self.photo_hidden:
             self.photo = alternate_path
+
+
         else:
+
+            mod_photo = self.email + settings.MOD_PHOTO_POSTFIX + '.jpg'
+            mod_photo_path = settings.MOD_PHOTO_DIR + mod_photo
+            mod_photo_abs_path = settings.MEDIA_ROOT + mod_photo_path
+
+            vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
+            vanilla_photo_path = settings.VANILLA_PHOTO_DIR + vanilla_photo
+            vanilla_photo_abs_path = settings.MEDIA_ROOT + vanilla_photo_path 
+
+            its_alternate = settings.ASSET_DIR + 'its_alternate.jpg'
+            its_alternate_abs_path = settings.MEDIA_ROOT + its_alternate
+
+            alternate_path = settings.ASSET_DIR + 'alternate.jpg'
+
+            # make absolute tmp photo path
+            tmp_photo_path = settings.MEDIA_ROOT + settings.TMP_DIR + self.email + '.jpg'
+
             # if we have no picture locally
-            if not os.path.isfile(os.path.join(settings.MEDIA_ROOT,vanilla_photo_path)) \
-            and not os.path.isfile(os.path.join(settings.MEDIA_ROOT, mod_photo_path)):
-                
+            if not os.path.isfile(vanilla_photo_abs_path) and not os.path.isfile(mod_photo_abs_path):
+
                 #get the raw image
                 img_cur = self.db.cursor()              
 
@@ -128,19 +132,19 @@ class Student_Record(object):
                 size = 105, 130
                 im = Image.open(tmp_photo_path)
                 im.thumbnail(size, Image.ANTIALIAS)
-                im.save(os.path.join(settings.MEDIA_ROOT, vanilla_photo_path), "JPEG")
+                im.save(vanilla_photo_abs_path, "JPEG")
 
                 img_cur.close()
                 
+                # delete the temporary picture
                 os.system("rm {0}".format(tmp_photo_path))
 
                 self.photo = vanilla_photo_path
             
             # Else there is a modified picture and we want to show that
-            elif os.path.isfile(os.path.join(settings.MEDIA_ROOT, mod_photo_path)):
+            elif os.path.isfile(mod_photo_abs_path):
                 # check if the pic is the ITS placeholder
-                if filecmp.cmp(os.path.join(settings.MEDIA_ROOT, mod_photo_path), \
-                    os.path.join(settings.MEDIA_ROOT, its_alternate)):
+                if filecmp.cmp(mod_photo_abs_path, its_alternate_abs_path ):
                     self.photo = alternate_path
                 else:
                     self.photo = mod_photo_path
@@ -148,8 +152,7 @@ class Student_Record(object):
             # We have a clean copy in our image folder
             else:
                 # check if the pic is the ITS placeholder
-                if filecmp.cmp(os.path.join(settings.MEDIA_ROOT, vanilla_photo_path), \
-                    os.path.join(settings.MEDIA_ROOT, its_alternate)):
+                if filecmp.cmp(vanilla_photo_abs_path, its_alternate_abs_path):
                     self.photo = alternate_path
                 else:
                     self.photo = vanilla_photo_path

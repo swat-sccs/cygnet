@@ -12,7 +12,7 @@
 #   email settings
 
 import os
-BASE_PATH = os.path.dirname(__file__)
+BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 LOGIN_REDIRECT_URL="/"
 
@@ -41,7 +41,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(BASE_PATH, 'media')
+MEDIA_ROOT = BASE_PATH + '/media'
 
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -53,7 +53,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(BASE_PATH, 'static')
+STATIC_ROOT = BASE_PATH + '/static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -61,7 +61,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(BASE_PATH, 'sitestatic'),
+    BASE_PATH + '/sitestatic'),
 )
 
 # List of finder classes that know how to find static files in
@@ -103,7 +103,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_PATH + '/templates'),
+    BASE_PATH + '/templates',
 )
 
 INSTALLED_APPS = (
@@ -185,11 +185,14 @@ EXCLUDED_USERS = []
 #   Ex: PHOTO_HIDDEN = ['dfeista1']
 PHOTO_HIDDEN = []
 
+
+# Leaf directories NEED to have a trailing slash.
+
 # The directory where photos are stored.
-VANILLA_PHOTO_DIR =  'photos/vanilla/'
+VANILLA_PHOTO_DIR =  '/photos/vanilla/'
 
 # The directory where modified pictures of users are stored.
-MOD_PHOTO_DIR =  'photos/mod/'
+MOD_PHOTO_DIR =  '/photos/mod/'
 
 # The path to the photo file to use for students with no photo (or a
 # hidden photo).  Should be relative to PHOTO_DIRECTORY.
