@@ -104,10 +104,10 @@ class Student_Record(object):
 
             vanilla_photo = self.email + settings.VANILLA_PHOTO_POSTFIX + '.jpg'
             vanilla_photo_path = settings.VANILLA_PHOTO_DIR + vanilla_photo
-            vanilla_photo_abs_path = settings.MEDIA_ROOT + vanilla_photo_path 
+            vanilla_photo_abs_path = settings.MEDIA_ROOT + vanilla_photo_path
 
             its_alternate = settings.ASSET_DIR + 'its_alternate.jpg'
-            its_alternate_abs_path = settings.MEDIA_ROOT + its_alternate
+            its_alternate_abs_path = settings.MEDIA_ROOT +  its_alternate
 
             alternate_path = settings.ASSET_DIR + 'alternate.jpg'
 
@@ -139,23 +139,23 @@ class Student_Record(object):
                 # delete the temporary picture
                 os.system("rm {0}".format(tmp_photo_path))
 
-                self.photo = vanilla_photo_path
+                self.photo = 'media' + vanilla_photo_path
             
             # Else there is a modified picture and we want to show that
             elif os.path.isfile(mod_photo_abs_path):
                 # check if the pic is the ITS placeholder
                 if filecmp.cmp(mod_photo_abs_path, its_alternate_abs_path ):
-                    self.photo = alternate_path
+                    self.photo = 'media' + alternate_path
                 else:
-                    self.photo = mod_photo_path
+                    self.photo = 'media' + mod_photo_path
             
             # We have a clean copy in our image folder
             else:
                 # check if the pic is the ITS placeholder
                 if filecmp.cmp(vanilla_photo_abs_path, its_alternate_abs_path):
-                    self.photo = alternate_path
+                    self.photo = 'media' + alternate_path
                 else:
-                    self.photo = vanilla_photo_path
+                    self.photo = 'media' + vanilla_photo_path
 
 
         return
