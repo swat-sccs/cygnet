@@ -91,9 +91,10 @@ class Student_Record(object):
         ## TODO: Add real exception handling and logging when manipulating
         # the database
 
+        alternate_path = settings.ASSET_DIR + 'alternate.jpg'
 
         if self.photo_hidden:
-            self.photo = alternate_path
+            self.photo = 'media' + alternate_path
 
 
         else:
@@ -109,7 +110,7 @@ class Student_Record(object):
             its_alternate = settings.ASSET_DIR + 'its_alternate.jpg'
             its_alternate_abs_path = settings.MEDIA_ROOT +  its_alternate
 
-            alternate_path = settings.ASSET_DIR + 'alternate.jpg'
+            
 
             # make absolute tmp photo path
             tmp_photo_path = settings.MEDIA_ROOT + settings.TMP_DIR + self.email + '.jpg'
