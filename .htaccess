@@ -10,6 +10,13 @@ Options -Indexes
 
 RewriteEngine On
 
+#Maintenance 
+#RewriteCond %{REMOTE_ADDR} !^130\.58\.192\.43$
+#RewriteCond %{REQUEST_URI} !/maintenance.html$ [NC]
+#RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
+#RewriteRule .* /maintenance.html [R=302,L]
+
+
 # Don't provide access to the git repo from the installed clone.
 RewriteRule ^.git.*$ - [R=404]
 
