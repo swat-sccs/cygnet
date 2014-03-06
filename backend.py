@@ -248,6 +248,9 @@ def get_matches(terms):
     if not terms:
         return []
 
+    if None in terms.keys() and len(terms.keys()) > 1:
+        return []
+
     recordtime()
 
     ## TODO: Add real exception handling and logging when manipulating
