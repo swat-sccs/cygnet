@@ -194,6 +194,16 @@ def terms_to_dict(terms):
     this method returns a dictionary of the form {field: value}
     if there are no specific fields, a dictionary is returned with only one key, None
     """
+    
+    DORMS = {
+        "ap" : "Alice Paul Hall",
+        "dk" : "David Kemp Hall",
+        "ml" : "Mary Lyon",
+        "strath" : "Strath Haven",        
+    }
+
+
+
     term_re = re.compile(r'(\w+:\w+)|'
                          r'(\w+:["\'][\w ]+["\'])|'
                          r'(\w+)|'
@@ -219,6 +229,12 @@ def terms_to_dict(terms):
         elif match[3]:
             dict_add(None, match[3].strip('"\''))
 
+    #fix for multi part dorm names
+    if "dorm" in term_dict.keys():
+        if term_dict["dorm"][0].lower() in DORMS.keys():
+            new = DORMS[term_dict["dorm"][0].lower()]
+            term_dict["dorm"][0] = new
+            
     logging.info("Search terms are: " + repr(term_dict))
     return term_dict
 
