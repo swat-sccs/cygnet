@@ -343,12 +343,12 @@ def generate_SQL_Query(terms_dict):
     term_query += "(DORM LIKE %s ) or (DORM_ROOM LIKE %s ) or (USER_ID LIKE %s ))\n"
     
     term_dict_thesaurus  = {
-        'first': " FIRST_NAME = %s ",
-        'last': "  LAST_NAME = %s ",
-        'year': " GRAD_YEAR = %s ",
-        'email': " USER_ID = %s ",
-        'dorm_room': " DORM_ROOM = %s ",
-        'dorm': " DORM = %s ",
+        'first': " FIRST_NAME LIKE %s ",
+        'last': "  LAST_NAME LIKE %s ",
+        'year': " GRAD_YEAR LIKE %s ",
+        'email': " USER_ID LIKE %s ",
+        'dorm_room': " DORM_ROOM LIKE %s ",
+        'dorm': " DORM LIKE %s ",
     }
 
     # if no specific terms are present:
@@ -368,6 +368,16 @@ def generate_SQL_Query(terms_dict):
         # five placeholders (see term_query) with the term.
         qt = [[e, e, e, e, e, e] for e in terms]
         qterms = tuple([e for subl in qt for e in subl])
+        
+        ## Ben - I think that what follows allows for partial search
+        ## matches.
+        ## TODO - see if this is vulnerable to SQL injection attacks
+        ## TODO - integrate this with specific searches too
+        
+        #for t in terms :
+        #    string = "%%%s%%" % (t)
+        #    qt.append( [string, string, string, string, string, string] )
+        #qterms = tuple([t for subl in qt for t in subl])
 
 
 
