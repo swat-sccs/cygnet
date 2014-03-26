@@ -3,18 +3,18 @@
 # Just in case, we don't really want people indexing these directories.
 Options -Indexes
 
+RewriteEngine On
+
+#Maintenance 
+##RewriteBase /
+#RewriteCond %{REMOTE_ADDR} !^10\.103\.18\.104     # <--YOUR IP HERE
+##RewriteCond %{REQUEST_URI} !^/maintenance\.html$                      
+##RewriteRule ^(.*)$ http://www.sccs.swarthmore.edu/?p=779
+ 
 # Tell Apache to handle backend.py as a CGI script.
 <Files backend.py>
        SetHandler cgi-script
 </Files>
-
-RewriteEngine On
-
-#Maintenance 
-#RewriteCond %{REMOTE_ADDR} !^130\.58\.192\.43$
-#RewriteCond %{REQUEST_URI} !/maintenance.html$ [NC]
-#RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
-#RewriteRule .* /maintenance.html [R=302,L]
 
 
 # Don't provide access to the git repo from the installed clone.

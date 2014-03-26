@@ -195,6 +195,15 @@ def terms_to_dict(terms):
     if there are no specific fields, a dictionary is returned with only one key, None
     """
     
+    ## Hacky way to prevent SQL Injection attacks - 
+    ## Only accept alphanumeric characters, colons, quotation marks
+    for ch in terms:
+        if ch.isalpha() or ch.isdigit() or ch in [' '] : #, ':', '"'] :
+            continue
+        return { }
+
+
+
     DORMS = {
         "ap" : "Alice Paul Hall",
         "dk" : "David Kemp Hall",
@@ -272,7 +281,7 @@ def get_matches(terms):
     cur = db.cursor() 
 
     # generate the SQL query
-    query, qterms = generate_SQL_Query(terms)
+    query, qterms = generate_SQL_Query(terms, db)
 
     # pass in the literal sql query plus format tuple
     # this automatically escapes the qterms
@@ -323,7 +332,7 @@ def recordtime(taskname=None):
     return now - recordtime.first_mark
 
 
-def generate_SQL_Query(terms_dict):
+def generate_SQL_Query(terms_dict, db):
     """
     Generates a SQL Query string from a dict of terms that all must 
     be present in the row (as substrings of different fields), by 
@@ -338,48 +347,47 @@ def generate_SQL_Query(terms_dict):
 
     query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
     query_prot += "DORM_ROOM FROM student_data WHERE\n" 
-
-    term_query = "((FIRST_NAME LIKE %s ) or (LAST_NAME LIKE %s ) or (GRAD_YEAR LIKE %s ) or "
-    term_query += "(DORM LIKE %s ) or (DORM_ROOM LIKE %s ) or (USER_ID LIKE %s ))\n"
     
+    term_query = "((FIRST_NAME LIKE %s ) or (LAST_NAME LIKE %s ) or (GRAD_YEAR LIKE %s ) or "
+    term_query += " (USER_ID LIKE %s ) or (DORM LIKE %s ) or (DORM_ROOM LIKE %s ) )\n"
+    
+
     term_dict_thesaurus  = {
-        'first': " FIRST_NAME LIKE %s ",
-        'last': "  LAST_NAME LIKE %s ",
-        'year': " GRAD_YEAR LIKE %s ",
-        'email': " USER_ID LIKE %s ",
-        'dorm_room': " DORM_ROOM LIKE %s ",
-        'dorm': " DORM LIKE %s ",
+        'first': " FIRST_NAME LIKE {0} ",
+        'last': "  LAST_NAME LIKE {0} ",
+        'year': " GRAD_YEAR LIKE {0} ",
+        'email': " USER_ID LIKE {0} ",
+        'dorm_room': " DORM_ROOM LIKE {0} ",
+        'dorm': " DORM LIKE {0} ",
     }
 
     # if no specific terms are present:
     if len(terms_dict) and not terms_dict.keys()[0]:
         terms = terms_dict[None]
 
-        i = 0
-        j = len(terms)-1
-        for term in terms:
-            search_string += term_query.format(term)
-            if i != j:
-                search_string += "AND\n"
-            i+=1
-
-        # return the qterms to main for formatting the sql query
-        # qt step is needed since for every term we need to format
-        # five placeholders (see term_query) with the term.
-        qt = [[e, e, e, e, e, e] for e in terms]
-        qterms = tuple([e for subl in qt for e in subl])
-        
         ## Ben - I think that what follows allows for partial search
         ## matches.
         ## TODO - see if this is vulnerable to SQL injection attacks
         ## TODO - integrate this with specific searches too
+        i = 0
+        j = len(terms)-1
+        search_string += query_prot + '('
+
+        for term in terms :
+            search_string += term_query.format( term ) 
+            if ( i != j ) :
+                search_string += "AND\n"
+            i += 1
+
+        search_string += " ); "
         
-        #for t in terms :
-        #    string = "%%%s%%" % (t)
-        #    qt.append( [string, string, string, string, string, string] )
-        #qterms = tuple([t for subl in qt for t in subl])
+        for t in terms :
+            
+            string = "%%%s%%" % (t)
+            qt.append( [string, string, string, string, string, string] )
+        qterms = tuple([t for subl in qt for t in subl])
 
-
+        return search_string, qterms
 
     else:
         dict_keys = terms_dict.keys()
@@ -387,18 +395,13 @@ def generate_SQL_Query(terms_dict):
         j = len(dict_keys)-1
         for key in dict_keys:
             if terms_dict[key]:
-                search_string += term_dict_thesaurus[key].format(terms_dict[key][0])
-                qt.append(terms_dict[key][0])
+                term = db.escape_string(terms_dict[key][0]) 
+                search_string += term_dict_thesaurus[key].format(term)
                 if i!=j:
                     search_string += " AND\n"
                 i+=1
 
-        qterms = tuple(qt)
 
+        return search_string, ()
 
-    query = query_prot + " ( " + search_string + " );"
-    
-
-    return query, qterms
-
-
+    return "", ()
