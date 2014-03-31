@@ -1,7 +1,7 @@
 ====================
 README - SCCS Cygnet
 ====================
-Last modified 02/12/2014.
+Last modified 03/31/2014.
 
 This is an information file for the codebase running the SCCS online cygnet.
 
@@ -15,6 +15,31 @@ Files:
 - media/
 - settings_base.py
 - settings_server.py
+
+===============================
+DIRECTORY STRUCTURE FOR MEDIA
+
+When setting up the cygnet you must create the following directory structure
+as this is how the pictures are stored an served at the moment.
+
+The current folder layout organizing the ID-pictures looks like this
+
+CYGNET_ROOT       
+    - media               --> general media folder
+        
+        - tmp             --> a working directory where the cygnet resizes pics
+                              that came straight from the ITS DB
+        - assets          --> media assets such as the alternate pic and 
+                              ITS placeholder etc.
+        - photos          
+            - vanilla     --> contains the pictures as they are found in the
+                              ITS database, thus vanilla as in plain
+            - mod         --> if students request a picture change one simply places
+                              said picture in here (with the appropriate name). 
+                              The backend will always look in here first for the picture.
+
+
+
 
 ===============================
 CHANGELOG
