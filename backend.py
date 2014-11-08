@@ -36,15 +36,19 @@ import sys
 import time
 import traceback
 
+#08/25/2014, defa: try and fix IO error in pil
+from PIL import Image
 
-import Image, ImageChops, filecmp
+import ImageChops, filecmp
 import MySQLdb
 
 
 class Student_Record(object):
 
     def __init__(self, db_conn, row):
-        
+
+        ##logging.warning("CYG:: Beginning of constructor")  
+
         # initalize user data from row
         self.last = row[0]
         self.first = row[1]
@@ -64,6 +68,8 @@ class Student_Record(object):
         self.photo_hidden = (self.email in settings.PHOTO_HIDDEN)
         self.on_leave = False
         self.off_campus = False
+        ##logging.warning("CYG:: End of constructor.")
+
 
     def set_student_vars(self):
         self.off_campus = (self.dorm_room == None and self.dorm == None)
@@ -134,9 +140,17 @@ class Student_Record(object):
                     output_file.close()
 
                 size = 105, 130
-                im = Image.open(tmp_photo_path)
-                im.thumbnail(size, Image.ANTIALIAS)
-                im.save(vanilla_photo_abs_path, "JPEG")
+                try:
+                    im = Image.open(tmp_photo_path)
+                    im.thumbnail(size, Image.ANTIALIAS)
+                    im.save(vanilla_photo_abs_path, "JPEG")
+                # defa, 8/25:
+                # we really need more exception handling in this whole codebase :P
+                except:
+                    self.photo = 'media' + alternate_path
+                    img_cur.close()
+                    logging.info("user %s picture is screwed" %tmp_photo_path)
+                    return
 
                 img_cur.close()
                 
@@ -166,11 +180,16 @@ class Student_Record(object):
 
 
     def as_dict(self):
+        
+        ##logging.warning("CYG:: In as_dict function")
+
         # check student status and set vars
         self.set_student_vars()
         if self.on_leave or self.off_campus:
-            return {}
+             ##logging.warning("CYG:: Student is on leave or off campus.")
+             return {}
         
+        ##logging.warning("CYG:: Constructing json dict")
         # if student will show up set photo
         self.set_student_photo()
 
@@ -185,6 +204,7 @@ class Student_Record(object):
             'photo':self.photo,
         }
 
+        ##logging.warning("CYG:: Returning dict of length: %i" % len(json_dict) )
         return json_dict
 
 
@@ -224,7 +244,7 @@ def terms_to_dict(terms):
 
     matches = term_re.findall(terms)
     logging.debug("Matches: %s" % matches)
-    
+
     term_dict = {}
     dict_add = lambda key, value: term_dict.setdefault(key, []).append(value)
     for match in matches:
@@ -293,6 +313,9 @@ def get_matches(terms):
     results = []
     rset = cur.fetchall()
 
+    ##DBGMessage = "CYG:: Got " + str(len(rset)) + " results from query." 
+    ##logging.warning( DBGMessage )
+
     for row in rset:
 
         # TODO: Check fields based on FIELD_ORDER outlined in settings
@@ -300,13 +323,15 @@ def get_matches(terms):
 
         # Check for Excluded Users
         if row[5] in settings.EXCLUDED_USERS:
+            ##logging.warning("CYG:: Excluding result because user is excluded.")
             continue
         else:
             student = Student_Record(db, row).as_dict()
             if student:
                 results.append(student)
 
-        
+    ##logging.warning("CYG:: Found %i results." % len(results) )
+    
     logging.info("Found %i results." % len(results))
 
     db.close()
