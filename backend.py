@@ -75,7 +75,7 @@ class Student_Record(object):
         self.off_campus = (self.dorm_room == None and self.dorm == None)
         self.on_leave = (self.dorm == 'On Leave')
 
-        if self.year == None or self.year == 'null':
+        if not self.year:
             self.year = 'N/A'
 
         if self.off_campus:
