@@ -69,13 +69,16 @@ class Student_Record(object):
         self.off_campus = (self.dorm_room == None and self.dorm == None)
         self.on_leave = (self.dorm == 'On Leave')
 
+        if self.year == None:
+            self.year = 'N/A'
+
         if self.off_campus:
             self.address = 'Off Campus'
             self.phone = ''
         else:
             if self.dorm == None:
                 self.dorm = ''
-            if self.dorm_room ==None:
+            if self.dorm_room == None:
                 self.dorm_room = ''
 
             self.address = self.dorm + " " + self.dorm_room
