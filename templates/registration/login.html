@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load url from future %}
 
 {% block content %}
 
@@ -28,5 +27,7 @@ account, you can log in below to access the Cygnet. If you don't have one, <a
 <input type="submit" value="login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
+<a href="https://guts.sccs.swarthmore.edu/user/password/login-forgotten/">Forgot your SCCS username?</a><br>
+<a href="https://guts.sccs.swarthmore.edu/user/password/login-forgotten/">Forgot your SCCS password?</a>
 
 {% endblock %}

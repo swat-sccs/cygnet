@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from django.conf import settings
 from django.shortcuts import render,redirect
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth       import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login
@@ -12,7 +12,7 @@ from django.utils.decorators   import available_attrs
 from backend import recordtime, terms_to_dict, get_matches
 import sys, json, logging, traceback
 
-import urlparse
+from urllib.parse import urlparse
 from functools import wraps
 
 
@@ -35,7 +35,7 @@ def user_authenticated(request):
             return True
 
     # check user permissions
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return True
 
     # nope!
@@ -49,8 +49,8 @@ def redirect_to_login_and_back(request, login_url=None,
 
     # If the login url is the same scheme and net location then just
     # use the path as the "next" url.
-    login_scheme, login_netloc = urlparse.urlparse(login_url)[:2]
-    current_scheme, current_netloc = urlparse.urlparse(path)[:2]
+    login_scheme, login_netloc = urlparse(login_url)[:2]
+    current_scheme, current_netloc = urlparse(path)[:2]
     if ((not login_scheme or login_scheme == current_scheme) and
         (not login_netloc or login_netloc == current_netloc)):
         path = request.get_full_path()
@@ -96,7 +96,6 @@ def backend(request):
     recordtime()
     terms = terms_to_dict(request.GET.get('terms', ''))
     payload = {'data': get_matches(terms)}
-
     output = json.dumps(payload)
     logging.debug("Size of data returned: %i chars or %g KB." %
                   (len(output), len(output) / 1024.0))
@@ -106,20 +105,19 @@ def backend(request):
     return HttpResponse(output, content_type='application/json')
 
 from django.contrib.auth.views import login as native_login
-from django.core.context_processors import csrf
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators import csrf
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 
-@csrf_exempt
+@csrf.csrf_exempt
 def login(request, *args, **kwargs):
-    print request.method, request.GET
+    print(request.method, request.GET)
     if request.method == 'GET' and 'csrf' in request.GET:
         csrf_token = csrf(request)['csrf_token']
         return HttpResponse(csrf_token, content_type='text/plain')
 
     if request.method == 'POST' and 'api' in request.POST:
-        print "using api login"
+        print("using api login")
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
         if user is not None and user.is_active:
             auth_login(request, user)

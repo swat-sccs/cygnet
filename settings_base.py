@@ -22,8 +22,8 @@ ADMINS = MANAGERS = (
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# TIME_ZONE = 'America/New_York'
-TIME_ZONE=None # use system time zone
+TIME_ZONE = 'America/New_York'
+#TIME_ZONE=None # use system time zone
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -72,39 +72,62 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.contrib.messages.context_processors.messages",
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-)
-
-ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
+#TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    BASE_PATH + '/templates',
-)
+#    BASE_PATH + '/templates',
+#)
+
+
+
+
+TEMPLATES = [{
+    'BACKEND':'django.template.backends.django.DjangoTemplates',
+    'DIRS': [os.path.join(BASE_PATH, 'templates'),],
+    'APP_DIRS': True,
+    'OPTIONS':{
+        'context_processors':[
+             "django.contrib.auth.context_processors.auth",
+             "django.template.context_processors.debug",
+             "django.template.context_processors.i18n",
+             "django.template.context_processors.media",
+             "django.template.context_processors.static",
+             "django.template.context_processors.tz",
+             "django.contrib.messages.context_processors.messages",
+        ],
+        },
+    },
+]
+
+
+# List of callables that know how to import templates from various sources.
+#TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader',
+#)
+
+#TEMPLATE_CONTEXT_PROCESSORS = (
+#    "django.contrib.auth.context_processors.auth",
+#    "django.core.context_processors.debug",
+#    "django.core.context_processors.i18n",
+#    "django.core.context_processors.media",
+#    "django.core.context_processors.static",
+#    "django.contrib.messages.context_processors.messages",
+#)
+
+MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        ]
+
+ROOT_URLCONF = 'urls'
+
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -119,6 +142,10 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+
+
+ALLOWED_HOSTS = ['cygnet.sccs.swarthmore.edu','130.58.218.8','127.0.0.1','localhost']
 
 # Logging configuration.
 # 1. send an email to the site admins on every HTTP 500 error.
@@ -138,7 +165,7 @@ LOGGING = {
     'handlers': {
         'null': {
             'level':'DEBUG',
-            'class':'django.utils.log.NullHandler',
+            'class':'logging.NullHandler',
         },
         'console':{
             'level':'DEBUG',
@@ -211,4 +238,5 @@ TMP_DIR = '/tmp/'
 ASSET_DIR = '/assets/'
 
 
-CAMPUS_IPS="130.58."
+CAMPUS_IPS="130.58"
+

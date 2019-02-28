@@ -7,7 +7,7 @@ readable_dorms = {
 'KYLE' : 'Kyle',
 'LODGES' : 'Lodges',
 'MERTZ' : 'Mertz',
-'ML4' : 'Mary Lyon',
+'ML' : 'Mary Lyon',
 'PALMER' : 'Palmer',
 'PARRSH' : 'Parrish',
 'PITT' : 'Pittenger',

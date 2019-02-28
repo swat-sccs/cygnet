@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: latin-1 -*-
 
 ### ========================
 ###       backend.py
@@ -33,13 +34,14 @@ import os
 import os.path
 import re
 import sys
+
 import time
 import traceback
 
 #08/25/2014, defa: try and fix IO error in pil
-from PIL import Image
-
-import ImageChops, filecmp
+#06/11/2015, tino: library error from pil
+from PIL import Image, ImageChops
+import filecmp
 import MySQLdb
 
 
@@ -50,9 +52,11 @@ class Student_Record(object):
         ##logging.warning("CYG:: Beginning of constructor")  
 
         # initalize user data from row
+        #self.last = row[0].decode(‘latin-1').encode('utf-8')
+        #self.first = row[1].decode(‘latin-1').encode('utf-8')
         self.last = row[0]
         self.first = row[1]
-        # middle name is ommitted
+	# middle name is ommitted
         self.year = row[3]
         self.phone = row[4]
         self.email = row[5]
@@ -131,8 +135,10 @@ class Student_Record(object):
                 img_cur = self.db.cursor()              
 
                 # queries the database while escaping the string
-                query = "SELECT PHOTO FROM student_data WHERE USER_ID= %s ;"
-                img_rset = img_cur.execute(query, (self.email))
+                #query = "SELECT PHOTO FROM student_data WHERE USER_ID= %s ;"
+                query = "SELECT PHOTO FROM student_data WHERE USER_ID='{0}' ;".format( self.email )
+                #img_rset = img_cur.execute(query, (self.email))
+                img_rset = img_cur.execute(query)
                 raw_img = img_cur.fetchone()[0]
 
                 with open(tmp_photo_path, "wb") as output_file:
@@ -262,7 +268,7 @@ def terms_to_dict(terms):
             dict_add(None, match[3].strip('"\''))
 
     #fix for multi part dorm names
-    if "dorm" in term_dict.keys():
+    if "dorm" in list(term_dict.keys()):
         if term_dict["dorm"][0].lower() in DORMS.keys():
             new = DORMS[term_dict["dorm"][0].lower()]
             term_dict["dorm"][0] = new
@@ -277,6 +283,10 @@ def get_matches(terms):
     that match the query represented by the search terms
     now querying the ITS housing db
     """
+    # TODO REMOVE
+    #DBGMessage = "CYG:: Got " + str(len(rset)) + " results from query." 
+    #logging.warning( DBGMessage )
+
     if not terms:
         return []
 
@@ -390,7 +400,7 @@ def generate_SQL_Query(terms_dict, db):
     }
 
     # if no specific terms are present:
-    if len(terms_dict) and not terms_dict.keys()[0]:
+    if len(terms_dict) and not list(terms_dict.keys())[0]:
         terms = terms_dict[None]
 
         ## Ben - I think that what follows allows for partial search
@@ -418,7 +428,7 @@ def generate_SQL_Query(terms_dict, db):
         return search_string, qterms
 
     else:
-        dict_keys = terms_dict.keys()
+        dict_keys = list(terms_dict.keys())
         i = 0
         j = len(dict_keys)-1
         for key in dict_keys:
@@ -429,7 +439,7 @@ def generate_SQL_Query(terms_dict, db):
                     search_string += " AND\n"
                 i+=1
 
-
+        raise Exception(search_string)
         return search_string, ()
 
     return "", ()

@@ -6,9 +6,7 @@ URL = 'https://cygnet.sccs.swarthmore.edu'
 FORCE_SCRIPT_NAME = '' # for mod_wsgi
 STATIC_URL = '/static/'
 
-DIRECTORY_FILE = '/usr/sccs/pub/dir/current'
-
-from django.core.urlresolvers import set_script_prefix
+from django.urls import set_script_prefix
 
 # this gets overriden by the wsgi handler, but this fixes it from manage.py
 set_script_prefix('/')
@@ -18,7 +16,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':   'cygnet',
         'USER':   'cygnet',
-        'HOST':   'db.sccs',
+        'HOST':   'localhost',
     } # set 'PASSWORD' in settings.py
 }
 
