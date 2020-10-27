@@ -14,14 +14,12 @@ account, you can log in below to access the Cygnet. If you don't have one, <a
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 <table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
+  <tr><td width="100px">
+      <input name="username" placeholder="SCCS Username"/>
+  </td></tr>
+  <tr><td>
+      <input name="password" type="password" placeholder="********"/>
+  </td></tr>
 </table>
 
 <input type="submit" value="login" />

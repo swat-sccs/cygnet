@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls import include, url
-from django.contrib.auth.views import logout
+from django.contrib.auth.views import auth_logout
 from django.views.static import serve
 import views as cygnet_views
 # Uncomment the next two lines to enable the admin:
@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^backend/', cygnet_views.backend, name='backend'),
 
     url(r'^accounts/login/$', cygnet_views.login, name='login'),
-    url(r'^accounts/logout/$',logout ,name='logout'),
+    url(r'^accounts/logout/$',cygnet_views.logout ,name='logout'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -26,5 +26,8 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^media/(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT,
+        }),
+        url(r'^static/(?P<path>.*)$', serve, {
+            'document_root': settings.STATIC_ROOT,
         }),
    ]

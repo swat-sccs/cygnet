@@ -22,7 +22,6 @@
 # - MOD_PHOTO_DIR      Relative path to modified user pictures
 
 
-
 from django.conf import settings
 
 from collections import namedtuple
@@ -34,6 +33,7 @@ import os
 import os.path
 import re
 import sys
+import datetime
 
 import time
 import traceback
@@ -47,7 +47,7 @@ import MySQLdb
 
 class Student_Record(object):
 
-    def __init__(self, db_conn, row):
+    def __init__(self, db_conn, row, updating):
 
         ##logging.warning("CYG:: Beginning of constructor")  
 
@@ -60,10 +60,15 @@ class Student_Record(object):
         self.year = row[3]
         self.phone = row[4]
         self.email = row[5]
+
         self.dorm = row[6]
         self.dorm_room = row[7]
+        if self.email in settings.ROOM_HIDDEN:	
+                self.dorm = ""
+                self.dorm_room = ""
 
         # initialize vars for later use 
+        self.updating = updating
         self.db = db_conn
         self.address = ''
         self.photo = ''
@@ -76,7 +81,7 @@ class Student_Record(object):
 
 
     def set_student_vars(self):
-        self.off_campus = (self.dorm_room == None and self.dorm == None)
+        self.off_campus = (self.dorm_room == None and self.dorm == None and not self.updating)
         self.on_leave = (self.dorm == 'On Leave')
 
         if not self.year:
@@ -104,7 +109,7 @@ class Student_Record(object):
         ## TODO: Add real exception handling and logging when manipulating
         # the database
 
-        alternate_path = settings.ASSET_DIR + 'alternate.jpg'
+        alternate_path = settings.ASSET_DIR + 'its_alternate.jpg'
 
         if self.photo_hidden:
             self.photo = 'media' + alternate_path
@@ -227,20 +232,19 @@ def terms_to_dict(terms):
     ## Hacky way to prevent SQL Injection attacks - 
     ## Only accept alphanumeric characters, colons, quotation marks
     for ch in terms:
-        if ch.isalpha() or ch.isdigit() or ch in [' '] : #, ':', '"'] :
+        if ch.isalpha() or ch.isdigit() or ch in [' '] : 
             continue
-        return { }
-
-
-
+        return {}
+    # return early on Unicode chars
+    try:
+        terms.encode('ascii')
+    except UnicodeEncodeError:
+        return {}
     DORMS = {
         "ap" : "Alice Paul Hall",
         "dk" : "David Kemp Hall",
-        "ml" : "Mary Lyon",
-        "strath" : "Strath Haven",        
+        "ml" : "Mary Lyon"
     }
-
-
 
     term_re = re.compile(r'(\w+:\w+)|'
                          r'(\w+:["\'][\w ]+["\'])|'
@@ -275,6 +279,21 @@ def terms_to_dict(terms):
             
     logging.info("Search terms are: " + repr(term_dict))
     return term_dict
+
+
+def is_updating(db):
+    """
+    returns whether ITS is updating their database
+    takes in the MySQLDb db instance
+    """
+    # when ITS does that they set all DORM and DORM_ROOM to null
+    # so we check if all of them are set to null
+    query = '''SELECT FIRST_NAME FROM student_data WHERE DORM IS NOT NULL AND DORM_ROOM IS NOT NULL LIMIT 1'''
+    # run query
+    with db.cursor() as cur:
+        cur.execute(query)
+        rset = cur.fetchall()
+    return (len(rset) <= 0)  # ITS is updating their database if no results are returned
 
 
 def get_matches(terms):
@@ -322,7 +341,14 @@ def get_matches(terms):
 
     results = []
     rset = cur.fetchall()
-
+    
+    updating = False
+    if False not in (row[6] is None and row[7] is None for row in rset):
+        # generator to make it faster
+        # dorm and dorm_room are None for all
+        # check if ITS is updating their database
+        updating = is_updating(db)
+    
     ##DBGMessage = "CYG:: Got " + str(len(rset)) + " results from query." 
     ##logging.warning( DBGMessage )
 
@@ -336,7 +362,7 @@ def get_matches(terms):
             ##logging.warning("CYG:: Excluding result because user is excluded.")
             continue
         else:
-            student = Student_Record(db, row).as_dict()
+            student = Student_Record(db, row, updating).as_dict()
             if student:
                 results.append(student)
 
@@ -344,8 +370,8 @@ def get_matches(terms):
     
     logging.info("Found %i results." % len(results))
 
-    db.close()
     cur.close()
+    db.close()
 
     recordtime("Reading and searching directory file")
     
@@ -381,10 +407,11 @@ def generate_SQL_Query(terms_dict, db):
     """
 
     search_string = ""
+
     qt = []
 
     query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
-    query_prot += "DORM_ROOM FROM student_data WHERE\n" 
+    query_prot += "DORM_ROOM FROM student_data WHERE (GRAD_YEAR >= %s) and  \n" 
     
     term_query = "((FIRST_NAME LIKE %s ) or (LAST_NAME LIKE %s ) or (GRAD_YEAR LIKE %s ) or "
     term_query += " (USER_ID LIKE %s ) or (DORM LIKE %s ) or (DORM_ROOM LIKE %s ) )\n"
@@ -402,6 +429,12 @@ def generate_SQL_Query(terms_dict, db):
     # if no specific terms are present:
     if len(terms_dict) and not list(terms_dict.keys())[0]:
         terms = terms_dict[None]
+        # find next graduation year
+        cur_datetime = datetime.datetime.now()
+        if cur_datetime.month <= 5:
+            next_grad_year = cur_datetime.year
+        else:
+            next_grad_year = cur_datetime.year + 1
 
         ## Ben - I think that what follows allows for partial search
         ## matches.
@@ -423,7 +456,7 @@ def generate_SQL_Query(terms_dict, db):
             
             string = "%%%s%%" % (t)
             qt.append( [string, string, string, string, string, string] )
-        qterms = tuple([t for subl in qt for t in subl])
+        qterms = tuple([next_grad_year] + [t for subl in qt for t in subl])
 
         return search_string, qterms
 

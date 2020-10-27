@@ -16,7 +16,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':   'cygnet',
         'USER':   'cygnet',
-        'HOST':   'localhost',
+        'HOST':   'db.sccs.swarthmore.edu',
     } # set 'PASSWORD' in settings.py
 }
 

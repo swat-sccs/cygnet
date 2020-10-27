@@ -175,7 +175,12 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'file': {
+            'level':'DEBUG',
+            'class':'logging.FileHandler',
+            'filename':'/var/log/cygnet/cygnet.debug.log',
+        },
     },
     'loggers': {
         'django': {
@@ -184,7 +189,7 @@ LOGGING = {
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': [], # set to b/c emails annoying while debugging GL 10/2/2020 TODO: remove comment ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },

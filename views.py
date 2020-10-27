@@ -7,10 +7,10 @@ from django.contrib import auth
 from django.contrib.auth       import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators   import available_attrs
+#from django.utils.decorators   import available_attrs
 
 from backend import recordtime, terms_to_dict, get_matches
-import sys, json, logging, traceback
+import sys, json, logging, traceback, os
 
 from urllib.parse import urlparse
 from functools import wraps
@@ -46,14 +46,27 @@ def redirect_to_login_and_back(request, login_url=None,
     path = request.build_absolute_uri()
     if not login_url:
         login_url = settings.LOGIN_URL
-
+        print("login url: {}".format(login_url))
+        logging.debug("login url: {}".format(login_url))
+    
     # If the login url is the same scheme and net location then just
     # use the path as the "next" url.
     login_scheme, login_netloc = urlparse(login_url)[:2]
+    print("login scheme: {}".format(login_scheme))
+    print("login netloc: {}".format(login_netloc))
+
     current_scheme, current_netloc = urlparse(path)[:2]
+    print("current scheme: {}".format(current_scheme))
+    print("current netloc: {}".format(current_netloc))
     if ((not login_scheme or login_scheme == current_scheme) and
         (not login_netloc or login_netloc == current_netloc)):
+        print("getting full path")
         path = request.get_full_path()
+
+    print("path: {}".format(path))
+    print("login url: {}".format(login_url))
+    print("redirect field name: {}".format(redirect_field_name))
+
     return redirect_to_login(path, login_url, redirect_field_name)
 
 
@@ -64,7 +77,7 @@ def checks_user_auth(function=None, redirect_field_name=REDIRECT_FIELD_NAME):
     '''
     # based on django.contrib.auth.decorators.user_passes_test
     def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
+        @wraps(view_func)#, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
             if not user_authenticated(request):
                 return redirect_to_login_and_back(request)
@@ -85,6 +98,7 @@ def home(request):
         params['cygnet_debug'] = True
 
     params['search_terms'] = request.GET.get('terms', '')
+    print("rendering home")
     return render(request, 'home.html', params)
 
 def backend(request):
@@ -104,7 +118,7 @@ def backend(request):
 
     return HttpResponse(output, content_type='application/json')
 
-from django.contrib.auth.views import login as native_login
+from django.contrib.auth.views import auth_login as native_login
 from django.views.decorators import csrf
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
@@ -112,20 +126,26 @@ from django.contrib.auth import login as auth_login
 @csrf.csrf_exempt
 def login(request, *args, **kwargs):
     print(request.method, request.GET)
+
     if request.method == 'GET' and 'csrf' in request.GET:
+        print ("inside get")
         csrf_token = csrf(request)['csrf_token']
         return HttpResponse(csrf_token, content_type='text/plain')
 
-    if request.method == 'POST' and 'api' in request.POST:
+    if request.method == 'POST': #and 'api' in request.POST:
         print("using api login")
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
+    
         if user is not None and user.is_active:
             auth_login(request, user)
-            return HttpResponse('authenticated', content_type='text/plain')
-        else:
-            response = HttpResponse('not authenticated', content_type='text/plain')
-            response.status_code=403
-            return response
+            return HttpResponseRedirect('/', content_type='application/html') 
+    
+    return render(request, 'registration/login.html')
 
-    return native_login(request, *args, **kwargs)
+from django.contrib.auth import logout as auth_logout
+
+def logout(request):
+    auth_logout(request);
+
+    return render(request, 'registration/logged_out.html')
 
