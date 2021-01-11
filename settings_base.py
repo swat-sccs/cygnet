@@ -92,6 +92,7 @@ TEMPLATES = [{
              "django.template.context_processors.debug",
              "django.template.context_processors.i18n",
              "django.template.context_processors.media",
+             "django.template.context_processors.request",
              "django.template.context_processors.static",
              "django.template.context_processors.tz",
              "django.contrib.messages.context_processors.messages",
@@ -145,7 +146,7 @@ INSTALLED_APPS = (
 
 
 
-ALLOWED_HOSTS = ['cygnet.sccs.swarthmore.edu','130.58.218.8','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
 # Logging configuration.
 # 1. send an email to the site admins on every HTTP 500 error.
@@ -179,7 +180,7 @@ LOGGING = {
         'file': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename':'/var/log/cygnet/cygnet.debug.log',
+            'filename':'./log/cygnet.debug.log',
         },
     },
     'loggers': {
