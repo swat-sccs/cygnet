@@ -385,7 +385,11 @@ def recordtime(taskname=None):
     it just stores the time value.  Returns the total elapsed time since
     this function was first called.
     """
+<<<<<<< HEAD
     now = time.perf_counter()
+=======
+    now = time.time()
+>>>>>>> 5e0f8e0 (* setup for dev env)
     if not hasattr(recordtime, 'first_mark'):
         recordtime.first_mark = now
         recordtime.last_mark = now

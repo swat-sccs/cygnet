@@ -1,6 +1,6 @@
 from settings_base import *
 
-DEBUG = TEMPLATE_DEBUG = False
+DEBUG = TEMPLATE_DEBUG = True
 
 URL = 'https://cygnet.sccs.swarthmore.edu'
 FORCE_SCRIPT_NAME = '' # for mod_wsgi
@@ -15,8 +15,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':   'cygnet',
-        'USER':   'cygnet',
+        'USER':   'root',
         'HOST':   'localhost',
+        'PORT':   '3306'
     } # set 'PASSWORD' in settings.py
 }
 
@@ -24,13 +25,13 @@ LOGGING['handlers']['cygnet'] = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'formatter': 'verbose',
-            'filename': '/var/log/cygnet/cygnet.log',
+            'filename': './log/cygnet.log',
 }
 LOGGING['handlers']['cygnet_debug'] = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'verbose',
-            'filename': '/var/log/cygnet/cygnet.log.debug',
+            'filename': './log/cygnet.log.debug',
 }
 
 
@@ -48,8 +49,8 @@ AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
 )
 
-AUTH_LDAP_SERVER_URI = 'ldap://ldap.sccs.swarthmore.edu'
-BASEDN = 'dc=sccs,dc=swarthmore,dc=edu'
+AUTH_LDAP_SERVER_URI = 'ldap://127.0.0.1:389'
+BASEDN = 'dc=localdomain'
 
 AUTH_LDAP_BIND_DN = ''
 AUTH_LDAP_BIND_PASSWORD = ''
