@@ -68,6 +68,9 @@ fi
 apt-get install slapd
 apt-get install ldap-utils
 
+# Turn on ldap server
+/etc/init.d/slapd start
+
 # Add users group
 FILE=/etc/ldap/slapd.d/users.ldif
 if [ ! -f "$FILE" ]; then
