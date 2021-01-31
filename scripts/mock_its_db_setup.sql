@@ -25,7 +25,10 @@ CREATE TABLE student_data(
     PRIMARY KEY (ID)
 );
 
-SET @profile_path = "PATH/TO/media/its_photos/profile.jpg";
+-- For local dev
+-- SET @profile_path = "PATH/TO/media/its_photos/profile.jpg";
+-- For Docker
+SET @profile_path = "/cygnet/media/its_photos/profile.jpg";
 
 INSERT INTO student_data
     (LAST_NAME, FIRST_NAME, USER_ID, GRAD_YEAR, DORM, DORM_ROOM, PHOTO)

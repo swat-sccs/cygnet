@@ -7,6 +7,26 @@ We also use the Cygnet to host April Fools jokes.
 ## Development Setup
 The "dev" branch is the default branch for this project. You will write new features for the Cygnet here by making feature branches off of this one. The following will get you set up with running the Cygnet on your computer.
 
+### Using Docker
+Install docker and docker-compose onto your machine and run the following:
+```bash
+# 1. Clone the repo
+git clone https://github.com/swat-sccs/cygnet.git
+cd cygnet
+
+# 2. Set up containers
+docker-compose up
+# In a separate shell, 
+# 2.1. Set up the mock ITS db
+docker exec -it cygnet_db sh -c 'mysql -u root -p < /scripts/mock_its_db_setup.sql'
+# Enter password: password
+# 2.2. Set up the django db
+docker exec cygnet './scripts/django_db_setup.sh'
+
+# 3. Visit localhost:8000
+```
+
+Comment out the Docker specific configs in <code>settings_server.py</code> and <code>settings.py</code> and uncomment the Local configs if you are not using Docker.
 ### Unix
 ```bash
 # Bash

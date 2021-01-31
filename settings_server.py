@@ -49,11 +49,14 @@ AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
 )
 
-AUTH_LDAP_SERVER_URI = 'ldap://127.0.0.1:389'
+# Local
+# AUTH_LDAP_SERVER_URI = 'ldap://127.0.0.1:389'
+# Docker
+AUTH_LDAP_SERVER_URI = 'ldap://ldap:389'
 BASEDN = 'dc=localdomain'
 
-AUTH_LDAP_BIND_DN = ''
-AUTH_LDAP_BIND_PASSWORD = ''
+AUTH_LDAP_BIND_DN = 'cn=admin,dc=localdomain'
+AUTH_LDAP_BIND_PASSWORD = 'admin'
 AUTH_LDAP_USER_SEARCH = LDAPSearch('ou=People,%s' % BASEDN, ldap.SCOPE_SUBTREE,
                                            '(uid=%(user)s)')
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch('ou=Group,%s' % BASEDN, ldap.SCOPE_SUBTREE,
