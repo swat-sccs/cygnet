@@ -4,10 +4,21 @@ SECRET_KEY = "secret"
 
 DATABASES['default']['PASSWORD'] = ''
 
+""" 
+Local dev
 ITS_DB_DATA = {
     'host': 'localhost',
     'user': 'root',
-    'passwd': '',
+    'passwd': 'password',
+    'db': 'its_cygnet'
+}
+"""
+
+# Docker
+ITS_DB_DATA = {
+    'host': 'cygnet_db',
+    'user': 'root',
+    'passwd': 'password',
     'db': 'its_cygnet'
 }
 
