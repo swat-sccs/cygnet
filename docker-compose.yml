@@ -3,7 +3,7 @@ version: '3.4'
 services:
   ldap:
     image: osixia/openldap:1.2.0
-    container_name: ldap
+    container_name: cygnet-ldap
     command: --copy-service
     volumes:
       - ./ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom
@@ -17,7 +17,7 @@ services:
       
   db:
     image: mysql:5.7
-    container_name: cygnet_db
+    container_name: cygnet-db
     volumes:
       - ./scripts:/scripts
     ports:
@@ -32,6 +32,8 @@ services:
   cygnet:
     image: cygnet
     container_name: cygnet
+    volumes: 
+      - .:/cygnet
     build:
       context: .
       dockerfile: ./Dockerfile
