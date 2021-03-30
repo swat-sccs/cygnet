@@ -16,7 +16,7 @@ ITS_DB_DATA = {
 
 # Docker
 ITS_DB_DATA = {
-    'host': 'cygnet_db',
+    'host': 'cygnet-db',
     'user': 'root',
     'passwd': 'password',
     'db': 'its_cygnet'
