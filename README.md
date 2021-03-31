@@ -4,6 +4,13 @@ The Cygnet is a Django web app that allows students to look up students before t
 
 We also use the Cygnet to host April Fools jokes.
 
+## Table of Contents
+* [Development Setup](#development-setup)
+  * [Using Docker](#using-docker)
+  * [Unix](#unix)
+  * [Windows](#windows)
+* [LDAP Mock Database](#ldap-mock-database)
+
 ## Development Setup
 The "dev" branch is the default branch for this project. You will write new features for the Cygnet here by making feature branches off of this one. The following will get you set up with running the Cygnet on your computer.
 
@@ -16,12 +23,6 @@ cd cygnet
 
 # 2. Set up containers
 docker-compose up
-# In a separate shell, 
-# 2.1. Set up the mock ITS db
-docker exec -it cygnet_db sh -c 'mysql -u root -p < /scripts/mock_its_db_setup.sql'
-# Enter password: password
-# 2.2. Set up the django db
-docker exec cygnet './scripts/django_db_setup.sh'
 
 # 3. Visit localhost:8000
 ```
@@ -97,3 +98,10 @@ Enter password: # No passwd
 # 7. Run dev server
 python manage.py runserver
 ```
+
+## LDAP Mock Database
+
+The ldif directory contains data that will be loaded into the LDAP mock database. It comes with two users, alice and bob. Their passwords are both "password."
+
+If you want to add more users, it may be easier to edit the ldif file and rebuild the cygnet-ldap image than to use the command line within the container.
+
