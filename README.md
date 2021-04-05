@@ -23,6 +23,8 @@ cd cygnet
 
 # 2. Set up containers
 docker-compose up
+# In a separate shell
+docker exec -it cygnet-db sh -c 'mysql -u root -p < /scripts/mock_its_db_setup.sql'
 
 # 3. Visit localhost:8000
 ```
