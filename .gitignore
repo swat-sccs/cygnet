@@ -1,0 +1,11 @@
+__pycache__/
+venv/
+share/
+bin/
+lib/
+include/
+media/photos/
+media/tmp/
+PILL/
+settings.py
+static/

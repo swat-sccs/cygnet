@@ -46,26 +46,17 @@ def redirect_to_login_and_back(request, login_url=None,
     path = request.build_absolute_uri()
     if not login_url:
         login_url = settings.LOGIN_URL
-        print("login url: {}".format(login_url))
         logging.debug("login url: {}".format(login_url))
     
     # If the login url is the same scheme and net location then just
     # use the path as the "next" url.
     login_scheme, login_netloc = urlparse(login_url)[:2]
-    print("login scheme: {}".format(login_scheme))
-    print("login netloc: {}".format(login_netloc))
 
     current_scheme, current_netloc = urlparse(path)[:2]
-    print("current scheme: {}".format(current_scheme))
-    print("current netloc: {}".format(current_netloc))
     if ((not login_scheme or login_scheme == current_scheme) and
         (not login_netloc or login_netloc == current_netloc)):
-        print("getting full path")
         path = request.get_full_path()
 
-    print("path: {}".format(path))
-    print("login url: {}".format(login_url))
-    print("redirect field name: {}".format(redirect_field_name))
 
     return redirect_to_login(path, login_url, redirect_field_name)
 
@@ -98,7 +89,6 @@ def home(request):
         params['cygnet_debug'] = True
 
     params['search_terms'] = request.GET.get('terms', '')
-    print("rendering home")
     return render(request, 'home.html', params)
 
 def backend(request):
@@ -125,15 +115,12 @@ from django.contrib.auth import login as auth_login
 
 @csrf.csrf_exempt
 def login(request, *args, **kwargs):
-    print(request.method, request.GET)
 
     if request.method == 'GET' and 'csrf' in request.GET:
-        print ("inside get")
         csrf_token = csrf(request)['csrf_token']
         return HttpResponse(csrf_token, content_type='text/plain')
 
     if request.method == 'POST': #and 'api' in request.POST:
-        print("using api login")
         user = authenticate(username=request.POST.get('username', ''), password=request.POST.get('password', ''))
     
         if user is not None and user.is_active:
