@@ -232,7 +232,7 @@ def terms_to_dict(terms):
     ## Hacky way to prevent SQL Injection attacks - 
     ## Only accept alphanumeric characters, colons, quotation marks
     for ch in terms:
-        if ch.isalpha() or ch.isdigit() or ch in [' '] : 
+        if ch.isalpha() or ch.isdigit() or ch in [' ', ':']: 
             continue
         return {}
     # return early on Unicode chars
@@ -411,30 +411,30 @@ def generate_SQL_Query(terms_dict, db):
     qt = []
 
     query_prot =  "SELECT LAST_NAME, FIRST_NAME, MIDDLE_NAME, GRAD_YEAR, PHONE, USER_ID, DORM, "
-    query_prot += "DORM_ROOM FROM student_data WHERE (GRAD_YEAR >= %s) and  \n" 
+    query_prot += "DORM_ROOM FROM student_data WHERE (GRAD_YEAR >= %s) and \n" 
     
     term_query = "((FIRST_NAME LIKE %s ) or (LAST_NAME LIKE %s ) or (GRAD_YEAR LIKE %s ) or "
     term_query += " (USER_ID LIKE %s ) or (DORM LIKE %s ) or (DORM_ROOM LIKE %s ) )\n"
     
 
     term_dict_thesaurus  = {
-        'first': " FIRST_NAME LIKE {0} ",
-        'last': "  LAST_NAME LIKE {0} ",
-        'year': " GRAD_YEAR LIKE {0} ",
-        'email': " USER_ID LIKE {0} ",
-        'dorm_room': " DORM_ROOM LIKE {0} ",
-        'dorm': " DORM LIKE {0} ",
+        'first': ' FIRST_NAME LIKE "{0}" ',
+        'last': '  LAST_NAME LIKE "{0}" ',
+        'year': ' GRAD_YEAR LIKE "{0}" ',
+        'email': ' USER_ID LIKE "{0}" ',
+        'dorm_room': ' DORM_ROOM LIKE "{0}" ',
+        'dorm': ' DORM LIKE "{0}" ',
     }
+    # find next graduation year
+    cur_datetime = datetime.datetime.now()
+    if cur_datetime.month <= 5:
+        next_grad_year = cur_datetime.year
+    else:
+        next_grad_year = cur_datetime.year + 1
 
     # if no specific terms are present:
     if len(terms_dict) and not list(terms_dict.keys())[0]:
         terms = terms_dict[None]
-        # find next graduation year
-        cur_datetime = datetime.datetime.now()
-        if cur_datetime.month <= 5:
-            next_grad_year = cur_datetime.year
-        else:
-            next_grad_year = cur_datetime.year + 1
 
         ## Ben - I think that what follows allows for partial search
         ## matches.
@@ -461,18 +461,19 @@ def generate_SQL_Query(terms_dict, db):
         return search_string, qterms
 
     else:
+        search_string += query_prot
         dict_keys = list(terms_dict.keys())
         i = 0
         j = len(dict_keys)-1
         for key in dict_keys:
             if terms_dict[key]:
                 term = db.escape_string(terms_dict[key][0]) 
-                search_string += term_dict_thesaurus[key].format(term)
-                if i!=j:
+                utf8_term = term.decode('utf-8')
+                search_string += term_dict_thesaurus[key].format(utf8_term)
+                if i != j:
                     search_string += " AND\n"
                 i+=1
 
-        raise Exception(search_string)
-        return search_string, ()
+        return search_string, (next_grad_year,)
 
     return "", ()
