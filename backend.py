@@ -137,7 +137,7 @@ class Student_Record(object):
             if not os.path.isfile(vanilla_photo_abs_path) and not os.path.isfile(mod_photo_abs_path):
 
                 #get the raw image
-                img_cur = self.db.cursor()              
+                img_cur = self.db.cursor()      
 
                 # queries the database while escaping the string
                 #query = "SELECT PHOTO FROM student_data WHERE USER_ID= %s ;"
