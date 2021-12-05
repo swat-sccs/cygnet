@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.7-buster
+FROM python:3.9-buster
 
 EXPOSE 8000
 
