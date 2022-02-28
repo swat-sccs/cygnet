@@ -1,3 +1,7 @@
+// configure Plausible.js 
+window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+
+window.sentAnalytics = false;
 
 /*
  * importXML - handle the messiness of creating the XMLHttpRequest
@@ -99,6 +103,10 @@ function doSearch() {
 	// Slide the searchbar up
 	if ( $('#top_spacer').height() > 20 ) {
 	    $('#top_spacer').animate({height:'20px'}, 500);      
+	}
+	
+	if (!window.sentAnalytics && plausible) {
+		plausible('Search', { callback: function () { window.sentAnalytics = true; } }); // send analytics event
 	}
 
 	requestAJAX("/backend/?terms=" + searchterms, displayResults, "home");
