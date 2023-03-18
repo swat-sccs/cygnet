@@ -1,5 +1,1 @@
-venv/
-.venv/
-__pycache__
-
-static
+node_modules
