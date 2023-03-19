@@ -1,3 +1,15 @@
+# How to set up development server
+
+1. Build Container
+`COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build`
+2. Run Container
+`docker-compose up`
+3. Visit http://localhost:3000
+As you edit project files, the page should update dynamically (no need to reload!).
+
+[source](https://geshan.com.np/blog/2023/01/nextjs-docker/)
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
