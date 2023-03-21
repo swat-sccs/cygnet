@@ -3,7 +3,7 @@ export default function SearchBar() {
   return (
     <>
         <div className={styles.container}>
-            Search...
+            <input type="text" placeholder="Search..." />
         </div>
     </> 
   )
