@@ -1,1 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Play:wght@400;700&display=swap');
 
+/*global*/
+body {
+    background: #F1F1F1;
+}
+.mont {
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+}
+
+
+/* nav.tsx */
+.play {
+    font-family: 'Play', sans-serif;
+    color: #44608F;
+}
+.grad {
+    background: linear-gradient(139.78deg, #46408A 22.6%, #7670BA 29.58%, #27A4AC 45.92%, #355CC0 63.81%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    font-weight: 600;
+}
+.ml-a {
+    margin-left: auto;
+}
+.pad {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.margin-spacing {
+    margin-top: 100px;
+}
+.insta-size {
+    width: 25px;
+    height: 25px;
+}
+.nav-item {
+    font-weight: 400;
+}
+.nav-item:hover {
+    filter: invert(37%) sepia(15%) saturate(1655%) hue-rotate(179deg) brightness(91%) contrast(86%);
+    cursor: pointer;
+    transition: filter 0.1s;
+    transition-timing-function: ease-in-out;
+}
+.z-max {
+    z-index: 9;
+}
+
+/* searchbar.tsx */
+.search-size-g {
+    width: 30px;
+    height: 30px;
+}
+.w-full {
+    width: 100%;
+}
+.searchbar {
+    outline: none;
+    font-size: 1.2rem;
+}
+
+/* cardbody.tsx, card.tsx, userimage.tsx */
+.margin-cardbody {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+.rounded-lg {
+    border-radius: 16px;
+}
+.gradBorder {
+    border: 4px solid transparent;
+    border-radius: 1000px;
+    background: 
+        linear-gradient(to right, white, white), 
+        linear-gradient(to right, #27A4AC , #355CC0),
+        linear-gradient(to top, #27A4AC , #355CC0); 
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    width: 55%;
+    height: auto;
+}
+.font-light {
+    font-weight: 400;
+}
+.grid-make {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 40px;
+    display: grid;
+}
+.enlarge-properties {
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.enlarge-properties:hover {
+    filter: invert(37%) sepia(15%) saturate(1655%) hue-rotate(179deg) brightness(91%) contrast(86%);
+    cursor: pointer;
+    transition: filter 0.1s;
+    transition-timing-function: ease-in-out;
+}

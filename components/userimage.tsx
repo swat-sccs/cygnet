@@ -1,13 +1,15 @@
 import Image from 'next/image'
+import eroth from '../public/imgs/eroth.jpeg'
+
 export default function UserImage() {
   return (
-    <>
-        <div>
+    <> 
+    {/*IMAGE MUST BE SQUARE*/}
+        <div className="w-full relative d-flex justify-content-center">
             <Image 
-            src="/../public/placeholder-image-person-jpg.jpeg"
+            src={eroth}
             alt="image of person"
-            width = {150}
-            height = {150}
+            className="rounded-circle gradBorder"
             />
         </div>
     </> 

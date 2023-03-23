@@ -1,15 +1,14 @@
-import styles from "./cardbody.module.css"
 import Card from './card'
 export default function CardBody() {
   return (
-    <>
-        <div className={styles.container}>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-        </div>
-    </>
-    
+    <div className="grid-make margin-cardbody">
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+    </div>
   )
 }
