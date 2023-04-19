@@ -6,9 +6,10 @@ import Head from 'next/head';
 import Nav from '../components/nav';
 import SearchBar from '../components/searchbar';
 import CardBody from '../components/cardbody';
-
+import useSWR from 'swr';
 
 export default function Home() {
+  
   return (
     <>
       <Head>

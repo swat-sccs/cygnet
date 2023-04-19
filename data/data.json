@@ -1,0 +1,36 @@
+[
+    {
+        "LAST_NAME": "Keem",
+        "FIRST_NAME": "Little",
+        "GRAD_YEAR": "2024",
+        "DORM": "WILLETS",
+        "DORM_ROOM": "313",
+        "EMAIL_ADDRESS": "bkeem1@swarthmore.edu"
+    },
+    {
+        "LAST_NAME": "Keem",
+        "FIRST_NAME": "Big",
+        "GRAD_YEAR": "2023",
+        "DORM": "DAVID KEMP",
+        "DORM_ROOM": "206",
+        "EMAIL_ADDRESS": "bkeem2@swarthmore.edu"
+    },
+    {
+        "LAST_NAME": "Keem",
+        "FIRST_NAME": "Huge",
+        "GRAD_YEAR": "2022",
+        "DORM": "MERTZ HALL",
+        "DORM_ROOM": "100",
+        "EMAIL_ADDRESS": "bkeem3@swarthmore.edu"
+    },
+    {
+        "LAST_NAME": "Keem",
+        "FIRST_NAME": "Enormous",
+        "GRAD_YEAR": "2024",
+        "DORM": "WILLETS",
+        "DORM_ROOM": "222",
+        "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
+    }
+]
+
+
