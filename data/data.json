@@ -1,6 +1,14 @@
 [
     {
         "LAST_NAME": "Keem",
+        "FIRST_NAME": "Baby",
+        "GRAD_YEAR": "2024",
+        "DORM": "WILLETS",
+        "DORM_ROOM": "222",
+        "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
+    },
+    {
+        "LAST_NAME": "Keem",
         "FIRST_NAME": "Little",
         "GRAD_YEAR": "2024",
         "DORM": "WILLETS",
@@ -30,7 +38,24 @@
         "DORM": "WILLETS",
         "DORM_ROOM": "222",
         "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
+    },
+    {
+        "LAST_NAME": "Keem",
+        "FIRST_NAME": "Immense",
+        "GRAD_YEAR": "2024",
+        "DORM": "WILLETS",
+        "DORM_ROOM": "222",
+        "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
+    },
+    {
+        "LAST_NAME": "Keem",
+        "FIRST_NAME": "Sizable",
+        "GRAD_YEAR": "2024",
+        "DORM": "WILLETS",
+        "DORM_ROOM": "222",
+        "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
     }
+
 ]
 
 
