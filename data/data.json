@@ -11,8 +11,8 @@
         "LAST_NAME": "Keem",
         "FIRST_NAME": "Little",
         "GRAD_YEAR": "2024",
-        "DORM": "WILLETS",
-        "DORM_ROOM": "313",
+        "DORM": "MARY LYON",
+        "DORM_ROOM": "121",
         "EMAIL_ADDRESS": "bkeem1@swarthmore.edu"
     },
     {
@@ -35,9 +35,9 @@
         "LAST_NAME": "Keem",
         "FIRST_NAME": "Enormous",
         "GRAD_YEAR": "2024",
-        "DORM": "WILLETS",
-        "DORM_ROOM": "222",
-        "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
+        "DORM": "ALICE PAUL",
+        "DORM_ROOM": "132",
+        "EMAIL_ADDRESS": "bkeem5@swarthmore.edu"
     },
     {
         "LAST_NAME": "Keem",
@@ -45,15 +45,15 @@
         "GRAD_YEAR": "2024",
         "DORM": "WILLETS",
         "DORM_ROOM": "222",
-        "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
+        "EMAIL_ADDRESS": "bkeem6@swarthmore.edu"
     },
     {
         "LAST_NAME": "Keem",
         "FIRST_NAME": "Sizable",
-        "GRAD_YEAR": "2024",
+        "GRAD_YEAR": "2026",
         "DORM": "WILLETS",
-        "DORM_ROOM": "222",
-        "EMAIL_ADDRESS": "bkeem4@swarthmore.edu"
+        "DORM_ROOM": "214",
+        "EMAIL_ADDRESS": "bkeem7@swarthmore.edu"
     }
 
 ]

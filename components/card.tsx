@@ -4,7 +4,7 @@ import Image from "next/image"
 
 import enlarge from '../public/imgs/enlarge.svg';
 
-interface Data {
+export interface Data {
   LAST_NAME: string;
   FIRST_NAME: string;
   GRAD_YEAR: string;

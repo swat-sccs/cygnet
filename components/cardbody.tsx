@@ -1,11 +1,15 @@
 import Card from './card'
-import data from '../data/data.json'
+import { Data } from './card'
+interface CardBodyProps {
+  filteredData: Data[]; 
+}
 
-export default function CardBody() {
+export default function CardBody(props: CardBodyProps) {
+  const {filteredData} = props;
   return (
     <div className="grid-make margin-cardbody">
       {
-        data.map((item, index) => <Card key = {index} {...item} />)
+        filteredData.map((item, index) => <Card key = {index} {...item} />)
       }
     </div>
   )

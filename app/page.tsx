@@ -5,8 +5,7 @@ import './globals.css';
 import Head from 'next/head';
 
 import Nav from '../components/nav';
-import SearchBar from '../components/searchbar';
-import CardBody from '../components/cardbody';
+import PageBody from '../components/pagebody';
 
 export default function Home() {
   
@@ -18,8 +17,7 @@ export default function Home() {
       <body>
         <Nav />
         <div className="container">
-          <SearchBar/>
-          <CardBody />
+          <PageBody />
         </div>
       </body>
     </>
