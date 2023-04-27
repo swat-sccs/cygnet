@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CardBody from "./cardbody";
 import SearchBar from "./searchbar";
-import data from '../data/data.json'
+import data from '../data/data.json';
 
 export default function PageBody() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,7 +13,7 @@ export default function PageBody() {
 
   return (
     <>
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <CardBody filteredData={filteredData}/>
     </>
   )

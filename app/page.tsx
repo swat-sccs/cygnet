@@ -16,7 +16,7 @@ export default function Home() {
       </Head>
       <body>
         <Nav />
-        <div className="container">
+        <div className="container mont">
           <PageBody />
         </div>
       </body>

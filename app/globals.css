@@ -50,7 +50,7 @@ body {
     z-index: 9;
 }
 
-/* searchbar.tsx */
+/* searchbar.tsx, filter.tsx */
 .search-size-g {
     width: 30px;
     height: 30px;
@@ -61,6 +61,68 @@ body {
 .searchbar {
     outline: none;
     font-size: 1.2rem;
+}
+.filterwindow {
+    top:100%;
+    right: 0px;
+    margin-top: 20px;
+    z-index:1000;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.chevron-down {
+    rotate: -180deg;
+}
+.chevron {
+    cursor: pointer;
+    transition-duration: 0.3s;
+    width: 30px;
+    height: 30px;
+}
+.chevron-sm {
+    pointer-events:none;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    width: 20px;
+    height: 20px;
+    right:10px;
+    top:10px;
+}
+.filterSelect {
+    background-color:white;
+    width: 150px;
+    margin-right: 10px;
+    border-radius:1000px;
+    border-color: #B9B9B9 solid 1px;
+}
+select {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius:1000px;
+    outline:none;
+    border: none;
+    width: 100%;
+}
+select {
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+}
+.filterButton {
+    border: transparent solid 0.5px;
+    background-color: #44608F;
+    padding: 8px 30px;
+    border-radius: 100px;
+    color: white;
+    outline: none;
+    font-weight: 600;
+    outline:none;
+}
+.filterButton:hover{
+    background:#4668a3;
 }
 
 /* cardbody.tsx, card.tsx, userimage.tsx */

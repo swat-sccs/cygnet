@@ -3,6 +3,8 @@ import line from '../public/imgs/line.svg';
 import chevron from '../public/imgs/chevron.svg';
 import { ChangeEvent } from 'react';
 import Image from 'next/image';
+import Filter from './filter';
+import { useState } from 'react';
 
 interface SearchbarProps {
   searchQuery: string;
@@ -10,6 +12,7 @@ interface SearchbarProps {
 }
 
 export default function SearchBar(props: SearchbarProps) {
+  const [filterOn, setFilterOn] = useState(false);
   const {searchQuery, setSearchQuery} = props;
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -17,7 +20,7 @@ export default function SearchBar(props: SearchbarProps) {
 
   return (
     <>
-        <div className="bg-white margin-spacing rounded-pill d-inline-flex align-items-center w-full px-4 shadow-sm py-3">
+        <div className="bg-white margin-spacing rounded-pill d-inline-flex align-items-center w-full px-4 shadow-sm py-3 position-relative">
           <Image src = {search} alt = "search" className="search-size-g"/>
           <input
           type = "search"
@@ -25,7 +28,8 @@ export default function SearchBar(props: SearchbarProps) {
           onChange={handleInputChange}
           placeholder="Search for Swarthmore College students..." />
           <Image src={line} alt="|" className="search-size-g" />
-          <Image src={chevron} alt="V" className="search-size-g"/>
+          <Image src={chevron} alt="filters" onClick={()=>setFilterOn(!filterOn)} className={filterOn?"chevron-down chevron":"chevron"}/>
+          <Filter filterOn = {filterOn}/>
         </div>
     </> 
   )
