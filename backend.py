@@ -96,7 +96,10 @@ class Student_Record(object):
             if self.dorm_room == None:
                 self.dorm_room = ''
 
-            self.address = self.dorm + " " + self.dorm_room
+            if self.updating:
+                self.address = "Room data unavailable"
+            else:
+                self.address = self.dorm + " " + self.dorm_room
 
         if self.phone == None:
             self.phone = ''
@@ -288,12 +291,12 @@ def is_updating(db):
     """
     # when ITS does that they set all DORM and DORM_ROOM to null
     # so we check if all of them are set to null
-    query = '''SELECT FIRST_NAME FROM student_data WHERE DORM IS NOT NULL AND DORM_ROOM IS NOT NULL LIMIT 1'''
+    query = "SELECT FIRST_NAME FROM student_data WHERE DORM IS NOT NULL AND DORM_ROOM IS NOT NULL"
     # run query
     with db.cursor() as cur:
         cur.execute(query)
         rset = cur.fetchall()
-    return (len(rset) <= 0)  # ITS is updating their database if no results are returned
+    return (len(rset) <= 10)  # ITS is updating their database if small num of results are returned
 
 
 def get_matches(terms):
@@ -343,11 +346,11 @@ def get_matches(terms):
     rset = cur.fetchall()
     
     updating = False
-    if False not in (row[6] is None and row[7] is None for row in rset):
+    #if False not in (row[6] is None and row[7] is None for row in rset):
         # generator to make it faster
         # dorm and dorm_room are None for all
         # check if ITS is updating their database
-        updating = is_updating(db)
+    updating = is_updating(db)
     
     ##DBGMessage = "CYG:: Got " + str(len(rset)) + " results from query." 
     ##logging.warning( DBGMessage )
