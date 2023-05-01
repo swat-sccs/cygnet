@@ -5,15 +5,19 @@ import data from '../data/data.json';
 
 export default function PageBody() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState('');
   const filteredData = data.filter((item) =>
-  `${item.FIRST_NAME} ${item.LAST_NAME} ${item.DORM} ${item.DORM_ROOM}`
+  `${item.FIRST_NAME} ${item.LAST_NAME} ${item.DORM_ROOM}`
     .toLowerCase()
-    .includes(searchQuery.toLowerCase())
+    .includes(searchQuery.toLowerCase().trim()) &&
+  `${item.DORM}${item.GRAD_YEAR}`
+    .toLowerCase()
+    .includes(filters.toLowerCase())
   );
 
   return (
     <>
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <SearchBar setSearchQuery={setSearchQuery} setFilters={setFilters}/>
         <CardBody filteredData={filteredData}/>
     </>
   )

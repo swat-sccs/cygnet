@@ -7,13 +7,13 @@ import Filter from './filter';
 import { useState } from 'react';
 
 interface SearchbarProps {
-  searchQuery: string;
   setSearchQuery: (query: string) => void;
+  setFilters: (query: string) => void;
 }
 
 export default function SearchBar(props: SearchbarProps) {
   const [filterOn, setFilterOn] = useState(false);
-  const {searchQuery, setSearchQuery} = props;
+  const {setSearchQuery, setFilters} = props;
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
@@ -29,7 +29,7 @@ export default function SearchBar(props: SearchbarProps) {
           placeholder="Search for Swarthmore College students..." />
           <Image src={line} alt="|" className="search-size-g" />
           <Image src={chevron} alt="filters" onClick={()=>setFilterOn(!filterOn)} className={filterOn?"chevron-down chevron":"chevron"}/>
-          <Filter filterOn = {filterOn}/>
+          <Filter filterOn = {filterOn} setFilters = {setFilters}/>
         </div>
     </> 
   )
