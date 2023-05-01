@@ -9,13 +9,15 @@ export default function Nav() {
         <p className="play h1 mt-2">CYGNET<span className="h4 grad"> by SCCS</span></p>
       </li>
       <li className="nav-item my-auto ml-a pt-3 h5">
-        <p>About</p>
+        <a href="https://www.sccs.swarthmore.edu/docs" target="_blank" className="text-decoration-none text-black">
+          <p>About</p>
+        </a>
       </li>
       <li className="nav-item my-auto pt-3 h5 pad">
         <p>Settings</p>
       </li>
       <li className="nav-item my-auto">
-        <a href="https://instagram.com/fett1g" target="_blank">
+        <a href="https://www.instagram.com/swatsccs/" target="_blank">
         <Image src={insta} alt="insta" className="insta-size" />
         </a>
       </li>

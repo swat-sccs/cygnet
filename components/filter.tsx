@@ -29,14 +29,14 @@ export default function Filter(props: FilterProps) {
         event.target.value === "Class Year" ? setGradYear("") : setGradYear(event.target.value);
     }
 
-    const handleClear = () => {
+    const handleReset = () => {
         setDorm("");
         setGradYear("");
     }
     return(
-        <div className={props.filterOn?"position-absolute filterwindow":"position-absolute invisible"}>
+        <div className={props.filterOn?"position-absolute filterwindow":"position-absolute opacity-0 invisible"}>
             <p className="h4 font-semibold">Filters</p>
-            <div className="filterSelect shadow d-inline-block position-relative">
+            <div className="filterSelect shadow-lg d-inline-block position-relative">
                 <select value={dorm} onChange={handleDormChange}>
                     <option selected>Dorms</option>
                     {dormsList.map( (dormName) => (
@@ -47,7 +47,7 @@ export default function Filter(props: FilterProps) {
                 </select>
                 <Image className="chevron-sm position-absolute" src = {chevron} alt="" />
             </div>
-            <div className="filterSelect shadow d-inline-block position-relative">
+            <div className="filterSelect shadow-lg d-inline-block position-relative">
                 <select value={gradYear} onChange={handleYearChange}>
                     <option selected>Class Year</option>
                     {yearsList.map( (year) => (
@@ -58,7 +58,7 @@ export default function Filter(props: FilterProps) {
                 </select>
                 <Image className="chevron-sm position-absolute" src = {chevron} alt="" />
             </div>
-            <button className="filterButton shadow" onClick={handleClear}>Clear</button>
+            <button className="filterButton shadow" onClick={handleReset}>Reset</button>
         </div>
     )
 }
