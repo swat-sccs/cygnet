@@ -157,7 +157,7 @@ class Student_Record(object):
                 try:
                     im = Image.open(tmp_photo_path)
                     im.thumbnail(size, Image.ANTIALIAS)
-                    im.save(vanilla_photo_abs_path, "JPEG")
+                    im.save(vanilla_photo_abs_path, "JPEG", icc_profile=im.info.get('icc_profile'))
                 # defa, 8/25:
                 # we really need more exception handling in this whole codebase :P
                 except:
