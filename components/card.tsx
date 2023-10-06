@@ -13,7 +13,7 @@ export default function Card( props: Data ) {
   const { LAST_NAME, FIRST_NAME, GRAD_YEAR, DORM, DORM_ROOM, EMAIL_ADDRESS } = props;
   return (
     <>
-        <div className="d-flex align-items-center flex-column bg-white rounded-lg pt-3 pb-2 width-full position-relative cont shadow-sm shadow">
+        <div className="d-flex align-items-center flex-column bg-white rounded-lg pt-3 pb-2 width-full position-relative cont shadow-sm">
             <UserImage /> {/*sourced from where?*/}
             <UserInfo 
                 FIRST_NAME={FIRST_NAME} 

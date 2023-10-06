@@ -38,7 +38,7 @@ export default function Filter(props: FilterProps) {
             <p className="h4 font-semibold">Filters</p>
             <div className="filterSelect shadow-lg d-inline-block position-relative">
                 <select value={dorm} onChange={handleDormChange}>
-                    <option selected>Dorms</option>
+                    <option>Dorms</option>
                     {dormsList.map( (dormName) => (
                         <option key={dormName} value={dormName}>
                             {dormName}
@@ -49,7 +49,7 @@ export default function Filter(props: FilterProps) {
             </div>
             <div className="filterSelect shadow-lg d-inline-block position-relative">
                 <select value={gradYear} onChange={handleYearChange}>
-                    <option selected>Class Year</option>
+                    <option >Class Year</option>
                     {yearsList.map( (year) => (
                         <option key={year} value={year}>
                             {year}
