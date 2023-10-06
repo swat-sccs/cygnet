@@ -13,7 +13,7 @@ export default function Nav() {
   <div className="bg-white shadow-sm mont position-fixed w-full z-max">
     <ul className="nav container">
       <li className="mr-auto">
-        <p className="play h1 mt-2 cursor-pointer" onClick={() => router.push("")}>CYGNET<span className="h4 grad"> by SCCS</span></p>
+        <p className="play h1 mt-2 cursor-pointer" onClick={() => router.push("/")}>CYGNET<span className="h4 grad"> by SCCS</span></p>
       </li>
       <li className="nav-item my-auto ml-a pt-3 h5">
         <a href="https://www.sccs.swarthmore.edu/docs" target="_blank" className="text-decoration-none text-black">
