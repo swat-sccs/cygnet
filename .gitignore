@@ -1,5 +1,5 @@
-venv/
-.venv/
-__pycache__
-
-static
+node_modules
+.next
+.DS_store
+.vscode
+.env*

@@ -1,99 +1,44 @@
-# Cygnet
+# How to set up development server
 
-The Cygnet is a Django web app that allows students to look up students before they meet them. It does this by pulling from the ITS student directory. The idea is to make it easier to put names to faces and make first-time-meetings less awkward.
+1. Build Container
+`COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build`
+2. Run Container
+`docker-compose up`
+3. Visit http://localhost:3000
+As you edit project files, the page should update dynamically (no need to reload!).
 
-We also use the Cygnet to host April Fools jokes.
+[source](https://geshan.com.np/blog/2023/01/nextjs-docker/)
 
-## Development Setup
-The "dev" branch is the default branch for this project. You will write new features for the Cygnet here by making feature branches off of this one. The following will get you set up with running the Cygnet on your computer.
 
-### Using Docker
-Install docker and docker-compose onto your machine and run the following:
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
 ```bash
-# 1. Clone the repo
-git clone https://github.com/swat-sccs/cygnet.git
-cd cygnet
-
-# 2. Set up containers
-docker-compose up
-# In a separate shell, 
-# 2.1. Set up the mock ITS db
-docker exec -it cygnet_db sh -c 'mysql -u root -p < /scripts/mock_its_db_setup.sql'
-# Enter password: password
-# 2.2. Set up the django db
-docker exec cygnet './scripts/django_db_setup.sh'
-
-# 3. Visit localhost:8000
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
 ```
 
-Comment out the Docker specific configs in <code>settings_server.py</code> and <code>settings.py</code> and uncomment the Local configs if you are not using Docker.
-### Unix
-```bash
-# Bash
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-# 1. Clone the repo and set up the virtual environment
-git clone https://github.com/swat-sccs/cygnet.git
-cd cygnet && virtualenv venv
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-# 2. Activate the virtual environment and install the required packages
-. ./venv/bin/activate
-pip install -r requirements.txt
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-# 3. Build the static files folder and migrate tables
-python manage.py collectstatic
-python manage.py migrate
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-# 4. Run ldap_setup.sh in Debian instance
-sudo ./ldap_setup.sh
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-# 5a. Change default profile picture path
-...
-# In scripts/mock_its_db_setup.sql
-SET @profile_path = "/PATH/TO/media/its_photos/profile.jpg";
-...
+## Learn More
 
-# 5b. Run mock_its_db_setup.sql
-mysql -u root -p < "/PATH/TO/scripts/mock_its_db_setup.sql"
-Enter password: # No passwd
+To learn more about Next.js, take a look at the following resources:
 
-# 6. Run dev server
-python manage.py runserver
-```
-### Windows
-You will need to install the [python-ldap windows binary](https://www.lfd.uci.edu/~gohlke/pythonlibs/) and [XAMPP](https://www.apachefriends.org/download.html) and set up [Debian on WSL2](https://wiki.debian.org/InstallingDebianOn/Microsoft/Windows/SubsystemForLinux). 
-```powershell
-# PowerShell
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-# 1. Clone the repo and set up the virtual environment
-git clone https://github.com/swat-sccs/cygnet.git
-cd cygnet
-virtualenv venv
-
-# 2. Activate the virtual environment and install the required packages
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-. ./venv/bin/activate
-pip install [path-to-python-ldap-windows-binary]
-pip install -r requirements.txt
-
-# 3. Activate Apache and MySql XAMPP services
-
-# 4. Build the static files folder and migrate tables
-python manage.py collectstatic
-python manage.py migrate
-
-# 5. Run ldap_setup.sh in Debian instance
-sudo ./ldap_setup.sh
-
-# 6a. Change default profile picture path
-...
-# In scripts/mock_its_db_setup.sql
-SET @profile_path = "/PATH/TO/media/its_photos/profile.jpg";
-...
-
-# 6b. Run mock_its_db_setup.sql in XAMPP shell
-mysql -u root -p < "/PATH/TO/scripts/mock_its_db_setup.sql"
-Enter password: # No passwd
-
-# 7. Run dev server
-python manage.py runserver
-```
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
