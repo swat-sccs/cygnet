@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block searchbar %}
+<form method="get" action="/">
+    <input id="terms" type="text" name="terms"
+            onkeyup="javascript:callSearch()"
+           autocomplete="off" 
+	   value="{{ search_terms }}"/>
+    <div id="spinner-box">
+    <img id="spinner" src="{{STATIC_URL}}images/spinner.gif" alt="[spinner]"/>
+    </div>
+    <div class="clearer">&nbsp;</div>
+</form>
+<div id="responsetime"
+    {% if cygnet_debug %}
+    style="display: block;"
+    {% else %}
+    style="display: none;"
+    {% endif %}
+    >
+    <span id="timelabel">Query took: </span>
+    <span id="timevalue"></span>
+</div>
+{% endblock %}
+
+{% block results %}
+<!-- RESULTS GET INSERTED HERE -->
+{% endblock %}
