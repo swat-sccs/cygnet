@@ -1,0 +1,51 @@
+# Two types of entries: people and groups
+dn: ou=People,dc=localdomain
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Group,dc=localdomain
+objectClass: organizationalUnit
+ou: Group
+
+# Users in our sample ldap db
+# Alice
+dn: uid=alice,ou=People,dc=localdomain
+objectClass: top
+objectClass: account
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: alice
+uidNumber: 10000
+gidNumber: 10000
+homeDirectory: /home/alice
+userPassword: password
+loginShell: /bin/bash
+
+dn: cn=alice,ou=Group,dc=localdomain
+objectClass: posixGroup
+cn: alice
+gidNumber: 10000
+
+# Bob
+dn: uid=bob,ou=People,dc=localdomain
+objectClass: top
+objectClass: account
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: bob
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/bob
+userPassword: password
+loginShell: /bin/bash
+
+dn: cn=bob,ou=Group,dc=localdomain
+objectClass: posixGroup
+cn: bob
+gidNumber: 10001
+
+# Staff group 
+dn: cn=staff,ou=Group,dc=localdomain
+objectClass: posixGroup
+cn: staff
+gidNumber: 20000

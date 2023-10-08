@@ -1,14 +1,45 @@
-version: '3.8'
+version: '3.4'
+
 services:
-  web:
-    build:
-      context: ./
-      target: runner
+  ldap:
+    image: osixia/openldap:1.2.0
+    container_name: ldap
+    command: --copy-service
     volumes:
-      - .:/app
-    command: npm run dev
+      - ./ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom
+    ports: 
+      - 389:389
+      - 636:636
+    environment: 
+      LDAP_ORGANISATION: SCCS
+      LDAP_DOMAIN: localdomain
+      LDAP_ADMIN_PASSWORD: admin  
+      
+  db:
+    image: mysql:5.7
+    container_name: cygnet_db
+    volumes:
+      - ./scripts:/scripts
     ports:
-      - "3000:3000"
+      - 3306:3306
+    restart: always
     environment:
-      NODE_ENV: development
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: its_cygnet
+
+  cygnet:
+    image: cygnet
+    container_name: cygnet
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    depends_on: 
+      - db
+      - ldap
+
+
 

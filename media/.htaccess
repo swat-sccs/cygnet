@@ -1,0 +1,10 @@
+# This .htaccess file should go in the /media directory of the
+# cygnet web directory.  It transparently hides everything in the
+# class-year photo directories that doesn't end in .jpg, i.e. all
+# the hidden and replaced photos.
+
+RewriteEngine On
+RewriteRule !(\.jpg$) R=404
+
+# Actually follow symlinked photos.
+Options FollowSymLinks
