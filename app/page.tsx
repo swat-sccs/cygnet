@@ -15,7 +15,7 @@ export interface UserInfo {
 
 
 export default async function Home() {
-  const getData = await fetch('http://localhost:3000/api/db');
+  const getData = await fetch('http://localhost:3000/api/db', {cache: "no-store"});
   const data = await getData.json();
   console.log(data);
   return <PageBody data={data}/>
