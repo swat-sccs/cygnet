@@ -1,7 +1,7 @@
+import { StudentInfo } from '@/app/page';
 import Card from './card'
-import { Data } from './card'
 interface CardBodyProps {
-  filteredData: Data[]; 
+  filteredData: StudentInfo[]; 
 }
 
 export default function CardBody(props: CardBodyProps) {
