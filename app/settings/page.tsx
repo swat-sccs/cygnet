@@ -1,21 +1,24 @@
 'use client'
-import Card, { Data } from '@/components/card';
+import Card from '@/components/card';
+import { StudentInfo } from '../page';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const user_data:Data = {
+
+const user_data:StudentInfo = {
     "LAST_NAME": "Fettig",
     "FIRST_NAME": "Nicholas",
     "GRAD_YEAR": "2026",
     "DORM": "MERTZ",
     "DORM_ROOM": "125",
-    "EMAIL_ADDRESS": "nfettig1@swarthmore.edu"
+    USER_ID: '',
+    PHOTO: Object //not permanent
 }
 
 export default function Settings(){
     return (
         <div className="d-inline-flex w-full margin-spacing">
             <div className="w-25">
-                <Card { ...user_data } />
+                <Card {...user_data} />
             </div>
             <div className="flex-grow-1 bg-white p-4 shadow-sm ml-2 rounded-lg mont">
                 <h1 className="h4">Edit Profile</h1>
