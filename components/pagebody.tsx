@@ -2,13 +2,11 @@
 import { useState } from "react";
 import CardBody from "./cardbody";
 import SearchBar from "./searchbar";
-import { UserInfo } from "../app/page"
+import { StudentInfo } from "../app/page"
 
 export default function PageBody( {data} : {data: any}) {
-  // const fdata = await fetch('../app/api/db/');
-  // console.log(fdata);
+  data = Array.isArray(data.response) ? data.response : [];
 
-  data = data.response;
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState('');
   const filteredData = data.filter((item: any) =>
