@@ -261,6 +261,7 @@ def terms_to_dict(terms):
     term_dict = {}
     dict_add = lambda key, value: term_dict.setdefault(key, []).append(value)
     for match in matches:
+        
         if match[0]:
             key, value = match[0].split(':')
             if key in settings.FIELD_ORDER:
@@ -308,14 +309,19 @@ def get_matches(terms):
     # TODO REMOVE
     #DBGMessage = "CYG:: Got " + str(len(rset)) + " results from query." 
     #logging.warning( DBGMessage )
+    
+    results = []
 
+    
     if not terms:
         return []
 
     if None in terms.keys() and len(terms.keys()) > 1:
         return []
-
+        
+        
     recordtime()
+    
 
     ## TODO: Add real exception handling and logging when manipulating
     #        the database
@@ -328,7 +334,8 @@ def get_matches(terms):
     db = MySQLdb.connect(host=its_dbc['host'], 
                      user=its_dbc['user'], 
                       passwd=its_dbc['passwd'],
-                      db=its_dbc['db'],) 
+                      db=its_dbc['db'],
+                        charset='utf8mb3') 
 
 
 
@@ -342,8 +349,9 @@ def get_matches(terms):
     # this automatically escapes the qterms
     cur.execute(query, qterms)
 
-    results = []
     rset = cur.fetchall()
+    
+    
     
     updating = False
     #if False not in (row[6] is None and row[7] is None for row in rset):
@@ -369,6 +377,8 @@ def get_matches(terms):
             if student:
                 results.append(student)
 
+
+    
     ##logging.warning("CYG:: Found %i results." % len(results) )
     
     logging.info("Found %i results." % len(results))
