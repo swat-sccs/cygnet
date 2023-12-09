@@ -1,4 +1,4 @@
-"use server"
+export const dynamic = 'force-dynamic'
 import 'bootstrap/dist/css/bootstrap.css';
 import './globals.css';
 

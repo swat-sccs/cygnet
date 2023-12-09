@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from "next/server";
 import { queryDb } from '../../queryDb';
 import { StudentInfo } from "@/app/page";
@@ -11,4 +12,3 @@ export async function GET(req: NextRequest, res: NextResponse) {
         return NextResponse.json({ response: e });
     }
 }
-

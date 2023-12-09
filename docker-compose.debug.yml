@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  cygnet:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    # mount current dir inside container
+    volumes:
+      - .:/usr/src/app
+    environment:
+      NODE_ENV: development
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    command: sh -c "npm install && npm run dev "

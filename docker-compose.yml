@@ -1,16 +1,30 @@
 version: '3.8'
 services:
-  web:
-    ports:
-      - 3000:3000
-      - 3306:3306
+  cygnet:
+    # we do not need ports under traefik
+    # ports:
     build:
       context: ./
-      target: runner
-    volumes:
-      - .:/app
-    command: npm run dev
-    environment:
-      NODE_ENV: development
+      dockerfile: Dockerfile
     env_file:
       - .env
+    # instead of an apache config, we configure this host with container labels
+    # traefik handles the rest
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik'
+      - 'traefik.http.routers.cygnet.entrypoints=https'
+      - 'traefik.http.routers.cygnet.rule=Host(`cygnetv2.sccs.swarthmore.edu`)'
+      - 'traefik.http.routers.cygnet.tls=true'
+      - 'traefik.http.routers.cygnet.tls.certresolver=letsEncrypt'
+      - 'traefik.http.services.cygnet.loadbalancer.server.port=3000'
+    command: "npm start"
+    networks:
+      - traefik
+
+# (re)define traefik proxy network
+networks:
+  traefik:
+    # defined elsewhere
+    external: true
+    driver: bridge
