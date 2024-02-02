@@ -1,8 +1,10 @@
 # How to set up development server
 
 1. Build and Run Container
-`docker compose -f docker-compose.debug.yml up --build`
-2. Visit http://localhost:3000
+`docker compose -f docker-compose.debug.yml up --build --remove-orphans`
+2. run ssh -L localhost:3306:130.58.64.142:3306 ibis to direct traffic to server
+(whitelisted for ITS databse)
+3. Visit http://localhost:3000
 As you edit project files, the page should update dynamically (no need to reload!).
 
 # How to set up prod server

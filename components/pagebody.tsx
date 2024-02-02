@@ -4,8 +4,7 @@ import CardBody from "./cardbody";
 import SearchBar from "./searchbar";
 import { StudentInfo } from "../app/page"
 
-export default function PageBody( {data} : {data: any}) {
-  data = Array.isArray(data.response) ? data.response : [];
+export default function PageBody( {data} : {data:StudentInfo[]}) {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState('');

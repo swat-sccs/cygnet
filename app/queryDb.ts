@@ -1,37 +1,11 @@
 import mysql from 'mysql2/promise';
-const host = process.env.DB_HOST;
-const user = process.env.DB_USER;
-const password = process.env.DB_PASS;
-const db = process.env.DB_NAME;
-const table = process.env.DB_TABLE;
-
-const dbConfig = {
-  host: host,
-  user: user,
-  password: password,
-  database: db,
-  // table: table,
-  port: 3306,
-};
-
-// FOR LOCAL DEV
-// const dbConfig = {
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'securepassword',
-//   database: 'its_cygnet',
-// };
+import { Pool } from 'mysql2/typings/mysql/lib/Pool';
+import { resolve } from 'path';
+import { pool } from './createDb';
 
 export async function queryDb(query : string ) {
-  try {
-    const db = await mysql.createConnection(dbConfig);
-    const [rows] = await db.query(query);
-    console.log(rows)
-    return rows;
-  }
-  catch (e) {
-    console.log(e);
-
-    return e;
-  }
+  const connection = await pool.getConnection();
+  const [rows, fields] = await connection.query(query);
+  connection.release();
+  return rows;
 }
