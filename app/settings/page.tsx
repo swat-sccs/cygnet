@@ -3,6 +3,8 @@ import Card from '@/components/card';
 import { StudentInfo } from '../page';
 import 'bootstrap/dist/css/bootstrap.css';
 
+// will need to be loaded from our own database eventually, 
+// just UI functional for now
 
 const user_data:StudentInfo = {
     "LAST_NAME": "Fettig",
@@ -11,7 +13,7 @@ const user_data:StudentInfo = {
     "DORM": "MERTZ",
     "DORM_ROOM": "125",
     USER_ID: '',
-    PHOTO: Object //not permanent
+    PHOTO: [] //not permanent, will be loaded in 
 }
 
 export default function Settings(){

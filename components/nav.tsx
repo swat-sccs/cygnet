@@ -27,7 +27,7 @@ export default function Nav() {
         >Settings</p>
       </li>
       <li className="nav-item my-auto">
-        <a href="https://www.instagram.com/fett1g/" target="_blank">
+        <a href="https://www.instagram.com/swatsccs/" target="_blank">
         <Image src={insta} alt="insta" className="insta-size" />
         </a>
       </li>

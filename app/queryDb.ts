@@ -1,6 +1,3 @@
-import mysql from 'mysql2/promise';
-import { Pool } from 'mysql2/typings/mysql/lib/Pool';
-import { resolve } from 'path';
 import { pool } from './createDb';
 
 export async function queryDb(query : string ) {
