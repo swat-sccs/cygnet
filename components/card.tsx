@@ -8,15 +8,25 @@ export default function Card( props: StudentInfo ) {
   return (
     <>
         <div className="d-flex align-items-center flex-column bg-white rounded-lg pt-3 pb-2 width-full position-relative cont shadow-sm">
-            <UserImage/> {/*sourced from where?*/}
-            <UserInfo 
+            <UserImage
                 FIRST_NAME={FIRST_NAME} 
-                LAST_NAME = {LAST_NAME} 
+                LAST_NAME = {LAST_NAME}
                 GRAD_YEAR = {GRAD_YEAR} 
                 DORM = {DORM} 
                 DORM_ROOM = {DORM_ROOM} 
                 USER_ID= {USER_ID}
                 PHOTO = {PHOTO}
+                //NEWPHOTO = {NEWPHOTO}
+            /> {/*sourced from where?*/}
+            <UserInfo 
+                FIRST_NAME={FIRST_NAME} 
+                LAST_NAME = {LAST_NAME}
+                GRAD_YEAR = {GRAD_YEAR} 
+                DORM = {DORM} 
+                DORM_ROOM = {DORM_ROOM} 
+                USER_ID= {USER_ID}
+                PHOTO = {PHOTO}
+                //NEWPHOTO = {NEWPHOTO}
             />
         </div>
     </>
