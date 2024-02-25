@@ -3,7 +3,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './globals.css';
 import './createDb'; // creates ITS database pool connection
 import { queryDb } from './queryDb';
-
+import { promises as fs } from 'fs';
+import Default from '../public/images/blurryface.png'
+//import fs from 'fs';
+//import path from 'path';
 import PageBody from '../components/pagebody';
 import Card from '@/components/card';
 
@@ -21,7 +24,29 @@ export default async function Home() {
   // for now, grab photo (this takes 16 seconds as opposed to 0.2 without it)
 
   var start:Date = new Date()
-  const raw:StudentInfo[] = JSON.parse(JSON.stringify(await queryDb("SELECT * FROM student_data WHERE DORM='Wharton'")));
+  // absolute path to settings file: /usr/src/app/student_settings/
+  const file = await fs.readFile('/usr/src/app/student_settings/student_settings.txt', 'utf8');
+ // const file = fs.readFileSync(path.resolve(__dirname, '../../../student_settings/student_settings.txt', { encoding: 'utf8', flag: 'r' }));
+  const user_settings = JSON.parse(file);
+  
+  let raw:StudentInfo[] = JSON.parse(JSON.stringify(await queryDb("SELECT * FROM student_data WHERE DORM='Wharton'")));
+  
+  raw = raw.filter( (student) => {
+    return !(student.USER_ID in user_settings[0]['EXCLUDED_USERS']);
+  })
+
+  raw.forEach( (student) => {
+    
+    if (student.USER_ID in user_settings[0]['ROOM_HIDDEN']) {
+      student.DORM_ROOM = '';
+      student.DORM = '';
+    }
+
+    // if (student.USER_ID in user_settings[0]['PHOTO_HIDDEN']) {
+    //   student.PHOTO = new Uint8Array();
+    // }
+  })
+
   // const raw:StudentInfo[] = JSON.parse(JSON.stringify(await queryDb("SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, USER_ID FROM student_data")));
   
   const data:StudentInfo[] = raw.map(a => {return {...a}}) // hard copy 
