@@ -1,3 +1,4 @@
+'use client'
 import search from '../public/imgs/graysearch.svg';
 import line from '../public/imgs/line.svg';
 import chevron from '../public/imgs/chevron.svg';

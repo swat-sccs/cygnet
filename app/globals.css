@@ -184,3 +184,8 @@ select {
 .ml-2 {
     margin-left: 2rem
 }
+
+.custom-spin {
+    min-width: 8rem;
+    min-height: 8rem;
+}
