@@ -6,6 +6,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    restart: unless-stopped
     env_file:
       - .env
     # instead of an apache config, we configure this host with container labels
