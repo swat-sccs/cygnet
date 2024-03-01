@@ -1,7 +1,6 @@
-'use client'
-import { StudentInfo } from '@/components/pagebody';
+import { StudentInfo } from '@/app/page';
 import Card from './card';
-import { use } from 'react';
+import { Suspense, use } from 'react';
 
 interface CardBodyProps {
     filteredData: Promise<StudentInfo[]> | undefined;
@@ -14,7 +13,9 @@ export default function CardBody(props: CardBodyProps) {
             <div className="grid-make margin-cardbody">
                 {
                     use(filteredData).map((item, index) => (
-                        <Card key={index} {...item} />
+                        <Suspense fallback={<Card key={index} />}>
+                            <Card key={index} {...item} />
+                        </Suspense>
                     ))
                 }
             </div>

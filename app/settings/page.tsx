@@ -1,6 +1,6 @@
 'use client'
 import Card from '@/components/card';
-import { StudentInfo } from '@/components/pagebody';
+import { StudentInfo } from '@/app/page';
 import 'bootstrap/dist/css/bootstrap.css';
 
 // will need to be loaded from our own database eventually, 
@@ -13,7 +13,7 @@ const user_data:StudentInfo = {
     "DORM": "MERTZ",
     "DORM_ROOM": "125",
     USER_ID: '',
-    PHOTO: new Uint8Array() //not permanent, will be loaded in 
+    PHOTO: undefined
 }
 
 export default function Settings(){

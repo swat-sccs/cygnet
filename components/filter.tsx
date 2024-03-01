@@ -1,3 +1,4 @@
+'use client'
 import React, { ChangeEvent } from 'react';
 import chevron from '../public/imgs/chevron.svg';
 import Image from 'next/image';

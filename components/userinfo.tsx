@@ -1,5 +1,5 @@
 'use client'
-import { StudentInfo } from "@/components/pagebody";
+import { StudentInfo } from "@/app/page";
 
 export default function UserInfo(props: StudentInfo | any) {
     const { LAST_NAME, FIRST_NAME, GRAD_YEAR, DORM, DORM_ROOM, USER_ID } = props;
