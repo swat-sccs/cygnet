@@ -1,12 +1,11 @@
 'use client'
 import Image from 'next/image'
 import { StudentInfo } from '@/app/page'
-import '@/public/placeholder-image-person-jpg.jpeg'
 
 export default function UserImage(props: StudentInfo | any) {
-    const { PHOTO } = props;
+    const { photo_path } = props;
 
-    if (!PHOTO) {
+    if (!photo_path) {
         return ( /* placeholder image */
             <>
                 <div className="w-full relative d-flex justify-content-center">
@@ -26,7 +25,7 @@ export default function UserImage(props: StudentInfo | any) {
                     width={300}
                     height={300}
                     loading={"lazy"}
-                    src={`data:image/jpeg;base64, ${PHOTO}`}
+                    src={photo_path}
                     alt="image of person"
                     className="rounded-circle gradBorder"
                 />

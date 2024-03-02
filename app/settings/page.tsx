@@ -7,13 +7,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 // just UI functional for now
 
 const user_data:StudentInfo = {
-    "LAST_NAME": "Fettig",
-    "FIRST_NAME": "Nicholas",
-    "GRAD_YEAR": "2026",
-    "DORM": "MERTZ",
-    "DORM_ROOM": "125",
-    USER_ID: '',
-    PHOTO: undefined
+    last: "Fettig",
+    first: "Nicholas",
+    year: "2026",
+    dorm: "MERTZ",
+    room: "125",
+    id: '',
+    photo_path: ''
 }
 
 export default function Settings(){
@@ -29,13 +29,13 @@ export default function Settings(){
                         <label className="h6 d-block">First Name</label>
                         <input 
                         className = "py-1 px-2 w-full d-block"
-                        placeholder={user_data.FIRST_NAME} />
+                        placeholder={user_data.first} />
                     </div>
                     <div className="w-full ml-2">
                         <label className="h6 d-block">Last Name</label>
                         <input 
                         className = "py-1 px-2 w-full d-block"
-                        placeholder={user_data.LAST_NAME} />
+                        placeholder={user_data.last} />
                     </div>
                     <div className="w-full ml-2">
                         <label className="h6 d-block">Pronouns</label>
