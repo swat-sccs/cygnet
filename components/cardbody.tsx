@@ -1,4 +1,3 @@
-'use client'
 import { StudentInfo } from '@/components/pagebody';
 import Card from './card';
 import { use } from 'react';
