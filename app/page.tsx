@@ -55,11 +55,11 @@ async function filterData({ user_settings }: { user_settings: any }) {
                 const imgBuffer = await queryDb(`SELECT PHOTO FROM student_data WHERE USER_ID='${student['USER_ID']}' `)
 
                 // @ts-ignore
-                sharp(imgBuffer[0]['PHOTO'])
+                await sharp(imgBuffer[0]['PHOTO'])
                     .jpeg()
-                    .toFile(genPath).then(() => {
-                        path = staticPath
-                    })
+                    .toFile(genPath);
+
+                path = staticPath
             }
         }
 
