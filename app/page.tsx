@@ -115,7 +115,9 @@ export default async function Home({ searchParams }: {
     return (
         <>
             <SearchBar />
-            <CardBody filteredData={filteredData} />
+            <Suspense fallback={<CardBody filteredData={undefined} />}>
+                <CardBody filteredData={filteredData} />
+            </Suspense>
         </>
     );
 }

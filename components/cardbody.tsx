@@ -13,9 +13,7 @@ export default function CardBody(props: CardBodyProps) {
             <div className="grid-make margin-cardbody">
                 {
                     use(filteredData).map((item, index) => (
-                        <Suspense fallback={<Card key={index} />}>
-                            <Card key={index} {...item} />
-                        </Suspense>
+                        <Card key={index} {...item} />
                     ))
                 }
             </div>
