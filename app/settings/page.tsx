@@ -1,6 +1,6 @@
 'use client'
 import Card from '@/components/card';
-import { StudentInfo } from '@/app/page';
+import { StudentInfo } from '@/components/pagebody';
 import 'bootstrap/dist/css/bootstrap.css';
 
 // will need to be loaded from our own database eventually, 

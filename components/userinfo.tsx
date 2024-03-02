@@ -1,5 +1,5 @@
 'use client'
-import { StudentInfo } from "@/app/page";
+import { StudentInfo } from "@/components/pagebody";
 
 export default function UserInfo(props: StudentInfo | any) {
 

@@ -1,6 +1,7 @@
-import { StudentInfo } from '@/app/page';
+'use client'
+import { StudentInfo } from '@/components/pagebody';
 import Card from './card';
-import { Suspense, use } from 'react';
+import { use } from 'react';
 
 interface CardBodyProps {
     filteredData: Promise<StudentInfo[]> | undefined;

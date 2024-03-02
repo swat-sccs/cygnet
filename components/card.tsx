@@ -1,7 +1,7 @@
-import { Suspense } from "react";
+'use client'
 import UserImage from "./userimage"
 import UserInfo from "./userinfo"
-import { StudentInfo } from "@/app/page";
+import { StudentInfo } from "@/components/pagebody";
 
 export default function Card(props: StudentInfo | any) {
     //probably can just use props -abhi
@@ -9,12 +9,10 @@ export default function Card(props: StudentInfo | any) {
         return (
             <>
                 <div className="d-flex align-items-center flex-column bg-white rounded-lg pt-3 pb-2 width-full position-relative cont shadow-sm">
-                    <Suspense fallback={<UserImage />}>
-                        <UserImage
-                            photo_path={props.photo_path}
-                        //NEWPHOTO = {NEWPHOTO}
-                        /> {/*sourced from where?*/}
-                    </Suspense>
+                    <UserImage
+                        photo_path={props.photo_path}
+                    //NEWPHOTO = {NEWPHOTO}
+                    /> {/*sourced from where?*/}
                     <UserInfo
                         first={props.first}
                         last={props.last}

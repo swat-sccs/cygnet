@@ -1,8 +1,7 @@
 'use client'
 import Image from 'next/image'
-import { StudentInfo } from '@/app/page'
 
-export default function UserImage(props: StudentInfo | any) {
+export default function UserImage(props: any) {
     const { photo_path } = props;
 
     if (!photo_path) {
