@@ -70,6 +70,7 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
             } else {
                 const imgBuffer = await queryDb(`SELECT PHOTO FROM student_data WHERE USER_ID='${student['USER_ID']}' `)
 
+                // @ts-ignore
                 fs.writeFileSync(genPath, imgBuffer[0]['PHOTO']);
                 path = fullPath
             }
