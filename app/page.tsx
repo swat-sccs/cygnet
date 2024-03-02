@@ -28,7 +28,13 @@ export interface StudentInfo {
     photo_path: string;
 }
 
-async function filterData({ user_settings }: { user_settings: any }) {
+async function filterData({ user_settings, searchParams }: { user_settings: any, searchParams?: {
+    query?: string;
+    filters?: string;
+} }) {
+    const searchQuery = searchParams?.query || '';
+    const filters = searchParams?.filters || '';
+
     // start querying db
     console.time("dbquery");
 
@@ -43,6 +49,16 @@ async function filterData({ user_settings }: { user_settings: any }) {
         if (student['USER_ID'] in user_settings[0]['EXCLUDED_USERS']) {
             return;
         }
+        
+        if (searchQuery && !(`${student['FIRST_NAME']} ${student['LAST_NAME']} ${student['DORM_ROOM']}`
+            .toLowerCase().includes(searchQuery.toLowerCase().trim()))) {
+                return;
+        }
+
+        if (filters && !(`${student['DORM']} ${student['DORM_ROOM']}`
+            .toLowerCase().includes(filters.toLowerCase().trim()))) {
+            return;
+    }
 
         let path = '/placeholder.jpg';
 
@@ -91,24 +107,13 @@ export default async function Home({ searchParams }: {
         filters?: string;
     }
 }) {
-    const searchQuery = searchParams?.query || '';
-    const filters = searchParams?.filters || '';
     // absolute path to settings file: /usr/src/app/student_settings/
     const file = await fs.promises.readFile('/usr/src/app/student_settings/student_settings.txt', 'utf8');
     // const file = fs.readFileSync(path.resolve(__dirname, '../../../student_settings/student_settings.txt', { encoding: 'utf8', flag: 'r' }));
     const user_settings = JSON.parse(file);
 
-    const filteredData = filterData({user_settings}).then((data) => {
-        data.filter((item: any) =>
-        `${item.FIRST_NAME} ${item.LAST_NAME} ${item.DORM_ROOM}`
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase().trim()) &&
-        `${item.DORM}${item.GRAD_YEAR}`
-            .toLowerCase()
-            .includes(filters.toLowerCase())
-        )
-        return data;
-    });
+    const filteredData = filterData({user_settings, searchParams})
+
     console.timeEnd("dbquery")
 
     return (
