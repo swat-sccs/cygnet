@@ -14,7 +14,9 @@ export default async function Home({ searchParams }: {
 
     return (
         <>
-            <SearchBar />
+            <Suspense>
+                <SearchBar />
+            </Suspense>
             <Suspense>
                 <PageBody searchParams={searchParams} />
             </Suspense>
