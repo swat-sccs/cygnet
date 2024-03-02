@@ -9,6 +9,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./public/photos:/usr/src/app/public/photos
     # instead of an apache config, we configure this host with container labels
     # traefik handles the rest
     labels:
