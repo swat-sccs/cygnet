@@ -7,7 +7,6 @@ import fs, { writeFileSync } from 'fs';
 import { Suspense } from 'react';
 import SearchBar from '@/components/searchbar';
 import CardBody from '@/components/cardbody';
-import sharp from 'sharp';
 
 export interface DbInfo {
     FIRST_NAME: string;
@@ -64,18 +63,15 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
 
         if (!(student['USER_ID'] in user_settings[0]['PHOTO_HIDDEN'])) {
             const staticPath = `/photos/${student['USER_ID']}.jpg`
-            const genPath = `/usr/src/app/public${staticPath}`;
+            const genPath = `/usr/src/app${staticPath}`;
+            const fullPath = `https://cygnetv2.sccs.swarthmore.edu${staticPath}`;
             if(fs.existsSync(genPath)) {
-                path = staticPath
+                path = fullPath
             } else {
                 const imgBuffer = await queryDb(`SELECT PHOTO FROM student_data WHERE USER_ID='${student['USER_ID']}' `)
 
-                // @ts-ignore
-                await sharp(imgBuffer[0]['PHOTO'])
-                    .jpeg()
-                    .toFile(genPath);
-
-                path = staticPath
+                fs.writeFileSync(genPath, imgBuffer[0]['PHOTO']);
+                path = fullPath
             }
         }
 

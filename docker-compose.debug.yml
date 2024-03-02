@@ -8,6 +8,7 @@ services:
     # mount current dir inside container
     volumes:
       - .:/usr/src/app
+      - ./photos:/usr/src/app/public/photos
     environment:
       NODE_ENV: development
     env_file:

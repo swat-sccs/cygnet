@@ -7,21 +7,40 @@ services:
       context: ./
       dockerfile: Dockerfile
     restart: unless-stopped
+    environment:
+      NODE_ENV: production
     env_file:
       - .env
     volumes:
-      - ./public/photos:/usr/src/app/public/photos
+      - ./photos:/usr/src/app/photos
     # instead of an apache config, we configure this host with container labels
     # traefik handles the rest
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=traefik'
       - 'traefik.http.routers.cygnet.entrypoints=https'
-      - 'traefik.http.routers.cygnet.rule=Host(`cygnetv2.sccs.swarthmore.edu`)'
+      - 'traefik.http.routers.cygnet.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && !PathPrefix(`/photos/`))'
       - 'traefik.http.routers.cygnet.tls=true'
       - 'traefik.http.routers.cygnet.tls.certresolver=letsEncrypt'
       - 'traefik.http.services.cygnet.loadbalancer.server.port=3000'
     command: "npm start"
+    networks:
+      - traefik
+
+  static:
+    image: nginx
+    restart: unless-stopped
+    volumes:
+      - ./photos:/usr/share/nginx/html/photos
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik'
+      - 'traefik.port=80'
+      - 'traefik.http.routers.static.entrypoints=https'
+      - 'traefik.http.routers.static.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && PathPrefix(`/photos/`))'
+      - 'traefik.http.routers.static.tls=true'
+      - 'traefik.http.routers.static.tls.certresolver=letsEncrypt'
+      - 'traefik.http.services.static.loadbalancer.server.port=80'
     networks:
       - traefik
 
