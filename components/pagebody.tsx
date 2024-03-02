@@ -61,7 +61,7 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
 
         if (!(student['USER_ID'] in user_settings[0]['PHOTO_HIDDEN'])) {
             const staticPath = `/photos/${student['USER_ID']}.jpg`
-            const genPath = `/usr/src/app${staticPath}`;
+            const genPath = `${__dirname}/../../..${staticPath}`;
             const fullPath = `https://cygnetv2.sccs.swarthmore.edu${staticPath}`;
             if(fs.existsSync(genPath)) {
                 path = fullPath
@@ -102,8 +102,8 @@ export default function PageBody({ searchParams }: {
         filters?: string;
     }
 }) {
-        // absolute path to settings file: /usr/src/app/student_settings/
-        const file = fs.readFileSync('/usr/src/app/student_settings/student_settings.txt', 'utf8');
+        // absolute path to settings file: cygnet/student_settings/
+        const file = fs.readFileSync(`${__dirname}/../../../student_settings/student_settings.txt`, 'utf8');
         // const file = fs.readFileSync(path.resolve(__dirname, '../../../student_settings/student_settings.txt', { encoding: 'utf8', flag: 'r' }));
         const user_settings = JSON.parse(file);
     
