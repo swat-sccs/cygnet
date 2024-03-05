@@ -2,6 +2,8 @@
 
 /*global*/
 body, html, .bg {
+    overflow-y: scroll;
+    overflow-x: none;
     background: #F1F1F1;
 }
 .mont {
