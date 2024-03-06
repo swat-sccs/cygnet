@@ -154,11 +154,6 @@ select {
 .font-light {
     font-weight: 400;
 }
-.grid-make {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 40px;
-    display: grid;
-}
 .enlarge-properties {
     position: absolute;
     z-index: 1;
@@ -188,6 +183,31 @@ select {
 }
 
 .custom-spin {
-    min-width: 8rem;
-    min-height: 8rem;
+    min-width: 150px;
+    min-height: 150px;
+}
+
+.cyg-img-container {
+    height: 75px;
+    width: 75px;
+    overflow: clip;
+}
+
+@media (min-width: 768px) {
+    .cyg-img-container {
+        height: 100px;
+        width: 100px;
+    }
+}
+
+@media (min-width: 992px) {
+    .cyg-img-container {
+        height: 150px;
+        width: 150px;
+    }
+}
+
+.cyg-img {
+    overflow: clip;
+    object-fit: cover;
 }

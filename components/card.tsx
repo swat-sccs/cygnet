@@ -7,8 +7,8 @@ export default function Card(props: StudentInfo | any) {
     //probably can just use props -abhi
     if (props.id) {
         return (
-            <>
-                <div className="d-flex align-items-center flex-column bg-white rounded-lg pt-3 pb-2 width-full position-relative cont shadow-sm">
+            <div className="col-6 col-md-4 col-lg-3 gy-4">
+                <div className="align-items-center bg-white rounded-lg pt-3 pb-2 cont shadow-sm">
                     <UserImage
                         photo_path={props.photo_path}
                     //NEWPHOTO = {NEWPHOTO}
@@ -24,16 +24,16 @@ export default function Card(props: StudentInfo | any) {
                     //NEWPHOTO = {NEWPHOTO}
                     />
                 </div>
-            </>
+            </div>
         )
     } else {
         return (
-            <>
-                <div className="d-flex align-items-center flex-column bg-white rounded-lg pt-3 pb-2 width-full position-relative cont shadow-sm">
+            <div className="col-6 col-md-4 col-lg-3 gy-4">
+                <div className="align-items-center bg-white rounded-lg pt-3 pb-2 cont shadow-sm">
                     <UserImage />
                     <UserInfo />
                 </div>
-            </>
+            </div>
         )
     }
 }

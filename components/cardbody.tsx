@@ -10,17 +10,20 @@ export default function CardBody(props: CardBodyProps) {
     const { filteredData } = props;
     if (filteredData) {
         return (
-            <div className="grid-make margin-cardbody">
+            <div className="container text-center">
+            <div className="row justify-content-md-center">
                 {
                     use(filteredData).map((item, index) => (
                         <Card key={index} {...item} />
                     ))
                 }
             </div>
+            </div>
         )
     } else {
         return (
-            <div className="grid-make margin-cardbody">
+            <div className="container text-center">
+            <div className="row justify-content-md-center">
                 <Card key={1} />
                 <Card key={2} />
                 <Card key={3} />
@@ -29,6 +32,7 @@ export default function CardBody(props: CardBodyProps) {
                 <Card key={6} />
                 <Card key={7} />
                 <Card key={8} />
+            </div>
             </div>
         )
     }

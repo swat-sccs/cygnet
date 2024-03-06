@@ -7,9 +7,11 @@ export default function UserImage(props: any) {
     if (!photo_path) {
         return ( /* placeholder image */
             <>
-                <div className="w-full relative d-flex justify-content-center">
-                    <div className="spinner-grow text-primary custom-spin" role="status">
-                        <span className="visually-hidden">Loading...</span>
+                <div className="w-full position-relative d-flex justify-content-center">
+                    <div className="position-relative cyg-img">
+                        <div className="spinner-grow text-primary custom-spin" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
                     </div>
                 </div>
             </>
@@ -18,16 +20,16 @@ export default function UserImage(props: any) {
 
     return (
         <>
-            {/*IMAGE MUST BE SQUARE*/}
-            <div className="w-full relative d-flex justify-content-center">
-                <Image
-                    width={300}
-                    height={300}
-                    loading={"lazy"}
-                    src={photo_path}
-                    alt="image of person"
-                    className="rounded-circle gradBorder"
-                />
+            <div className="w-full position-relative d-flex justify-content-center">
+                <div className="position-relative cyg-img-container">
+                    <Image
+                        fill={true}
+                        loading={"lazy"}
+                        src={photo_path}
+                        alt="image of person"
+                        className="rounded-circle gradBorder cyg-img"
+                    />
+                </div>
             </div>
         </>
     )
