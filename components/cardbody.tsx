@@ -10,8 +10,8 @@ export default function CardBody(props: CardBodyProps) {
     const { filteredData } = props;
     if (filteredData) {
         return (
-            <div className="container text-center">
-            <div className="row justify-content-md-center">
+            <div className="container">
+            <div className="row">
                 {
                     use(filteredData).map((item, index) => (
                         <Card key={index} {...item} />
@@ -22,8 +22,8 @@ export default function CardBody(props: CardBodyProps) {
         )
     } else {
         return (
-            <div className="container text-center">
-            <div className="row justify-content-md-center">
+            <div className="container">
+            <div className="row">
                 <Card key={1} />
                 <Card key={2} />
                 <Card key={3} />
