@@ -52,10 +52,11 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
                 return;
         }
 
-        if (filters && !(`${student['DORM']} ${student['DORM_ROOM']}`
+        // TODO: Change 'filters' to be array ('Dana' filter currently overlaps with 'Danawell Hall')
+        if (filters && !(`${student['DORM']}${student['GRAD_YEAR']}`
             .toLowerCase().includes(filters.toLowerCase().trim()))) {
             return;
-    }
+        }
 
         let path = '/placeholder.jpg';
 
