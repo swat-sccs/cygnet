@@ -9,7 +9,8 @@ interface FilterProps {
     setFilters: (query: string) => void;
 }
 const dormsList = filterData[0].DORMS;
-const yearsList = filterData[0].YEARS;
+const currentYear = new Date().getFullYear();
+const yearsList = Array.from( { length: 4}, (_, i) => currentYear + i)
 
 export default function Filter(props: FilterProps) {
     const { setFilters } = props;
