@@ -5,6 +5,8 @@ import fs, { writeFileSync } from 'fs';
 import { Suspense } from 'react';
 import CardBody from './cardbody';
 
+import student_settings from '@/student_settings/student_settings.json'
+
 
 export interface DbInfo {
     FIRST_NAME: string;
@@ -61,19 +63,32 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
         let path = '/placeholder.jpg';
 
         if (!(student['USER_ID'] in user_settings[0]['PHOTO_HIDDEN'])) {
-            const staticPath = `/photos/${student['USER_ID']}.jpg`
+            const modPath = `/photos/mod/${student['USER_ID']}_m.jpg`;
+            const genModPath = `${__dirname}/../../..${modPath}`;
+
+            // const prePath = `https://cygnetv2.sccs.swarthmore.edu`
+            const prePath = process.env.DOMAIN;
+            const staticPath = `/photos/${student['USER_ID']}.jpg`;
             const genPath = `${__dirname}/../../..${staticPath}`;
-            const fullPath = `https://cygnetv2.sccs.swarthmore.edu${staticPath}`;
-            if(fs.existsSync(genPath)) {
-                path = fullPath
+
+            //const fullPath = `https://cygnetv2.sccs.swarthmore.edu${staticPath}`;
+
+            if (fs.existsSync(genModPath)) {
+                path = prePath + genModPath 
+            }
+            else if(fs.existsSync(genPath)) {
+                //path = fullPath
+                path = prePath + staticPath
             } else {
                 const imgBuffer = await queryDb(`SELECT PHOTO FROM student_data WHERE USER_ID='${student['USER_ID']}' `)
 
                 // @ts-ignore
                 fs.writeFileSync(genPath, imgBuffer[0]['PHOTO']);
-                path = fullPath
+                // path = fullPath
+                path = prePath + staticPath
             }
         }
+        console.log(path);
 
         let newStudent: StudentInfo = {
             first: student['FIRST_NAME'],
