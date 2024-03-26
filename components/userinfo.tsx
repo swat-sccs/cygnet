@@ -28,7 +28,7 @@ export default function UserInfo(props: StudentInfo | any) {
     return (
         <div className="mont mt-2 text-center">
             <div className="h4 mb-0">{props.first} {props.last}</div>
-            <p className="font-light mb-0">he/him</p> {/*get pronouns from where*/}
+            <p className="font-light mb-0">{props.pronouns}</p> {/*get pronouns from where*/}
             <div className="h6 font-light mt-3">{props.dorm} {props.room} | {props.year}</div>
             <div className="h6 mt-3">{props.id}</div>
         </div>

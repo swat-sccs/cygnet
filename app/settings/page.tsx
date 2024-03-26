@@ -13,7 +13,8 @@ const user_data:StudentInfo = {
     dorm: "MERTZ",
     room: "125",
     id: '',
-    photo_path: ''
+    photo_path: '',
+    pronouns: ''
 }
 
 export default function Settings(){

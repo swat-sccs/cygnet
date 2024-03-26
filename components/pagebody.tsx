@@ -22,6 +22,7 @@ export interface StudentInfo {
     room: string;
     id: string;
     photo_path: string;
+    pronouns: string;
 }
 
 async function filterData({ user_settings, searchParams }: { user_settings: any, searchParams?: {
@@ -92,7 +93,8 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
             dorm: student['DORM'],
             room: student['DORM_ROOM'],
             id: student['USER_ID'],
-            photo_path: path
+            photo_path: path,
+            pronouns: ""
         }
 
         if (student['USER_ID'] in user_settings[0]['ROOM_HIDDEN']) {
