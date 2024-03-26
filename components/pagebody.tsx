@@ -1,12 +1,9 @@
 export const dynamic = 'force-dynamic'
 import '@/app/createDb'; // creates ITS database pool connection
 import { queryDb } from '@/app/queryDb';
-import fs, { writeFileSync } from 'fs';
+import fs from 'fs';
 import { Suspense } from 'react';
 import CardBody from './cardbody';
-
-import student_settings from '@/student_settings/student_settings.json'
-
 
 export interface DbInfo {
     FIRST_NAME: string;
@@ -66,15 +63,14 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
             const modPath = `/photos/mod/${student['USER_ID']}_m.jpg`;
             const genModPath = `${__dirname}/../../..${modPath}`;
 
-            // const prePath = `https://cygnetv2.sccs.swarthmore.edu`
-            const prePath = process.env.DOMAIN;
+            // production needs domain due to external static server
+            // dev uses next public dir b/c doesn't need build-time copy
+            const prePath = (process.env.NODE_ENV === "production") ? process.env.DOMAIN : "";
             const staticPath = `/photos/${student['USER_ID']}.jpg`;
             const genPath = `${__dirname}/../../..${staticPath}`;
 
-            //const fullPath = `https://cygnetv2.sccs.swarthmore.edu${staticPath}`;
-
             if (fs.existsSync(genModPath)) {
-                path = prePath + genModPath 
+                path = prePath + modPath
             }
             else if(fs.existsSync(genPath)) {
                 //path = fullPath
@@ -88,7 +84,6 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
                 path = prePath + staticPath
             }
         }
-        console.log(path);
 
         let newStudent: StudentInfo = {
             first: student['FIRST_NAME'],

@@ -9,6 +9,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      DOMAIN: https://cygnetv2.sccs.swarthmore.edu
     env_file:
       - .env
     volumes:

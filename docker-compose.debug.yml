@@ -11,6 +11,7 @@ services:
       - ./photos:/usr/src/app/public/photos
     environment:
       NODE_ENV: development
+      DOMAIN: http://localhost:3000
     env_file:
       - .env
     ports:
