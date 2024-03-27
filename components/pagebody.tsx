@@ -43,7 +43,7 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
 
     console.time("foreach")
     await Promise.all(raw.map(async (student) => {
-        if (student['USER_ID'] in user_settings[0]['EXCLUDED_USERS']) {
+        if (user_settings[0]['EXCLUDED_USERS'].includes(student['USER_ID'])) {
             return;
         }
         
@@ -60,7 +60,7 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
 
         let path = '/placeholder.jpg';
 
-        if (!(student['USER_ID'] in user_settings[0]['PHOTO_HIDDEN'])) {
+        if (!(user_settings[0]['PHOTO_HIDDEN'].includes(student['USER_ID']))) {
             const modPath = `/photos/mod/${student['USER_ID']}_m.jpg`;
             const genModPath = `${__dirname}/../../..${modPath}`;
 
@@ -97,7 +97,7 @@ async function filterData({ user_settings, searchParams }: { user_settings: any,
             pronouns: ""
         }
 
-        if (student['USER_ID'] in user_settings[0]['ROOM_HIDDEN']) {
+        if (user_settings[0]['ROOM_HIDDEN'].includes(student['USER_ID'])) {
             newStudent.room = '';
             newStudent.dorm = '';
         }
