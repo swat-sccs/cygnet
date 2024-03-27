@@ -33,10 +33,6 @@ body {
 .ml-a {
     margin-left: auto;
 }
-.pad {
-    margin-left: 30px;
-    margin-right: 30px;
-}
 .margin-spacing {
     margin-top: 100px;
 }
@@ -180,7 +176,7 @@ select {
 }
 
 .text-selected {
-    color: #44608F;
+    color: #44608F !important;
 }
 
 .ml-2 {
