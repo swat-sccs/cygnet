@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 import '@/app/createDb'; // creates ITS database pool connection
 import { queryDb } from '@/app/queryDb';
 import fs from 'fs';
