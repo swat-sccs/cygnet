@@ -14,11 +14,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./photos:/usr/src/app/photos
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
+      - cygnet-photos:/usr/src/app/photos
       # instead of an apache config, we configure this host with container labels
       # traefik handles the rest
       labels:
@@ -38,11 +34,7 @@ services:
     image: nginx
     restart: unless-stopped
     volumes:
-      - ./photos:/usr/share/nginx/html/photos
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
+      - cygnet-photos:/usr/share/nginx/html/photos
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
@@ -55,6 +47,13 @@ services:
     networks:
       - traefik
       - internal
+
+  cygnet-db:
+    image: mariadb:11.3
+    volumes:
+      - cygnet-overlay:/var/lib/mysql
+    networks:
+      - internal # do not expose
 
 # (re)define traefik proxy network
 networks:

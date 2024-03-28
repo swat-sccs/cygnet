@@ -5,4 +5,4 @@ node_modules
 .env*
 photos/*.jpg
 photos/mod/*.jpg
-
+dbdata/

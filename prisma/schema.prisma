@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model StudentOverlay {
+    uid String @unique // ITS insists this is unique now
+    prefName String
+    pronouns String
+    hideProfile Boolean @default(false)
+    hideDorm Boolean @default(false)
+    hidePhoto Boolean @default(false)
+}

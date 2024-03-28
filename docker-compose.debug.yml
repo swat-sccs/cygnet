@@ -15,8 +15,17 @@ services:
       KEYCLOAK_ID: "rsdv2"
       KEYCLOAK_ISSUER: "https://auth.sccs.swarthmore.edu/realms/master"
       NEXTAUTH_URL: "http://localhost:3000"
+      DATABASE_URL: "mysql://root:S3cret@cygnet-db:3306/cygnet_db"
     env_file:
       - .env
     ports:
       - 3000:3000
-    command: sh -c "npm install && npm run dev "
+    command: sh -c "npm install && npx prisma generate && npm run dev "
+
+  cygnet-db:
+    image: mariadb:11.3
+    environment:
+      - MYSQL_ROOT_PASSWORD=S3cret
+      - MYSQL_PASSWORD=An0thrS3crt
+      - MYSQL_USER=cygnet_user
+      - MYSQL_DATABASE=cygnet_db
