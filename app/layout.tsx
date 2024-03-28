@@ -1,6 +1,7 @@
 import Nav from '@/components/nav'
 import './globals.css'
 import Script from 'next/script'
+import { NextAuthProvider } from './NextAuthProvider';
 
 export const metadata = {
     title: 'Cygnet',
@@ -13,15 +14,17 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en">
-            <body className="bg">
-                <Nav />
-                <div className="container mont">
-                    {children}
-                </div>
-            </body>
-            {/*@ts-ignore*/}
-            <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"/>
-        </html>
+        <NextAuthProvider>
+            <html lang="en">
+                <body className="bg">
+                    <Nav />
+                    <div className="container mont">
+                        {children}
+                    </div>
+                </body>
+                {/*@ts-ignore*/}
+                <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" />
+            </html>
+        </NextAuthProvider>
     )
 }

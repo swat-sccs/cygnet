@@ -116,7 +116,7 @@ export default function PageBody({ searchParams }: {
     }
 }) {
         // absolute path to settings file: cygnet/student_settings/
-        const file = fs.readFileSync(`${__dirname}/../../../student_settings/student_settings.txt`, 'utf8');
+        const file = fs.readFileSync(`${__dirname}/../../../student_settings/student_settings.json`, 'utf8');
         // const file = fs.readFileSync(path.resolve(__dirname, '../../../student_settings/student_settings.txt', { encoding: 'utf8', flag: 'r' }));
         const user_settings = JSON.parse(file);
     

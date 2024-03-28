@@ -11,28 +11,46 @@ export default function CardBody(props: CardBodyProps) {
     if (filteredData) {
         return (
             <div className="container">
-            <div className="row">
-                {
-                    use(filteredData).map((item, index) => (
-                        <Card key={index} {...item} />
-                    ))
-                }
-            </div>
+                <div className="row">
+                    {
+                        use(filteredData).map((item, index) => (
+                            <div className="col-6 col-md-4 col-lg-3 gy-4">
+                                <Card key={index} {...item} />
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
         )
     } else {
         return (
             <div className="container">
-            <div className="row">
-                <Card key={1} />
-                <Card key={2} />
-                <Card key={3} />
-                <Card key={4} />
-                <Card key={5} />
-                <Card key={6} />
-                <Card key={7} />
-                <Card key={8} />
-            </div>
+                <div className="row">
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                        <Card />
+                    </div>
+                </div>
             </div>
         )
     }

@@ -12,6 +12,9 @@ services:
     environment:
       NODE_ENV: development
       DOMAIN: http://localhost:3000
+      KEYCLOAK_ID: "rsdv2"
+      KEYCLOAK_ISSUER: "https://auth.sccs.swarthmore.edu/realms/master"
+      NEXTAUTH_URL: "http://localhost:3000"
     env_file:
       - .env
     ports:
