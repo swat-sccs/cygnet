@@ -63,3 +63,18 @@ networks:
   traefik:
     # defined elsewhere
     external: true
+
+volumes:
+  cygnet-overlay:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=130.58.218.26,rw
+      device: ":/volumes/cygnet-data"
+
+  cygnet-photos:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: nfsvers=4,addr=130.58.218.26,rw
+      device: ":/volumes/cygnet-photos"
