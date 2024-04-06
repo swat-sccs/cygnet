@@ -27,3 +27,11 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build
+    - uses: action-pack/gitlab-sync@v3
+      with:
+        # GitLab repo URL
+        url: https://gitlab.sccs.swarthmore.edu/sccs/cygnet.git
+        # GitLab username
+        username: mirrorbot
+        # GitLab token
+        token: ${{ secrets.GITLAB_TOKEN }}
