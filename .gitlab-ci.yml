@@ -1,9 +1,17 @@
-build:
-  image: https://registry.sccs.swarthmore.edu/sccs/cygnet/docker:20.10.16
+default:
+  image: docker:24.0.9
   services:
-    - name: https://registry.sccs.swarthmore.edu/sccs/cygnet/docker:20.10.16-dind
-      alias: docker
+    - name: docker:24.0.9-dind
+  before_script:
+    - docker info
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+build:
   stage: build
   script:
-    - docker build -t cygnet:latest .
-    - docker push https://registry.sccs.swarthmore.edu/sccs/cygnet/cygnet:latest
+    - docker login -u $SCCS_REGISTRY_USER -p $SCCS_REGISTRY_TOKEN $SCCS_REGISTRY
+    - docker build -t $SCCS_REGISTRY/sccs/cygnet/cygnet:latest .
+    - docker push $SCCS_REGISTRY/sccs/cygnet/cygnet:latest
+
