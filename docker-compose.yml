@@ -3,7 +3,7 @@ services:
   cygnet:
     # we do not need ports under traefik
     # ports:
-    image: cygnet
+    image: registry.sccs.swarthmore.edu/sccs/cygnet/cygnet:latest
     build:
       context: ./
       dockerfile: Dockerfile
@@ -17,6 +17,7 @@ services:
       - cygnet-photos:/usr/src/app/photos
       # instead of an apache config, we configure this host with container labels
       # traefik handles the rest
+    deploy:
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
@@ -35,6 +36,7 @@ services:
     restart: unless-stopped
     volumes:
       - cygnet-photos:/usr/share/nginx/html/photos
+    deploy:
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
