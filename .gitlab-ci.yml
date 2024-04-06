@@ -1,0 +1,9 @@
+build:
+  image: https://registry.sccs.swarthmore.edu/sccs/cygnet/docker:20.10.16
+  services:
+    - name: https://registry.sccs.swarthmore.edu/sccs/cygnet/docker:20.10.16-dind
+      alias: docker
+  stage: build
+  script:
+    - docker build -t cygnet:latest .
+    - docker push https://registry.sccs.swarthmore.edu/sccs/cygnet/cygnet:latest
