@@ -41,6 +41,9 @@ services:
     volumes:
       - cygnet-photos:/usr/share/nginx/html/photos
     deploy:
+      placement:
+        constraints:
+          - node.role == manager
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
