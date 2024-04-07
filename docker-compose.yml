@@ -15,9 +15,13 @@ services:
       - .env
     volumes:
       - cygnet-photos:/usr/src/app/photos
+    deploy:
+      # this is required becuase of the its whitelist
+      placement:
+        constraints:
+          - node.role == manager
       # instead of an apache config, we configure this host with container labels
       # traefik handles the rest
-    deploy:
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
@@ -54,6 +58,8 @@ services:
     image: mariadb:11.3
     volumes:
       - cygnet-overlay:/var/lib/mysql
+    env_file:
+      - .env
     networks:
       - internal # do not expose
 
@@ -66,15 +72,15 @@ networks:
 
 volumes:
   cygnet-overlay:
-    driver: local
+    name: cygnet-overlay
     driver_opts:
       type: nfs
-      o: nfsvers=4,addr=130.58.218.26,rw
-      device: ":/volumes/cygnet-data"
+      o: "nfsvers=4,addr=130.58.218.26,rw,nolock,soft"
+      device: ":/volumes/cygnet-overlay"
 
   cygnet-photos:
-    driver: local
+    name: cygnet-photos
     driver_opts:
       type: nfs
-      o: nfsvers=4,addr=130.58.218.26,rw
+      o: "nfsvers=4,addr=130.58.218.26,rw,nolock,soft"
       device: ":/volumes/cygnet-photos"
