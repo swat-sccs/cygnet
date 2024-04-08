@@ -33,9 +33,6 @@ body {
 .ml-a {
     margin-left: auto;
 }
-.margin-spacing {
-    margin-top: 100px;
-}
 .insta-size {
     width: 25px;
     height: 25px;
@@ -134,7 +131,6 @@ select {
 
 /* cardbody.tsx, card.tsx, userimage.tsx */
 .margin-cardbody {
-    margin-top: 40px;
     margin-bottom: 20px;
 }
 .rounded-lg {
