@@ -9,7 +9,7 @@ export default function Card(props: StudentInfo | any) {
     return (
       <div className="align-items-center bg-white rounded-lg pt-3 pb-2 cont shadow-sm">
         <UserImage
-          photo_path={props.photo_path}
+          photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
           //NEWPHOTO = {NEWPHOTO}
         />{" "}
         {/*sourced from where?*/}
@@ -20,7 +20,7 @@ export default function Card(props: StudentInfo | any) {
           dorm={props.showDorm ? props.dorm : "Room Hidden"}
           room={props.showDorm ? props.room : ""}
           id={props.id}
-          photo_path={props.showPhoto ? props.photo_path : "/placeholder.jpg"}
+          photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
           pronouns={props.pronouns}
           //NEWPHOTO = {NEWPHOTO}
         />

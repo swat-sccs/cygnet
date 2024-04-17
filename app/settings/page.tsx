@@ -17,11 +17,6 @@ async function getUser(id: string | undefined) {
   }
 
   console.log("UID: " + id);
-  const file = fs.readFileSync(
-    `${__dirname}/../../../../student_settings/student_settings.json`,
-    "utf8"
-  );
-  const user_settings = JSON.parse(file);
 
   // @ts-ignore
   const raw: any[] =
@@ -32,33 +27,31 @@ async function getUser(id: string | undefined) {
 
   let path = "/placeholder.jpg";
 
-  if (!user_settings[0]["PHOTO_HIDDEN"].includes(id)) {
-    const modPath = `/photos/mod/${id}_m.jpg`;
-    const genModPath = `${__dirname}/../../../..${modPath}`;
-    console.log(genModPath);
+  const modPath = `/photos/mod/${id}_m.jpg`;
+  const genModPath = `${__dirname}/../../../..${modPath}`;
+  console.log(genModPath);
 
-    // production needs domain due to external static server
-    // dev uses next public dir b/c doesn't need build-time copy
-    const prePath =
-      process.env.NODE_ENV === "production" ? process.env.DOMAIN : "";
-    const staticPath = `/photos/${id}.jpg`;
-    const genPath = `${__dirname}/../../../../${staticPath}`;
+  // production needs domain due to external static server
+  // dev uses next public dir b/c doesn't need build-time copy
+  const prePath =
+    process.env.NODE_ENV === "production" ? process.env.DOMAIN : "";
+  const staticPath = `/photos/${id}.jpg`;
+  const genPath = `${__dirname}/../../../../${staticPath}`;
 
-    if (fs.existsSync(genModPath)) {
-      path = prePath + modPath;
-    } else if (fs.existsSync(genPath)) {
-      //path = fullPath
-      path = prePath + staticPath;
-    } else {
-      const imgBuffer = await queryDb(
-        `SELECT PHOTO FROM student_data WHERE USER_ID='${id}' `
-      );
+  if (fs.existsSync(genModPath)) {
+    path = prePath + modPath;
+  } else if (fs.existsSync(genPath)) {
+    //path = fullPath
+    path = prePath + staticPath;
+  } else {
+    const imgBuffer = await queryDb(
+      `SELECT PHOTO FROM student_data WHERE USER_ID='${id}' `
+    );
 
-      // @ts-ignore
-      fs.writeFileSync(genPath, imgBuffer[0]["PHOTO"]);
-      // path = fullPath
-      path = prePath + staticPath;
-    }
+    // @ts-ignore
+    fs.writeFileSync(genPath, imgBuffer[0]["PHOTO"]);
+    // path = fullPath
+    path = prePath + staticPath;
   }
 
   const user_data: StudentInfo = {
@@ -70,6 +63,9 @@ async function getUser(id: string | undefined) {
     id: id,
     photo_path: path,
     pronouns: "",
+    showDorm: true,
+    showPicture: true,
+    showProfile: true,
   };
 
   return user_data;
@@ -83,11 +79,6 @@ export default async function Settings() {
 
     if (session && session.user) {
       const id = session.user.email?.split("@")[0];
-      const old_data = await prisma.studentOverlay.findUnique({
-        where: {
-          uid: id,
-        },
-      });
       if (!id) notFound();
 
       const rawFormData = {
@@ -97,8 +88,9 @@ export default async function Settings() {
         showDorm: formData.get("showDorm"),
         showPicture: formData.get("showPicture"),
         showProfile : formData.get("showProfile"),
-        
       };
+
+      const photo_path = (await getUser(id)).photo_path;
 
       await prisma.studentOverlay.upsert({
         where: {
@@ -117,7 +109,7 @@ export default async function Settings() {
           firstName: rawFormData.firstName,
           lastName: rawFormData.lastName,
           pronouns: rawFormData.pronouns,
-          photoPath: "",
+          photoPath: photo_path,
           showProfile: rawFormData.showProfile === "on" ? true : false,
           showDorm: rawFormData.showDorm === "on" ? true : false,
           showPhoto: rawFormData.showPicture === "on" ? true : false,

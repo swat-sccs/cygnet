@@ -22,7 +22,15 @@ export default function Filter(props: FilterProps) {
       }, [dorm, gradYear]);
 
     const handleFilterChange = () => {
-        setFilters(dorm + gradYear);
+        let filterString = "";
+        if(dorm)
+            filterString += dorm;
+        if(dorm && gradYear)
+            filterString += ',';
+        if(gradYear)
+            filterString += gradYear;
+
+        setFilters(filterString);
     }
     const handleDormChange = (event: ChangeEvent<HTMLSelectElement>) => {
         event.target.value === "Dorms" ? setDorm("") : setDorm(event.target.value);
