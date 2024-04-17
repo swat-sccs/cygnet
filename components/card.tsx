@@ -5,7 +5,7 @@ import { StudentInfo } from "@/components/pagebody";
 
 export default function Card(props: StudentInfo | any) {
   //probably can just use props -abhi
-  if (props.id) {
+  if (props.id && props.showProfile) {
     return (
       <div className="align-items-center bg-white rounded-lg pt-3 pb-2 cont shadow-sm">
         <UserImage
@@ -17,10 +17,10 @@ export default function Card(props: StudentInfo | any) {
           first={props.first}
           last={props.last}
           year={props.year}
-          dorm={props.dorm}
-          room={props.room}
+          dorm={props.showDorm ? props.dorm : "Room Hidden"}
+          room={props.showDorm ? props.room : ""}
           id={props.id}
-          photo_path={props.photo_path}
+          photo_path={props.showPhoto ? props.photo_path : "/placeholder.jpg"}
           pronouns={props.pronouns}
           //NEWPHOTO = {NEWPHOTO}
         />

@@ -58,7 +58,13 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
           <input
             className="form-check-input"
             type="checkbox"
-            name="showPicture"
+            name="showDorm"
+            checked={userData.showDorm}
+            onChange={(e) =>
+              setUserData(
+                Object.assign({}, userData, { showDorm: !(userData.showDorm) })
+              )
+            }
           />
           <label className="mont">Show Dorm</label>
         </div>
@@ -67,6 +73,12 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
             className="form-check-input"
             type="checkbox"
             name="showPicture"
+            checked={userData.showPicture}
+            onChange={(e) =>
+              setUserData(
+                Object.assign({}, userData, { showPicture: !(userData.showPicture) })
+              )
+            }
           />
           <label className="mont">Show Picture</label>
         </div>
@@ -74,7 +86,13 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
           <input
             className="form-check-input"
             type="checkbox"
-            name="showPicture"
+            name="showProfile"
+            checked={userData.showProfile}
+            onChange={(e) =>
+              setUserData(
+                Object.assign({}, userData, { showProfile: !(userData.showProfile) })
+              )
+            }
           />
           <label className="mont">Show Profile</label>
         </div>

@@ -22,6 +22,9 @@ export interface StudentInfo {
     id: string;
     photo_path: string;
     pronouns: string;
+    showDorm: boolean;
+    showProfile: boolean;
+    showPicture: boolean;
 }
 
 async function filterData({ user_settings, searchParams }: { user_settings: any, searchParams?: {

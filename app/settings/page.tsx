@@ -91,11 +91,13 @@ export default async function Settings() {
       if (!id) notFound();
 
       const rawFormData = {
-        firstName:
-          formData.get("fName")?.toString() || old_data?.firstName || "",
-        lastName: formData.get("lName")?.toString() || old_data?.lastName || "",
-        pronouns:
-          formData.get("pNouns")?.toString() || old_data?.pronouns || "",
+        firstName: formData.get("fName")?.toString() || "",
+        lastName: formData.get("lName")?.toString() || "",
+        pronouns: formData.get("pNouns")?.toString() || "",
+        showDorm: formData.get("showDorm"),
+        showPicture: formData.get("showPicture"),
+        showProfile : formData.get("showProfile"),
+        
       };
 
       await prisma.studentOverlay.upsert({
@@ -106,6 +108,9 @@ export default async function Settings() {
           firstName: rawFormData.firstName,
           lastName: rawFormData.lastName,
           pronouns: rawFormData.pronouns,
+          showProfile: rawFormData.showProfile === "on" ? true : false,
+          showDorm: rawFormData.showDorm === "on" ? true : false,
+          showPhoto: rawFormData.showPicture === "on" ? true : false,
         },
         create: {
           uid: id,
@@ -113,6 +118,9 @@ export default async function Settings() {
           lastName: rawFormData.lastName,
           pronouns: rawFormData.pronouns,
           photoPath: "",
+          showProfile: rawFormData.showProfile === "on" ? true : false,
+          showDorm: rawFormData.showDorm === "on" ? true : false,
+          showPhoto: rawFormData.showPicture === "on" ? true : false,
         },
       });
     }
@@ -138,6 +146,9 @@ export default async function Settings() {
         pronouns: user_data_prisma.pronouns,
         id: user_data_prisma.uid,
         photo_path: user_data_prisma.photoPath,
+        showDorm: user_data_prisma.showDorm,
+        showPicture: user_data_prisma.showPhoto,
+        showProfile: user_data_prisma.showProfile,
         year: cygnet_user_data.year,
         dorm: cygnet_user_data.dorm,
         room: cygnet_user_data.room,
@@ -152,6 +163,9 @@ export default async function Settings() {
         dorm: cygnet_user_data.dorm,
         room: cygnet_user_data.room,
         photo_path: cygnet_user_data.photo_path,
+        showDorm: true,
+        showPicture: true,
+        showProfile: true,
       };
     }
 
