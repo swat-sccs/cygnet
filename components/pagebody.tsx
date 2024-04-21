@@ -108,14 +108,14 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
       }
 
       let newStudent: StudentInfo = {
-        first: student["FIRST_NAME"],
-        last: student["LAST_NAME"],
+        first: user?.firstName ? user.firstName : student["FIRST_NAME"],
+        last: user?.lastName ? user.lastName : student["LAST_NAME"],
         year: student["GRAD_YEAR"],
         dorm: student["DORM"],
         room: student["DORM_ROOM"],
         id: student["USER_ID"],
         photo_path: path,
-        pronouns: "",
+        pronouns: user?.pronouns ? user.pronouns : "",
         showDorm: true,
         showPicture: true,
         showProfile: true,
@@ -144,11 +144,11 @@ export default function PageBody({
     const filteredData = filterData(searchParams);
 
     return (
-      <>
+      <div className="">
         <Suspense fallback={<CardBody filteredData={undefined} />}>
           <CardBody filteredData={filteredData} />
         </Suspense>
-      </>
+      </div>
     );
   }
 }

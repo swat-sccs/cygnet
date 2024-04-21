@@ -18,7 +18,7 @@ export default function RootLayout({
             <html lang="en">
                 <body className="bg">
                     <Nav />
-                    <div className="container mont">
+                    <div className="">
                         {children}
                     </div>
                 </body>
