@@ -7,7 +7,7 @@ export default function Card(props: StudentInfo | any) {
   //probably can just use props -abhi
   if (props.id && props.showProfile) {
     return (
-      <div className="align-items-center bg-white rounded-lg pt-3 pb-2 cont shadow-sm">
+      <div className="align-items-center bg-white rounded-lg pt-3 pb-2 cont shadow-sm flex-fill flex-grow-1 h-100">
         <UserImage
           photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
           //NEWPHOTO = {NEWPHOTO}

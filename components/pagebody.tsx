@@ -43,7 +43,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
         '%${filter}%' OR DORM_ROOM LIKE '%${filter}%' OR USER_ID LIKE \
         '%${filter}%'`;
         })
-        .join(" OR ")
+        .join(") AND (")
     : "";
 
   if (filters[0]) {
@@ -53,7 +53,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
         return `GRAD_YEAR LIKE '%${filter}%' OR DORM LIKE \
                 '%${filter}%' OR DORM_ROOM LIKE '%${filter}%'`;
       })
-      .join(" OR ");
+      .join(") AND (");
   }
 
   console.log(filterString);

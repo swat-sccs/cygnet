@@ -130,9 +130,6 @@ select {
 }
 
 /* cardbody.tsx, card.tsx, userimage.tsx */
-.margin-cardbody {
-    margin-bottom: 20px;
-}
 .rounded-lg {
     border-radius: 16px;
 }
