@@ -17,7 +17,7 @@ export default function Card(props: StudentInfo | any) {
           first={props.first}
           last={props.last}
           year={props.year}
-          dorm={props.showDorm ? props.dorm : "Room Hidden"}
+          dorm={(props.showDorm && props.dorm) ? props.dorm : "Room Not Shown"}
           room={props.showDorm ? props.room : ""}
           id={props.id}
           photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
