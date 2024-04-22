@@ -25,7 +25,7 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
               onChange={(e) =>
                 {
                   if (badwords.check(e.target.value)) {
-                    alert('bad ')
+                    alert('Profanity detected, please contact us if this is a mistake!')
                   } else {
                     setUserData(
                       Object.assign({}, userData, { first: e.target.value })
@@ -42,9 +42,15 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
               className="py-1 px-2 w-full d-block"
               value={userData.last}
               onChange={(e) =>
-                setUserData(
-                  Object.assign({}, userData, { last: e.target.value })
-                )
+                {
+                  if (badwords.check(e.target.value)) {
+                    alert('Profanity detected, please contact us if this is a mistake!')
+                  } else {
+                    setUserData(
+                      Object.assign({}, userData, { last: e.target.value })
+                    )
+                  }
+                }
               }
             />
           </div>
@@ -55,9 +61,15 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
               className="py-1 px-2 w-full d-block"
               value={userData.pronouns}
               onChange={(e) =>
-                setUserData(
-                  Object.assign({}, userData, { pronouns: e.target.value })
-                )
+                {
+                  if (badwords.check(e.target.value)) {
+                    alert('Profanity detected, please contact us if this is a mistake!')
+                  } else {
+                    setUserData(
+                      Object.assign({}, userData, { pronouns: e.target.value })
+                    )
+                  }
+                }
               }
             />
           </div>
