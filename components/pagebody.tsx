@@ -4,6 +4,7 @@ import fs from "fs";
 import { Suspense } from "react";
 import CardBody from "./cardbody";
 import prisma from "@/lib/prisma";
+import TextModerate from 'text-moderate';
 
 export interface DbInfo {
   FIRST_NAME: string;
@@ -31,10 +32,8 @@ export interface StudentInfo {
 async function filterData(searchParams: { query?: string; filters?: string }) {
   const searchQuery = (searchParams?.query || "").split(" ");
   const filters = (searchParams?.filters || "").split(",");
-
   console.log(searchQuery);
   console.log(filters);
-
   let filterString: string = searchQuery[0]
     ? searchQuery
         .map((filter: string) => {

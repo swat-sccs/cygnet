@@ -20,7 +20,8 @@
     "prisma": "^5.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sharp": "^0.33.2"
+    "sharp": "^0.33.2",
+    "text-moderate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "18.15.3",

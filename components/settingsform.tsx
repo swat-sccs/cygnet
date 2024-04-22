@@ -5,6 +5,13 @@ import { StudentInfo } from "./pagebody";
 import Card from "./card";
 
 export default function SettingsForm({ inData }: { inData: StudentInfo }) {
+
+  const TextModerate = require('text-moderate');
+  const textModerate = new TextModerate();
+  console.log("TESTING HEREEE");
+  console.log(textModerate.isProfane('glassky'));
+  console.log(textModerate.isProfane('shittalker'));
+  console.log(textModerate.isProfane('sirfuckwad'));
   const [userData, setUserData] = useState(inData);
   return (
     <div className="row">
@@ -21,9 +28,15 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
               className="py-1 px-2 w-full d-block"
               value={userData.first}
               onChange={(e) =>
-                setUserData(
-                  Object.assign({}, userData, { first: e.target.value })
-                )
+                {
+                  if (textModerate.isProfane(e.target.value)) {
+                    alert('bad ')
+                  } else {
+                    setUserData(
+                      Object.assign({}, userData, { first: e.target.value })
+                    )
+                  }
+                }
               }
             />
           </div>
