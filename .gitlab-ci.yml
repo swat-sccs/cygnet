@@ -3,15 +3,24 @@ default:
   services:
     - name: docker:24.0.9-dind
   before_script:
+    - apk add bash curl
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - mv .secure_files/.env .env
     - docker info
+    - docker login -u $SCCS_REGISTRY_USER -p $SCCS_REGISTRY_TOKEN $SCCS_REGISTRY
 
 variables:
-  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_CERTDIR: ""
 
 build:
   stage: build
   script:
-    - docker login -u $SCCS_REGISTRY_USER -p $SCCS_REGISTRY_TOKEN $SCCS_REGISTRY
-    - docker build -t $SCCS_REGISTRY/sccs/cygnet/cygnet:latest .
+    - docker compose build
     - docker push $SCCS_REGISTRY/sccs/cygnet/cygnet:latest
 
+deploy_docker_stage:
+  stage: deploy
+  variables:
+    DOCKER_HOST: "tcp://130.58.218.21:2376"
+  script:
+    - docker stack deploy --with-registry-auth -c ./docker-compose.yml cygnet

@@ -41,8 +41,7 @@ export default function SearchBar() {
     const [filterOn, setFilterOn] = useState(false);
 
     return (
-        <>
-            <div className="container">
+        <div className="container-md">
                 <div className="bg-white margin-spacing rounded-pill d-inline-flex align-items-center w-full px-4 shadow-sm py-3 position-relative">
                     <Image src={search} alt="search" className="search-size-g" />
                     <input
@@ -57,7 +56,6 @@ export default function SearchBar() {
                     <Image src={chevron} alt="filters" onClick={() => setFilterOn(!filterOn)} className={filterOn ? "chevron-down chevron" : "chevron"} />
                     <Filter filterOn={filterOn} setFilters={handleFilters} />
                 </div>
-            </div>
-        </>
+        </div>
     )
 }

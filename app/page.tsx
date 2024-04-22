@@ -31,14 +31,14 @@ export default async function Home({ searchParams }: {
     if((clientIPArr[0].includes('130') && clientIPArr[1] === '58') ||
             (clientIPArr[0].includes('172')) || await auth()) {
         return (
-            <>
+            <div className="">
                 <Suspense>
                     <SearchBar />
                 </Suspense>
                 <Suspense>
                     <PageBody searchParams={searchParams} />
                 </Suspense>
-            </>
+            </div>
         );
     }
 

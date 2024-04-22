@@ -4,7 +4,7 @@ import fs from "fs";
 import { Suspense } from "react";
 import CardBody from "./cardbody";
 import prisma from "@/lib/prisma";
-import TextModerate from 'text-moderate';
+//import TextModerate from 'text-moderate';
 
 export interface DbInfo {
   FIRST_NAME: string;
@@ -42,7 +42,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
         '%${filter}%' OR DORM_ROOM LIKE '%${filter}%' OR USER_ID LIKE \
         '%${filter}%'`;
         })
-        .join(" OR ")
+        .join(") AND (")
     : "";
 
   if (filters[0]) {
@@ -52,7 +52,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
         return `GRAD_YEAR LIKE '%${filter}%' OR DORM LIKE \
                 '%${filter}%' OR DORM_ROOM LIKE '%${filter}%'`;
       })
-      .join(" OR ");
+      .join(") AND (");
   }
 
   console.log(filterString);
@@ -107,14 +107,14 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
       }
 
       let newStudent: StudentInfo = {
-        first: student["FIRST_NAME"],
-        last: student["LAST_NAME"],
+        first: user?.firstName ? user.firstName : student["FIRST_NAME"],
+        last: user?.lastName ? user.lastName : student["LAST_NAME"],
         year: student["GRAD_YEAR"],
         dorm: student["DORM"],
         room: student["DORM_ROOM"],
         id: student["USER_ID"],
         photo_path: path,
-        pronouns: "",
+        pronouns: user?.pronouns ? user.pronouns : "",
         showDorm: true,
         showPicture: true,
         showProfile: true,
@@ -143,11 +143,29 @@ export default function PageBody({
     const filteredData = filterData(searchParams);
 
     return (
-      <>
         <Suspense fallback={<CardBody filteredData={undefined} />}>
           <CardBody filteredData={filteredData} />
         </Suspense>
-      </>
     );
+  } else {
+    return (
+          <div className="mont d-flex mt-5 align-items-center justify-content-center row w-100">
+            <div className="col-12">
+                <p
+                    className="h4 text-center"
+                >
+                    Welcome to<br/>
+                    <span className="play text-black">the&nbsp;<span className="h1">CYGNET</span><span className="h4 grad"> by SCCS</span></span>
+                </p>
+            </div>
+            <div className="col-12">
+                <p
+                    className="text-center h6 mt-5"
+                >
+                    Enter a query or add a filter to begin
+                </p>
+            </div>
+        </div>
+    )
   }
 }

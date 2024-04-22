@@ -30,7 +30,7 @@ services:
         - 'traefik.http.routers.cygnet.tls=true'
         - 'traefik.http.routers.cygnet.tls.certresolver=letsEncrypt'
         - 'traefik.http.services.cygnet.loadbalancer.server.port=3000'
-    command: "npm start"
+    command: sh -c "sleep 10 && npx prisma migrate deploy && npm start"
     networks:
       - traefik
       - internal
@@ -41,6 +41,9 @@ services:
     volumes:
       - cygnet-photos:/usr/share/nginx/html/photos
     deploy:
+      placement:
+        constraints:
+          - node.role == manager
       labels:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
@@ -58,6 +61,10 @@ services:
     image: mariadb:11.3
     volumes:
       - cygnet-overlay:/var/lib/mysql
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
     env_file:
       - .env
     networks:
