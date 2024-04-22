@@ -30,7 +30,7 @@ services:
         - 'traefik.http.routers.cygnet.tls=true'
         - 'traefik.http.routers.cygnet.tls.certresolver=letsEncrypt'
         - 'traefik.http.services.cygnet.loadbalancer.server.port=3000'
-    command: "npm start"
+    command: sh -c "sleep 10 && npx prisma migrate deploy && npm start"
     networks:
       - traefik
       - internal
