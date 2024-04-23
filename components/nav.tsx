@@ -10,7 +10,7 @@ export default function Nav() {
   const pathName = usePathname();
 
   return (
-    <div className="bg-white navbar navbar-expand-lg shadow-sm mont mb-4 w-full z-max">
+    <div className="bg-white navbar navbar-expand-lg shadow-sm mont w-full z-max">
       <div className="container">
         <p
           className="play h1 mt-2 cursor-pointer"

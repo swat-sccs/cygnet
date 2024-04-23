@@ -41,21 +41,21 @@ export default function SearchBar() {
     const [filterOn, setFilterOn] = useState(false);
 
     return (
-        <div className="container-md">
-                <div className="bg-white margin-spacing rounded-pill d-inline-flex align-items-center w-full px-4 shadow-sm py-3 position-relative">
-                    <Image src={search} alt="search" className="search-size-g" />
-                    <input
-                        type="search"
-                        className="flex-grow-1 mx-4 mont border-0 searchbar"
-                        onChange={(e) => {
-                            handleSearch(e.target.value);
-                        }}
-                        placeholder="Search for Swarthmore College students..."
-                        defaultValue={searchParams.get('query')?.toString()} />
-                    <Image src={line} alt="|" className="search-size-g" />
-                    <Image src={chevron} alt="filters" onClick={() => setFilterOn(!filterOn)} className={filterOn ? "chevron-down chevron" : "chevron"} />
-                    <Filter filterOn={filterOn} setFilters={handleFilters} />
-                </div>
+        <div className="container-md mt-4">
+            <div className="bg-white margin-spacing rounded-pill d-inline-flex align-items-center w-full px-4 shadow-sm py-3 position-relative">
+                <Image src={search} alt="search" className="search-size-g" />
+                <input
+                    type="search"
+                    className="flex-grow-1 mx-4 mont border-0 searchbar"
+                    onChange={(e) => {
+                        handleSearch(e.target.value);
+                    }}
+                    placeholder="Search for Swarthmore College students..."
+                    defaultValue={searchParams.get('query')?.toString()} />
+                <Image src={line} alt="|" className="search-size-g" />
+                <Image src={chevron} alt="filters" onClick={() => setFilterOn(!filterOn)} className={filterOn ? "chevron-down chevron" : "chevron"} />
+                <Filter filterOn={filterOn} setFilters={handleFilters} />
+            </div>
         </div>
     )
 }
