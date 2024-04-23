@@ -11,7 +11,7 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
   return (
     <div className="row container-fluid mx-auto">
       <div className="col-12 col-md-3 h-100 w-full">
-        <Card {...userData} />
+        <Card {...userData} button={true} />
       </div>
       <div className="col-12 mt-2 col-md-9 h-full bg-white pt-3 pb-2 px-4 shadow-sm rounded-lg mont">
         <h1 className="h4 text-center">Edit Profile</h1>

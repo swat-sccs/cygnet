@@ -201,12 +201,37 @@ select {
     min-height: 150px;
 }
 
+.cyg-img-overlay {
+    transition: .25s ease-in-out;
+    opacity: 0;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    overflow: clip;
+    display: inline-flex;
+    place-items: center;
+}
+
+.cyg-img-svg {
+    flex-direction: column;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
 .cyg-img-container {
     height: 75px;
     width: 75px;
     overflow: clip;
 }
 
+.cyg-img-container:hover .cyg-img-overlay {
+    opacity: 1;
+    background-color: rgba(53, 92, 192, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+  
 @media (min-width: 768px) {
     .cyg-img-container {
         height: 100px;
@@ -224,4 +249,9 @@ select {
 .cyg-img {
     overflow: clip;
     object-fit: cover;
+    opacity: 1;
+    height: auto;
+    transition: .25s ease;
+    backface-visibility: hidden;
+    cursor: pointer;
 }
