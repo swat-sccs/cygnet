@@ -7,6 +7,7 @@ import PageBody from '@/components/pagebody';
 import { auth } from '@/lib/auth';
 import { signIn } from 'next-auth/react';
 import { notFound } from 'next/navigation';
+import ForceSignin from '@/components/forceSignIn';
 
 function IP() {
     const FALLBACK_IP_ADDRESS = '0.0.0.0'
@@ -43,5 +44,5 @@ export default async function Home({ searchParams }: {
     }
 
     // otherwise sign in
-    notFound();
+    return <ForceSignin />;
 }
