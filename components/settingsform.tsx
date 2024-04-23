@@ -2,11 +2,8 @@
 import { useState } from "react";
 import { StudentInfo } from "./pagebody";
 import Card from "./card";
-import BadWordsNext from 'bad-words-next'
-import en from 'bad-words-next/data/en.json'
 
 export default function SettingsForm({ inData }: { inData: StudentInfo }) {
-    const badwords = new BadWordsNext({ data: en })
     const [userData, setUserData] = useState(inData);
     return (
         <div className="row container-md mx-auto mb-4">
@@ -24,13 +21,9 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
                                 className="py-1 px-2 w-full d-block"
                                 value={userData.first}
                                 onChange={(e) => {
-                                    if (badwords.check(e.target.value)) {
-                                        alert('Profanity detected, please contact us if this is a mistake!')
-                                    } else {
                                         setUserData(
                                             Object.assign({}, userData, { first: e.target.value })
                                         )
-                                    }
                                 }
                                 }
                             />
@@ -42,13 +35,9 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
                                 className="py-1 px-2 w-full d-block"
                                 value={userData.last}
                                 onChange={(e) => {
-                                    if (badwords.check(e.target.value)) {
-                                        alert('Profanity detected, please contact us if this is a mistake!')
-                                    } else {
                                         setUserData(
                                             Object.assign({}, userData, { last: e.target.value })
                                         )
-                                    }
                                 }
                                 }
                             />
@@ -60,13 +49,9 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
                                 className="py-1 px-2 w-full d-block"
                                 value={userData.pronouns}
                                 onChange={(e) => {
-                                    if (badwords.check(e.target.value)) {
-                                        alert('Profanity detected, please contact us if this is a mistake!')
-                                    } else {
                                         setUserData(
                                             Object.assign({}, userData, { pronouns: e.target.value })
                                         )
-                                    }
                                 }
                                 }
                             />

@@ -8,6 +8,9 @@ import { queryDb } from "../queryDb";
 import prisma from "../../lib/prisma";
 import SettingsForm from "@/components/settingsform";
 
+import BadWordsNext from 'bad-words-next'
+import en from 'bad-words-next/data/en.json'
+
 // will need to be loaded from our own database eventually,
 // just UI functional for now
 
@@ -69,12 +72,19 @@ async function getUser(id: string | undefined) {
 }
 
 export default async function Settings() {
+
     async function submitData(formData: FormData) {
         "use server";
 
+        const badwords = new BadWordsNext({ data: en })
         const session = await auth();
 
         if (session && session.user) {
+            //Replaces profane inputs with '***' placeholder. Change to error upon submission instead?
+            formData.set("fName", badwords.filter(formData.get("fName")?.toString() || "")); 
+            formData.set("lName", badwords.filter(formData.get("lName")?.toString() || "")); 
+            formData.set("pNouns", badwords.filter(formData.get("pNouns")?.toString() || "")); 
+
             const id = session.user.email?.split("@")[0];
             if (!id) notFound();
 
