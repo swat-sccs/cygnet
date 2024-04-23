@@ -32,8 +32,6 @@ export interface StudentInfo {
 async function filterData(searchParams: { query?: string; filters?: string }) {
   const searchQuery = (searchParams?.query || "").split(" ");
   const filters = (searchParams?.filters || "").split(",");
-  console.log(searchQuery);
-  console.log(filters);
   let filterString: string = searchQuery[0]
     ? searchQuery
         .map((filter: string) => {
@@ -54,8 +52,6 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
       })
       .join(") AND (");
   }
-
-  console.log(filterString);
 
   let query = `SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, \
         USER_ID FROM student_data WHERE (${filterString}) `;

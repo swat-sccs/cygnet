@@ -16,8 +16,6 @@ async function getUser(id: string | undefined) {
         notFound();
     }
 
-    console.log("UID: " + id);
-
     // @ts-ignore
     const raw: any[] =
         await queryDb(`SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM \
@@ -29,7 +27,6 @@ async function getUser(id: string | undefined) {
 
     const modPath = `/photos/mod/${id}_m.jpg`;
     const genModPath = `${__dirname}/../../../..${modPath}`;
-    console.log(genModPath);
 
     // production needs domain due to external static server
     // dev uses next public dir b/c doesn't need build-time copy

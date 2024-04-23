@@ -13,8 +13,6 @@ const dbConfig = {
   port: 3306,
 };
 
-console.time("dbcreate")
 export var pool = mysql.createPool(
     dbConfig
 );
-console.timeEnd("dbcreate")
