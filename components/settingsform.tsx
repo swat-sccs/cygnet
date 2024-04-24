@@ -1,10 +1,41 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StudentInfo } from "./pagebody";
 import Card from "./card";
+import { useSnackbar } from '@swat-sccs/react-simple-snackbar';
 
-export default function SettingsForm({ inData }: { inData: StudentInfo }) {
-    const [userData, setUserData] = useState(inData);
+const snackOptions = {
+    position: 'bottom-left' as const,
+    style: {
+        backgroundColor: 'white',
+        border: 'none',
+        color: 'black',
+        fontFamily: 'Montserrat, sans-serif',
+        fontSize: '12px',
+        transform: 'translateY(-8dvh)',
+        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+    },
+    closeStyle: {
+        color: '#44608F',
+        fontSize: '12px',
+    },
+}
+
+export default function SettingsForm(props: { inData: StudentInfo, pending: boolean, state: { message: string } }) {
+
+    const [userData, setUserData] = useState(props.inData);
+    const [openSnackbar, closeSnackbar] = useSnackbar(snackOptions);
+
+    useEffect(() => {
+        if(props.pending) {
+            closeSnackbar();
+            openSnackbar("Loading...");
+        } else if(props.state.message !== "") {
+            closeSnackbar();
+            openSnackbar(props.state.message);
+        }
+    }, [props.pending, props.state.message]);
+
     return (
         <div className="row container-md mx-auto mb-4">
             <div className="col-12 col-md-3 flex-grow-1 gy-4">
@@ -21,9 +52,9 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
                                 className="py-1 px-2 w-full d-block"
                                 value={userData.first}
                                 onChange={(e) => {
-                                        setUserData(
-                                            Object.assign({}, userData, { first: e.target.value })
-                                        )
+                                    setUserData(
+                                        Object.assign({}, userData, { first: e.target.value })
+                                    )
                                 }
                                 }
                             />
@@ -35,9 +66,9 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
                                 className="py-1 px-2 w-full d-block"
                                 value={userData.last}
                                 onChange={(e) => {
-                                        setUserData(
-                                            Object.assign({}, userData, { last: e.target.value })
-                                        )
+                                    setUserData(
+                                        Object.assign({}, userData, { last: e.target.value })
+                                    )
                                 }
                                 }
                             />
@@ -49,9 +80,9 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
                                 className="py-1 px-2 w-full d-block"
                                 value={userData.pronouns}
                                 onChange={(e) => {
-                                        setUserData(
-                                            Object.assign({}, userData, { pronouns: e.target.value })
-                                        )
+                                    setUserData(
+                                        Object.assign({}, userData, { pronouns: e.target.value })
+                                    )
                                 }
                                 }
                             />
@@ -107,7 +138,7 @@ export default function SettingsForm({ inData }: { inData: StudentInfo }) {
                             <label className="mont form-check-label" htmlFor="showProfile">Show Profile</label>
                         </div>
                     </div>
-                    <input type="submit" value="Submit" className="mt-4 mx-auto w-full" />
+                    <input type="submit" value="Submit" aria-disabled={props.pending} className="mt-4 mx-auto w-full" />
                 </div>
             </div>
         </div>
