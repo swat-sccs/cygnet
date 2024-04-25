@@ -75,21 +75,17 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
       let path = "/placeholder.jpg";
 
       if (!user || user.showPhoto) {
-        const modPath = `/photos/mod/${student["USER_ID"]}_m.jpg`;
-        const genModPath = `${__dirname}/../../..${modPath}`;
+        const modPath = `/mod/${student["USER_ID"]}_m.jpg`;
+        const genModPath = `${__dirname}/../../../photos${modPath}`;
 
-        // production needs domain due to external static server
-        // dev uses next public dir b/c doesn't need build-time copy
-        const prePath =
-          process.env.NODE_ENV === "production" ? process.env.DOMAIN : "";
-        const staticPath = `/photos/${student["USER_ID"]}.jpg`;
-        const genPath = `${__dirname}/../../..${staticPath}`;
+        const staticPath = `/${student["USER_ID"]}.jpg`;
+        const genPath = `${__dirname}/../../../photos${staticPath}`;
 
         if (fs.existsSync(genModPath)) {
-          path = prePath + modPath;
+          path = modPath;
         } else if (fs.existsSync(genPath)) {
           //path = fullPath
-          path = prePath + staticPath;
+          path = staticPath;
         } else {
           const imgBuffer = await queryDb(
             `SELECT PHOTO FROM student_data WHERE USER_ID='${student["USER_ID"]}' `
@@ -98,7 +94,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
           // @ts-ignore
           fs.writeFileSync(genPath, imgBuffer[0]["PHOTO"]);
           // path = fullPath
-          path = prePath + staticPath;
+          path = staticPath;
         }
       }
 

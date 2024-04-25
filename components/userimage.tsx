@@ -51,6 +51,7 @@ export default function UserImage(props: any) {
                 <div className="position-relative cyg-img-container rounded-circle gradBorder">
                     <Image
                         fill={true}
+                        sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 15vw"
                         loading={"lazy"}
                         src={props.button ? preview : photo_path}
                         alt="image of person"

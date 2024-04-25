@@ -7,6 +7,8 @@ import fs from "fs";
 import { DbInfo, StudentInfo } from "@/components/pagebody";
 import { queryDb } from "./queryDb";
 
+import sharp from 'sharp';
+
 import BadWordsNext from "bad-words-next";
 import en from 'bad-words-next/data/en.json';
 
@@ -24,21 +26,19 @@ export async function getUser(id: string | undefined) {
 
     let path = "/placeholder.jpg";
 
-    const modPath = `/photos/mod/${id}_m.jpg`;
-    const genModPath = `${__dirname}/../../../..${modPath}`;
+    const modPath = `/mod/${id}_m.jpg`;
+    const genModPath = `${__dirname}/../../../../photos${modPath}`;
 
     // production needs domain due to external static server
     // dev uses next public dir b/c doesn't need build-time copy
-    const prePath =
-        process.env.NODE_ENV === "production" ? process.env.DOMAIN : "";
-    const staticPath = `/photos/${id}.jpg`;
-    const genPath = `${__dirname}/../../../../${staticPath}`;
+    const staticPath = `/${id}.jpg`;
+    const genPath = `${__dirname}/../../../../photos${staticPath}`;
 
     if (fs.existsSync(genModPath)) {
-        path = prePath + modPath;
+        path = modPath;
     } else if (fs.existsSync(genPath)) {
         //path = fullPath
-        path = prePath + staticPath;
+        path = staticPath;
     } else {
         const imgBuffer = await queryDb(
             `SELECT PHOTO FROM student_data WHERE USER_ID='${id}' `
@@ -47,7 +47,7 @@ export async function getUser(id: string | undefined) {
         // @ts-ignore
         fs.writeFileSync(genPath, imgBuffer[0]["PHOTO"]);
         // path = fullPath
-        path = prePath + staticPath;
+        path = staticPath;
     }
 
     const user_data: StudentInfo = {
@@ -88,12 +88,10 @@ export async function submitData(prevState: {
 
         const picData = formData.get("picFile") as File;
         if (picData) {
-            const modPath = `/photos/mod/${id}_m.jpg`;
-            const genModPath = `${__dirname}/../../../..${modPath}`;
-            const prePath =
-                process.env.NODE_ENV === "production" ? process.env.DOMAIN : "";
+            const modPath = `/mod/${id}_m.jpg`;
+            const genModPath = `${__dirname}/../../../../photos${modPath}`;
 
-            photo_path = prePath + modPath;
+            photo_path = modPath;
 
             const imageReader = picData.stream().getReader();
             const imageDataU8: number[] = [];
@@ -111,12 +109,13 @@ export async function submitData(prevState: {
             //@ts-ignore
             const imageBinary = Buffer.from(imageDataU8, 'binary');
 
-            fs.writeFile(genModPath, imageBinary, async (err) => {
-                if (err) {
-                    console.log(err);
-                    photo_path = (await getUser(id)).photo_path;
-                }
-            })
+            try {
+                await sharp(imageBinary)
+                    .toFormat('jpg')
+                    .toFile(genModPath);
+            } catch (e) {
+                return { message: "Failed to save photo!" };
+            }
         }
 
         const rawFormData = {

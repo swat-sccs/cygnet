@@ -8,7 +8,8 @@ services:
     # mount current dir inside container
     volumes:
       - .:/usr/src/app
-      - ./photos:/usr/src/app/public/photos
+      - ./photos:/usr/src/app/public
+      # todo: figure out what to do abt placeholder
     environment:
       NODE_ENV: development
       DOMAIN: http://localhost:3000

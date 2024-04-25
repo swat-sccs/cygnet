@@ -26,7 +26,7 @@ services:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
         - 'traefik.http.routers.cygnet.entrypoints=https'
-        - 'traefik.http.routers.cygnet.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && !PathPrefix(`/photos/`))'
+        - 'traefik.http.routers.cygnet.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && !PathPrefix(`/iiif/`))'
         - 'traefik.http.routers.cygnet.tls=true'
         - 'traefik.http.routers.cygnet.tls.certresolver=letsEncrypt'
         - 'traefik.http.services.cygnet.loadbalancer.server.port=3000'
@@ -36,10 +36,13 @@ services:
       - internal
 
   static:
-    image: nginx
+    image: edirom/cantaloupe
     restart: unless-stopped
     volumes:
-      - cygnet-photos:/usr/share/nginx/html/photos
+      - cygnet-photos:/opt/cantaloupe/images
+    configs:
+      - source: cantaloupe_conf
+        target: /etc/cantaloupe.properties
     deploy:
       placement:
         constraints:
@@ -49,10 +52,10 @@ services:
         - 'traefik.docker.network=traefik'
         - 'traefik.port=80'
         - 'traefik.http.routers.static.entrypoints=https'
-        - 'traefik.http.routers.static.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && PathPrefix(`/photos/`))'
+        - 'traefik.http.routers.static.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && PathPrefix(`/iiif/`))'
         - 'traefik.http.routers.static.tls=true'
         - 'traefik.http.routers.static.tls.certresolver=letsEncrypt'
-        - 'traefik.http.services.static.loadbalancer.server.port=80'
+        - 'traefik.http.services.static.loadbalancer.server.port=8182'
     networks:
       - traefik
       - internal
@@ -69,6 +72,10 @@ services:
       - .env
     networks:
       - internal # do not expose
+
+configs:
+  cantaloupe_conf:
+    file: ./cantaloupe.properties
 
 # (re)define traefik proxy network
 networks:

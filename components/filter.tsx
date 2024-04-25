@@ -1,6 +1,5 @@
 'use client'
 import React, { ChangeEvent } from 'react';
-import chevron from '../public/imgs/chevron.svg';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import filterData from '../data/filterData.json';
@@ -57,7 +56,7 @@ export default function Filter(props: FilterProps) {
                         ))}
                     </select>
                     <div className="col-2 p-0 d-inline-flex align-items-center justify-content-end px-2">
-                        <Image className="chevron-sm" src={chevron} alt="" />
+                        <Image className="chevron-sm" src="/imgs/chevron.svg" alt="" />
                     </div>
                 </div>
             </div>
@@ -72,7 +71,7 @@ export default function Filter(props: FilterProps) {
                         ))}
                     </select>
                     <div className="col-2 p-0 d-inline-flex align-items-center justify-content-end px-2">
-                        <Image className="chevron-sm" src={chevron} alt="" />
+                        <Image className="chevron-sm" src="/imgs/chevron.svg" alt="" />
                     </div>
                 </div>
             </div>
