@@ -53,7 +53,7 @@ export default function Nav() {
             </li>
             <li className="nav-item ms-auto pt-3">
               <a href="https://www.instagram.com/swatsccs/" target="_blank">
-                <Image src="/imgs/insta.svg" alt="insta" className="insta-size" />
+                <Image src="/imgs/insta.svg" width={30} height={30} alt="insta" className="insta-size" />
               </a>
             </li>
           </ul>

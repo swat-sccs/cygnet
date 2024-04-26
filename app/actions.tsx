@@ -91,8 +91,6 @@ export async function submitData(prevState: {
             const modPath = `/mod/${id}_m.jpg`;
             const genModPath = `${__dirname}/../../../../photos${modPath}`;
 
-            photo_path = modPath;
-
             const imageReader = picData.stream().getReader();
             const imageDataU8: number[] = [];
 
@@ -113,8 +111,10 @@ export async function submitData(prevState: {
                 await sharp(imageBinary)
                     .toFormat('jpg')
                     .toFile(genModPath);
+
+                photo_path = modPath;
             } catch (e) {
-                return { message: "Failed to save photo!" };
+                console.log("Did not save!");
             }
         }
 

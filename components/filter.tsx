@@ -56,7 +56,7 @@ export default function Filter(props: FilterProps) {
                         ))}
                     </select>
                     <div className="col-2 p-0 d-inline-flex align-items-center justify-content-end px-2">
-                        <Image className="chevron-sm" src="/imgs/chevron.svg" alt="" />
+                        <Image className="chevron-sm" src="/imgs/chevron.svg" width={30} height={30} alt="" />
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@ export default function Filter(props: FilterProps) {
                         ))}
                     </select>
                     <div className="col-2 p-0 d-inline-flex align-items-center justify-content-end px-2">
-                        <Image className="chevron-sm" src="/imgs/chevron.svg" alt="" />
+                        <Image className="chevron-sm" src="/imgs/chevron.svg" width={30} height={30} alt="" />
                     </div>
                 </div>
             </div>
