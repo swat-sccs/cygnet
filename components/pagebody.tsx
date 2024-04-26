@@ -30,8 +30,18 @@ export interface StudentInfo {
 }
 
 async function filterData(searchParams: { query?: string; filters?: string }) {
-  const searchQuery = (searchParams?.query || "").split(" ");
+  const searchQuery = (searchParams?.query || "").split(" ").filter((value: string) => {
+    if(value.match(/^\s*$/g))
+        return false;
+    return true;
+  });
+
+  if(!searchQuery.length) {
+    return [];
+  }
+
   const filters = (searchParams?.filters || "").split(",");
+
   let filterString: string = searchQuery[0]
     ? searchQuery
         .map((filter: string) => {
