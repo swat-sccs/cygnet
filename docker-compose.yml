@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      DOMAIN: https://cygnetv2.sccs.swarthmore.edu
+      DOMAIN: https://cygnet.sccs.swarthmore.edu
     env_file:
       - .env
     volumes:
@@ -26,7 +26,7 @@ services:
         - 'traefik.enable=true'
         - 'traefik.docker.network=traefik'
         - 'traefik.http.routers.cygnet.entrypoints=https'
-        - 'traefik.http.routers.cygnet.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && !PathPrefix(`/iiif/`))'
+        - 'traefik.http.routers.cygnet.rule=((Host(`cygnet.sccs.swarthmore.edu`) || Host(`www.cygnet.sccs.swarthmore.edu`)) && !PathPrefix(`/iiif/`))'
         - 'traefik.http.routers.cygnet.tls=true'
         - 'traefik.http.routers.cygnet.tls.certresolver=letsEncrypt'
         - 'traefik.http.services.cygnet.loadbalancer.server.port=3000'
@@ -52,7 +52,7 @@ services:
         - 'traefik.docker.network=traefik'
         - 'traefik.port=80'
         - 'traefik.http.routers.static.entrypoints=https'
-        - 'traefik.http.routers.static.rule=(Host(`cygnetv2.sccs.swarthmore.edu`) && PathPrefix(`/iiif/`))'
+        - 'traefik.http.routers.static.rule=((Host(`cygnet.sccs.swarthmore.edu`) || Host(`www.cygnet.sccs.swarthmore.edu`)) && PathPrefix(`/iiif/`))'
         - 'traefik.http.routers.static.tls=true'
         - 'traefik.http.routers.static.tls.certresolver=letsEncrypt'
         - 'traefik.http.services.static.loadbalancer.server.port=8182'

@@ -1,4 +1,6 @@
-# How to set up development server
+# Cygnet
+
+## How to set up development server
 
 1. Build and Run Container
 `docker compose -f docker-compose.debug.yml up --build`
@@ -9,7 +11,7 @@
 As you edit project files, the page should update dynamically (no need to reload!).
 ctrl+s multiple times to reset pool connection as needed.
 
-# How to set up prod server
+## How to set up prod server
 
 (Ensure Traefik is set up)
 

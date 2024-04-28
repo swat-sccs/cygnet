@@ -3,7 +3,7 @@
 export default function cygImgLoader({ src, width, quality }: { src: string, width: string, quality: string }) {
 
     if(src.includes("svg")) {
-        return `https://cygnetv2.sccs.swarthmore.edu${src}`;
+        return `https://cygnet.sccs.swarthmore.edu${src}`;
     }
 
     // IIIF spec--swap all but leading slash
@@ -12,5 +12,5 @@ export default function cygImgLoader({ src, width, quality }: { src: string, wid
     //       a stupid API.
     src = src.replaceAll(/(?!^)\//g, "$");
 
-    return `https://cygnetv2.sccs.swarthmore.edu/iiif/3${src}/square/^${width},/0/default.jpg`;
+    return `https://cygnet.sccs.swarthmore.edu/iiif/3${src}/square/^${width},/0/default.jpg`;
 }
