@@ -5,9 +5,7 @@ import { headers } from 'next/headers';
 import SearchBar from '@/components/searchbar';
 import PageBody from '@/components/pagebody';
 import { auth } from '@/lib/auth';
-import { signIn } from 'next-auth/react';
-import { notFound } from 'next/navigation';
-import ForceSignin from '@/components/forceSignIn';
+import SignIn from '@/components/signin';
 
 function IP() {
     const FALLBACK_IP_ADDRESS = '0.0.0.0'
@@ -44,5 +42,5 @@ export default async function Home({ searchParams }: {
     }
 
     // otherwise sign in
-    return <ForceSignin />;
+    return <SignIn />;
 }

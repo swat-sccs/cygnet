@@ -60,6 +60,12 @@ body {
 .nav-item {
     font-weight: 400;
 }
+.grad-hover:hover {
+    filter: brightness(130%);
+    cursor: pointer;
+    transition: filter 0.1s;
+    transition-timing-function: ease-in-out;
+}
 .nav-item:hover {
     filter: invert(37%) sepia(15%) saturate(1655%) hue-rotate(179deg) brightness(91%) contrast(86%);
     cursor: pointer;

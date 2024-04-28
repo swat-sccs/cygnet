@@ -1,9 +1,8 @@
 import { StudentInfo } from "@/components/pagebody";
 import { auth } from "@/lib/auth";
 import "bootstrap/dist/css/bootstrap.css";
-import ForceSignin from "@/components/forceSignIn";
+import SignIn from "@/components/signin";
 import prisma from "../../lib/prisma";
-import SettingsForm from "@/components/settingsform";
 
 import { getUser } from "@/app/actions";
 import SnackbarWrapper from "@/components/snackwrapper";
@@ -59,5 +58,5 @@ export default async function Settings() {
             <SnackbarWrapper user_data={user_data}/>
         );
     }
-    return <ForceSignin />;
+    return <SignIn />;
 }
