@@ -10,7 +10,7 @@ export default function Card(props: StudentInfo | any) {
       <div className="align-items-center bg-white rounded-lg py-3 px-2 cont shadow-sm flex-fill flex-grow-1 h-100">
         <UserImage
           photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
-          button={props.button ? props.button : false}
+          button={(props.button && props.showPicture) ? props.button : false}
           //NEWPHOTO = {NEWPHOTO}
         />{" "}
         {/*sourced from where?*/}
