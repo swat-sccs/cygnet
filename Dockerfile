@@ -10,4 +10,5 @@ RUN rm -rf node_modules
 RUN chown -R node:node /usr/src/app
 USER node
 RUN npm install
+RUN npx prisma generate
 RUN npm run build

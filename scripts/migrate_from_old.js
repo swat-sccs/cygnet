@@ -97,14 +97,14 @@ async function copyRecord(uid) {
     connection.release();
 }
 
-user_settings[0]["EXCLUDED_USERS"].forEach(uid => {
-    copyRecord(uid); 
+user_settings[0]["EXCLUDED_USERS"].forEach(async uid => {
+    await copyRecord(uid);
 });
 
-user_settings[0]["ROOM_HIDDEN"].forEach(uid => {
-    copyRecord(uid); 
+user_settings[0]["ROOM_HIDDEN"].forEach(async uid => {
+    await copyRecord(uid);
 });
 
-user_settings[0]["PHOTO_HIDDEN"].forEach(uid => {
-    copyRecord(uid); 
+user_settings[0]["PHOTO_HIDDEN"].forEach(async uid => {
+    await copyRecord(uid);
 });
