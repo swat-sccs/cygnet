@@ -30,7 +30,7 @@ export default function SignIn() {
                 </p>
             </div>
             <div className="col-12 d-flex justify-content-center">
-                <button className="filterButton shadow-md mt-5" onClick={() => signIn()}>Sign in</button>
+                <button className="filterButton shadow-md mt-5" onClick={() => signIn("keycloak")}>Sign in</button>
             </div>
         </div>
     )

@@ -53,7 +53,7 @@ export default function Nav() {
                         </li>
                         <li className="nav-item ms-auto my-auto pt-3 h5">
                             <p
-                                onClick={() => session?.user ? signOut() : signIn()}
+                                onClick={() => session?.user ? signOut() : signIn("keycloak")}
                             >
                                 {session?.user ? "Sign Out" : "Sign In"}
                             </p>
