@@ -46,8 +46,8 @@ export default function Filter(props: FilterProps) {
         <div className={props.filterOn ? "position-absolute filterwindow d-flex row mx-2 mont" : "position-absolute opacity-0 invisible"}>
             <p className="h4 font-semibold col-12 gx-2 gy-2">Filters</p>
             <div className="col-12 col-md-4 gx-2 gy-2">
-                <div className="filterSelect shadow-md row w-100 g-0 px-2">
-                    <select className="col-10" value={dorm} onChange={handleDormChange} title="Dorm">
+                <div className="filterSelect shadow-md w-100 g-0">
+                    <select className="w-100" value={dorm} onChange={handleDormChange} title="Dorm">
                         <option>Dorms</option>
                         {dormsList.map((dormName) => (
                             <option key={dormName} value={dormName}>
@@ -55,14 +55,11 @@ export default function Filter(props: FilterProps) {
                             </option>
                         ))}
                     </select>
-                    <div className="col-2 p-0 d-inline-flex align-items-center justify-content-end px-2">
-                        <Image className="chevron-sm" src="/imgs/chevron.svg" width={30} height={30} alt="" />
-                    </div>
                 </div>
             </div>
             <div className="col-12 col-md-4 gx-2 gy-2">
-                <div className="filterSelect shadow-md row w-100 g-0 px-2">
-                    <select className="col-10" value={gradYear} onChange={handleYearChange} title="Year">
+                <div className="filterSelect shadow-md w-100 g-0">
+                    <select className="w-100" value={gradYear} onChange={handleYearChange} title="Year">
                         <option >Class Year</option>
                         {yearsList.map((year) => (
                             <option key={year} value={year}>
@@ -70,9 +67,6 @@ export default function Filter(props: FilterProps) {
                             </option>
                         ))}
                     </select>
-                    <div className="col-2 p-0 d-inline-flex align-items-center justify-content-end px-2">
-                        <Image className="chevron-sm" src="/imgs/chevron.svg" width={30} height={30} alt="" />
-                    </div>
                 </div>
             </div>
             <div className="col-12 col-md-4 gx-2 gy-2">

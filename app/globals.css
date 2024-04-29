@@ -20,6 +20,12 @@ body {
     color: black;
 }
 
+.icon::before {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
 /*footer.tsx*/
 .bg-blue {
     background: #31425f;
@@ -42,6 +48,7 @@ body {
     font-family: 'Play', sans-serif;
     color: #44608F;
 }
+
 .grad {
     background: linear-gradient(139.78deg, #46408A 22.6%, #7670BA 29.58%, #27A4AC 45.92%, #355CC0 63.81%);
     -webkit-background-clip: text;
@@ -50,28 +57,34 @@ body {
     text-fill-color: transparent;
     font-weight: 600;
 }
+
 .ml-a {
     margin-left: auto;
 }
+
 .insta-size {
     width: 25px;
     height: 25px;
 }
+
 .nav-item {
     font-weight: 400;
 }
+
 .grad-hover:hover {
     filter: brightness(130%);
     cursor: pointer;
     transition: filter 0.1s;
     transition-timing-function: ease-in-out;
 }
+
 .nav-item:hover {
     filter: invert(37%) sepia(15%) saturate(1655%) hue-rotate(179deg) brightness(91%) contrast(86%);
     cursor: pointer;
     transition: filter 0.1s;
     transition-timing-function: ease-in-out;
 }
+
 .z-max {
     z-index: 9;
 }
@@ -81,60 +94,68 @@ body {
     width: 30px;
     height: 30px;
 }
+
 .w-full {
     width: 100%;
 }
+
 .searchbar {
     outline: none;
     font-size: 1.2rem;
     min-width: 0;
 }
+
 .filterwindow {
-    top:calc(100% + 20px);
+    top: calc(100% + 20px);
     right: 0px;
-    z-index:1000;
+    z-index: 1000;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
     border-radius: 25px;
     padding: 15px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.chevron-down {
-    rotate: -180deg;
+
+.filterSelect select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    /*outline: none;*/
+    border: none;
+    background: none;
+    color: inherit;
+    padding-left: 1rem;
+    border-radius: 1000px;
 }
-.chevron {
-    cursor: pointer;
-    transition-duration: 0.3s;
-    width: 30px;
-    height: 30px;
-}
-.chevron-sm {
-    pointer-events:none;
-    cursor: pointer;
-    transition-duration: 0.3s;
-    width: 20px;
-    height: 20px;
-}
+
 .filterSelect {
-    border-radius:1000px;
+    position: relative;
+    display: inline-flex;
+    border-radius: 1000px;
     background-color: white;
     border: #B9B9B9 solid 1px;
-}
-select:hover {
-    background-color:rgb(250, 250, 250);
-}
-select {
     cursor: pointer;
-    padding: 8px 12px;
-    border-radius:1000px;
-    outline:none;
-    border: none;
+    min-height: 40px;
+    height: 100%;
+    width: 100%;
 }
-select {
-    -moz-appearance:none; /* Firefox */
-    -webkit-appearance:none; /* Safari and Chrome */
-    appearance:none;
+
+.filterSelect:hover {
+    background-color: rgb(250, 250, 250);
 }
+
+.filterSelect:after {
+    content: '\f078';
+    display: block;
+    font-size: 1rem;
+    font: var(--fa-font-solid);
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
 .filterButton {
     border: transparent solid 0.5px;
     background-color: #44608F;
@@ -143,31 +164,35 @@ select {
     color: white;
     outline: none;
     font-weight: 600;
-    outline:none;
+    outline: none;
 }
-.filterButton:hover{
-    background:#4668a3;
+
+.filterButton:hover {
+    background: #4668a3;
 }
 
 /* cardbody.tsx, card.tsx, userimage.tsx */
 .rounded-lg {
     border-radius: 16px;
 }
+
 .gradBorder {
     border: 4px solid transparent;
     border-radius: 1000px;
-    background: 
-        linear-gradient(to right, white, white), 
-        linear-gradient(to right, #27A4AC , #355CC0),
-        linear-gradient(to top, #27A4AC , #355CC0); 
+    background:
+        linear-gradient(to right, white, white),
+        linear-gradient(to right, #27A4AC, #355CC0),
+        linear-gradient(to top, #27A4AC, #355CC0);
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
     width: 45%;
     height: auto;
 }
+
 .font-light {
     font-weight: 400;
 }
+
 .enlarge-properties {
     position: absolute;
     z-index: 1;
@@ -231,7 +256,7 @@ select {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-  
+
 @media (min-width: 768px) {
     .cyg-img-container {
         height: 100px;
