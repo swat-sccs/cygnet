@@ -158,7 +158,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
             .join(") AND (");
     }
     
-    filterString.replace(/\W/g, '')
+    filterString.replaceAll(/\W/g, ' ')
     const query = `SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, \
         USER_ID FROM student_data WHERE (${filterString})`;
 
