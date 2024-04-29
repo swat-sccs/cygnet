@@ -68,6 +68,9 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
     if (!searchQuery.length) {
         return [];
     }
+    
+    searchQuery[0] = searchQuery[0].replaceAll(/\W/g, ' ');
+
 
     let prismaQuery: any[] = [];
 
@@ -158,7 +161,6 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
             .join(") AND (");
     }
     
-    filterString.replaceAll(/\W/g, ' ')
     const query = `SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, \
         USER_ID FROM student_data WHERE (${filterString})`;
 
