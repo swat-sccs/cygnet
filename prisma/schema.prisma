@@ -13,6 +13,9 @@ model StudentOverlay {
     firstName String
     lastName String 
     pronouns String
+    dorm String
+    dormRoom String
+    gradYear String
     photoPath String
     showProfile Boolean @default(true)
     showDorm Boolean @default(true)

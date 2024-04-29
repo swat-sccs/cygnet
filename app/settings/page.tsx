@@ -31,12 +31,12 @@ export default async function Settings() {
                 pronouns: user_data_prisma.pronouns,
                 id: user_data_prisma.uid,
                 photo_path: user_data_prisma.photoPath,
+                year: user_data_prisma.gradYear,
+                dorm: user_data_prisma.dorm,
+                room: user_data_prisma.dormRoom,
                 showDorm: user_data_prisma.showDorm,
                 showPicture: user_data_prisma.showPhoto,
                 showProfile: user_data_prisma.showProfile,
-                year: cygnet_user_data.year,
-                dorm: cygnet_user_data.dorm,
-                room: cygnet_user_data.room,
             };
         } else {
             user_data = {

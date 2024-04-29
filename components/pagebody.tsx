@@ -4,170 +4,262 @@ import fs from "fs";
 import { Suspense } from "react";
 import CardBody from "./cardbody";
 import prisma from "@/lib/prisma";
+import { StudentOverlay } from "@prisma/client";
 //import TextModerate from 'text-moderate';
 
 export interface DbInfo {
-  FIRST_NAME: string;
-  LAST_NAME: string;
-  GRAD_YEAR: string;
-  DORM: string;
-  DORM_ROOM: string;
-  USER_ID: string;
+    FIRST_NAME: string;
+    LAST_NAME: string;
+    GRAD_YEAR: string;
+    DORM: string;
+    DORM_ROOM: string;
+    USER_ID: string;
 }
 
 export interface StudentInfo {
-  first: string;
-  last: string;
-  year: string;
-  dorm: string;
-  room: string;
-  id: string;
-  photo_path: string;
-  pronouns: string;
-  showDorm: boolean;
-  showProfile: boolean;
-  showPicture: boolean;
+    first: string;
+    last: string;
+    year: string;
+    dorm: string;
+    room: string;
+    id: string;
+    photo_path: string;
+    pronouns: string;
+    showDorm: boolean;
+    showProfile: boolean;
+    showPicture: boolean;
+}
+
+async function getPhoto(uid: string) {
+    let path = "/placeholder.jpg";
+
+    const modPath = `/mod/${uid}_m.jpg`;
+    const genModPath = `${__dirname}/../../../photos${modPath}`;
+
+    const staticPath = `/${uid}.jpg`;
+    const genPath = `${__dirname}/../../../photos${staticPath}`;
+
+    if (fs.existsSync(genModPath)) {
+        path = modPath;
+    } else if (fs.existsSync(genPath)) {
+        //path = fullPath
+        path = staticPath;
+    } else {
+        const imgBuffer = await queryDb(
+            `SELECT PHOTO FROM student_data WHERE USER_ID='${uid}' `
+        );
+
+        // @ts-ignore
+        fs.writeFileSync(genPath, imgBuffer[0]["PHOTO"]);
+        // path = fullPath
+        path = staticPath;
+    }
+
+    return path;
 }
 
 async function filterData(searchParams: { query?: string; filters?: string }) {
-  const searchQuery = (searchParams?.query || "").split(" ").filter((value: string) => {
-    if(value.match(/^\s*$/g))
-        return false;
-    return true;
-  });
+    const searchQuery = (searchParams?.query || "").split(" ").filter((value: string) => {
+        if (value.match(/^\s*$/g))
+            return false;
+        return true;
+    });
 
-  if(!searchQuery.length) {
-    return [];
-  }
+    if (!searchQuery.length) {
+        return [];
+    }
 
-  const filters = (searchParams?.filters || "").split(",");
+    let prismaQuery: any[] = [];
 
-  let filterString: string = searchQuery[0]
-    ? searchQuery
-        .map((filter: string) => {
-          return `FIRST_NAME LIKE '%${filter}%' OR LAST_NAME LIKE \
+    const filters = (searchParams?.filters || "").split(",");
+
+    let filterString: string = searchQuery[0]
+        ? searchQuery
+            .map((filter: string) => {
+                prismaQuery.push({
+                    OR: [{
+                        firstName: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        lastName: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        gradYear: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        dorm: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        dormRoom: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        uid: {
+                            contains: filter,
+                        }
+                    }]
+                });
+                return `FIRST_NAME LIKE '%${filter}%' OR LAST_NAME LIKE \
         '%${filter}%' OR GRAD_YEAR LIKE '%${filter}%' OR DORM LIKE \
         '%${filter}%' OR DORM_ROOM LIKE '%${filter}%' OR USER_ID LIKE \
         '%${filter}%'`;
-        })
-        .join(") AND (")
-    : "";
+            })
+            .join(") AND (")
+        : "";
 
-  if (filters[0]) {
-    filterString += searchQuery[0] ? ") AND (" : "";
-    filterString += filters
-      .map((filter: string) => {
-        return `GRAD_YEAR LIKE '%${filter}%' OR DORM LIKE \
+    if (filters[0]) {
+        filterString += searchQuery[0] ? ") AND (" : "";
+        filterString += filters
+            .map((filter: string) => {
+                prismaQuery.push({
+                    OR: [{
+                        firstName: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        lastName: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        gradYear: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        dorm: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        dormRoom: {
+                            contains: filter,
+                        }
+                    },
+                    {
+                        uid: {
+                            contains: filter,
+                        }
+                    }]
+                });
+                return `GRAD_YEAR LIKE '%${filter}%' OR DORM LIKE \
                 '%${filter}%' OR DORM_ROOM LIKE '%${filter}%'`;
-      })
-      .join(") AND (");
-  }
+            })
+            .join(") AND (");
+    }
 
-  let query = `SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, \
+    const query = `SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, \
         USER_ID FROM student_data WHERE (${filterString}) `;
 
-  // @ts-ignore
-  let raw: any[] = await queryDb(query);
-  let data: StudentInfo[] = [];
+    // @ts-ignore
+    const raw: any[] = await queryDb(query);
+    const data: StudentInfo[] = [];
 
-  await Promise.all(
-    raw.map(async (student) => {
-      const user = await prisma.studentOverlay.findUnique({
+    // reuse query instead of reprocessing
+    const overlay: StudentOverlay[] = await prisma.studentOverlay.findMany({
         where: {
-            uid: student["USER_ID"],
+            AND: prismaQuery
         }
-      })
-
-      if (user && !user.showProfile) {
-        return;
-      }
-
-      let path = "/placeholder.jpg";
-
-      if (!user || user.showPhoto) {
-        const modPath = `/mod/${student["USER_ID"]}_m.jpg`;
-        const genModPath = `${__dirname}/../../../photos${modPath}`;
-
-        const staticPath = `/${student["USER_ID"]}.jpg`;
-        const genPath = `${__dirname}/../../../photos${staticPath}`;
-
-        if (fs.existsSync(genModPath)) {
-          path = modPath;
-        } else if (fs.existsSync(genPath)) {
-          //path = fullPath
-          path = staticPath;
-        } else {
-          const imgBuffer = await queryDb(
-            `SELECT PHOTO FROM student_data WHERE USER_ID='${student["USER_ID"]}' `
-          );
-
-          // @ts-ignore
-          fs.writeFileSync(genPath, imgBuffer[0]["PHOTO"]);
-          // path = fullPath
-          path = staticPath;
-        }
-      }
-
-      let newStudent: StudentInfo = {
-        first: user?.firstName ? user.firstName : student["FIRST_NAME"],
-        last: user?.lastName ? user.lastName : student["LAST_NAME"],
-        year: student["GRAD_YEAR"],
-        dorm: student["DORM"],
-        room: student["DORM_ROOM"],
-        id: student["USER_ID"],
-        photo_path: path,
-        pronouns: user?.pronouns ? user.pronouns : "",
-        showDorm: true,
-        showPicture: true,
-        showProfile: true,
-      };
-
-      if (user && !user.showDorm) {
-        newStudent.showDorm = false;
-      }
-
-      data.push(newStudent);
     })
-  );
 
-  return data;
+    const records = Promise.allSettled([
+        overlay.map(async (student) => {
+            let newStudent: StudentInfo = {
+                first: student.firstName,
+                last: student.lastName,
+                year: student.gradYear,
+                dorm: student.dorm,
+                room: student.dormRoom,
+                id: student.uid,
+                photo_path: student.photoPath,
+                pronouns: student.pronouns,
+                showDorm: student.showDorm,
+                showPicture: student.showPhoto,
+                showProfile: student.showProfile,
+            };
+
+            data.push(newStudent);
+        }),
+        raw.map(async (student) => {
+
+            if (overlay.find((record) => {
+                return record.uid === student["USER_ID"]
+            })) {
+                return;
+            }
+
+            let newStudent: StudentInfo = {
+                first: student["FIRST_NAME"],
+                last: student["LAST_NAME"],
+                year: student["GRAD_YEAR"],
+                dorm: student["DORM"],
+                room: student["DORM_ROOM"],
+                id: student["USER_ID"],
+                photo_path: await getPhoto(student["USER_ID"]),
+                pronouns: "",
+                showDorm: true,
+                showPicture: true,
+                showProfile: true,
+            };
+
+            data.push(newStudent);
+        })]
+    );
+
+    await records;
+
+    return data.sort((a: StudentInfo, b: StudentInfo) => {
+        if (a.first < b.first)
+            return -1;
+        return 1;
+    });
 }
 
-export default function PageBody({
-  searchParams,
+export default async function PageBody({
+    searchParams,
 }: {
-  searchParams?: {
-    query?: string;
-    filters?: string;
-  };
+    searchParams?: {
+        query?: string;
+        filters?: string;
+    };
 }) {
-  if (searchParams?.query || searchParams?.filters) {
-    const filteredData = filterData(searchParams);
+    if (searchParams?.query || searchParams?.filters) {
+        const filteredData = filterData(searchParams);
 
-    return (
-        <Suspense fallback={<CardBody filteredData={undefined} />}>
-          <CardBody filteredData={filteredData} />
-        </Suspense>
-    );
-  } else {
-    return (
-          <div className="mont d-flex mt-5 align-items-center justify-content-center row w-100">
-            <div className="col-12">
-                <p
-                    className="h4 text-center"
-                >
-                    Welcome to<br/>
-                    <span className="play text-black">the&nbsp;<span className="h1">CYGNET</span><span className="h4 grad"> by SCCS</span></span>
-                </p>
+        return (
+            <Suspense fallback={<CardBody filteredData={undefined} />}>
+                <CardBody filteredData={filteredData} />
+            </Suspense>
+        );
+    } else {
+        return (
+            <div className="mont d-flex mt-5 align-items-center justify-content-center row w-100">
+                <div className="col-12">
+                    <p
+                        className="h4 text-center"
+                    >
+                        Welcome to<br />
+                        <span className="play text-black">the&nbsp;<span className="h1">CYGNET</span><span className="h4 grad"> by SCCS</span></span>
+                    </p>
+                </div>
+                <div className="col-12">
+                    <p
+                        className="text-center h6 mt-5"
+                    >
+                        Enter a query or add a filter to begin
+                    </p>
+                </div>
             </div>
-            <div className="col-12">
-                <p
-                    className="text-center h6 mt-5"
-                >
-                    Enter a query or add a filter to begin
-                </p>
-            </div>
-        </div>
-    )
-  }
+        )
+    }
 }

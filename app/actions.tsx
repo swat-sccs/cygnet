@@ -127,6 +127,10 @@ export async function submitData(prevState: {
             showProfile: formData.get("showProfile"),
         };
 
+        //@ts-ignore
+        const itsRecord: any[] = await queryDb(`SELECT GRAD_YEAR, DORM, DORM_ROOM \
+            FROM student_data WHERE USER_ID='${id}' `);
+
         await prisma.studentOverlay.upsert({
             where: {
                 uid: id,
@@ -146,6 +150,9 @@ export async function submitData(prevState: {
                 lastName: rawFormData.lastName,
                 pronouns: rawFormData.pronouns,
                 photoPath: photo_path,
+                dorm: itsRecord[0]["DORM"],
+                dormRoom: itsRecord[0]["DORM_ROOM"],
+                gradYear: itsRecord[0]["GRAD_YEAR"],
                 showProfile: rawFormData.showProfile === "on" ? true : false,
                 showDorm: rawFormData.showDorm === "on" ? true : false,
                 showPhoto: rawFormData.showPicture === "on" ? true : false,
