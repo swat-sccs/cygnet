@@ -175,12 +175,6 @@ body {
     place-items: center;
 }
 
-.cyg-img-svg {
-    flex-direction: column;
-    flex-grow: 1;
-    cursor: pointer;
-}
-
 .cyg-img-container:hover .cyg-img-overlay {
     opacity: 1;
     background-color: rgba(53, 92, 192, 0.4);
