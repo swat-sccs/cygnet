@@ -1,5 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import './globals.css';
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import SearchBar from '@/components/searchbar';
@@ -30,7 +28,7 @@ export default async function Home({ searchParams }: {
     if((clientIPArr[0].includes('130') && clientIPArr[1] === '58') ||
             (clientIPArr[0].includes('172')) || await auth()) {
         return (
-            <div className="">
+            <div className="px-4">
                 <Suspense>
                     <SearchBar />
                 </Suspense>

@@ -1,6 +1,5 @@
 import { StudentInfo } from "@/components/pagebody";
 import { auth } from "@/lib/auth";
-import "bootstrap/dist/css/bootstrap.css";
 import SignIn from "@/components/signin";
 import prisma from "../../lib/prisma";
 

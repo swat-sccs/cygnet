@@ -3,6 +3,7 @@ import './globals.css'
 import Script from 'next/script'
 import { NextAuthProvider } from './NextAuthProvider';
 import Footer from '@/components/footer';
+import { mont } from './fonts';
 
 export const metadata = {
     title: 'Cygnet',
@@ -16,8 +17,8 @@ export default function RootLayout({
 }) {
     return (
         <NextAuthProvider>
-            <html lang="en">
-                <body className="bg">
+            <html lang="en" className={`${mont.className} font-medium`}>
+                <body className="bg-page-bg-light dark:bg-page-bg-dark">
                     <div className="most-height">
                         <Nav />
                         <div className="">
@@ -26,8 +27,6 @@ export default function RootLayout({
                     </div>
                     <Footer/>
                 </body>
-                {/*@ts-ignore*/}
-                <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossOrigin="anonymous" />
                 <Script src="https://kit.fontawesome.com/3d9fad96a7.js" crossOrigin="anonymous" />
             </html>
         </NextAuthProvider>

@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import CardBody from "./cardbody";
 import prisma from "@/lib/prisma";
 import { StudentOverlay } from "@prisma/client";
+import { play } from "@/app/fonts";
 //import TextModerate from 'text-moderate';
 
 export interface DbInfo {
@@ -68,7 +69,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
     if (!searchQuery.length) {
         return [];
     }
-    
+
     searchQuery[0] = searchQuery[0].replaceAll(/\W/g, ' ');
 
 
@@ -160,7 +161,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
             })
             .join(") AND (");
     }
-    
+
     const query = `SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, \
         USER_ID FROM student_data WHERE (${filterString})`;
 
@@ -223,6 +224,11 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
     await records;
 
     return data.sort((a: StudentInfo, b: StudentInfo) => {
+        if (a.first == b.first)
+            if (a.last < b.last)
+                return -1
+            else
+                return 1
         if (a.first < b.first)
             return -1;
         return 1;
@@ -247,16 +253,23 @@ export default async function PageBody({
         );
     } else {
         return (
-            <div className="mont d-flex mt-5 align-items-center justify-content-center row w-100">
-                <div className="col-12">
+            <div className="flex mt-5 items-center justify-center flex-col w-full text-black dark:text-white">
+                <div className="flex-row w-full">
                     <p
                         className="h4 text-center"
                     >
                         Welcome to<br />
-                        <span className="play text-black">the&nbsp;<span className="h1">CYGNET</span><span className="h4 grad"> by SCCS</span></span>
+                        <span className={`${play.className} h1`}>
+                            <span className="text-black dark:text-white text-3xl" >
+                                CYGNET
+                            </span>
+                            <span className="h4 grad dark:brightness-150">
+                                by SCCS
+                            </span>
+                        </span>
                     </p>
                 </div>
-                <div className="col-12">
+                <div className="flex-row w-full">
                     <p
                         className="text-center h6 mt-5"
                     >

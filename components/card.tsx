@@ -7,13 +7,11 @@ export default function Card(props: StudentInfo | any) {
   //probably can just use props -abhi
   if (props.id && props.showProfile) {
     return (
-      <div className="align-items-center bg-white rounded-lg py-3 px-2 cont shadow-sm flex-fill flex-grow-1 h-100">
+      <div className="items-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow grow h-full">
         <UserImage
           photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
           button={(props.button && props.showPicture) ? props.button : false}
-          //NEWPHOTO = {NEWPHOTO}
         />{" "}
-        {/*sourced from where?*/}
         <UserInfo
           first={props.first}
           last={props.last}
@@ -23,13 +21,12 @@ export default function Card(props: StudentInfo | any) {
           id={props.id}
           photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
           pronouns={props.pronouns}
-          //NEWPHOTO = {NEWPHOTO}
         />
       </div>
     );
   } else {
     return (
-      <div className="align-items-center bg-white rounded-lg py-3 px-2 cont shadow-sm">
+      <div className="items-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow grow h-full">
         <UserImage />
         <UserInfo />
       </div>

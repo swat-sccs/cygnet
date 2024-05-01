@@ -43,11 +43,13 @@ export default function Filter(props: FilterProps) {
         setGradYear("");
     }
     return (
-        <div className={props.filterOn ? "position-absolute filterwindow d-flex row mx-2 mont" : "position-absolute opacity-0 invisible"}>
-            <p className="h4 font-semibold col-12 gx-2 gy-2">Filters</p>
-            <div className="col-12 col-md-4 gx-2 gy-2">
-                <div className="filterSelect shadow-md w-100 g-0">
-                    <select className="w-100" value={dorm} onChange={handleDormChange} title="Dorm">
+        <div className={props.filterOn ? "absolute filterwindow bg-gray-50/25 dark:bg-gray-800/25 grid gap-4 grid-cols-3 grid-rows-2 mx-2" : "absolute opacity-0 invisible"}>
+            <div className="grow flex-col w-full col-span-3">
+                <p className="h4 font-semibold text-2xl dark:text-white ml-1">Filters</p>
+            </div>
+            <div className="grow flex-col w-full col-span-1">
+                <div className="filterSelect shadow w-full g-0">
+                    <select className="w-full" value={dorm} onChange={handleDormChange} title="Dorm">
                         <option>Dorms</option>
                         {dormsList.map((dormName) => (
                             <option key={dormName} value={dormName}>
@@ -57,9 +59,9 @@ export default function Filter(props: FilterProps) {
                     </select>
                 </div>
             </div>
-            <div className="col-12 col-md-4 gx-2 gy-2">
-                <div className="filterSelect shadow-md w-100 g-0">
-                    <select className="w-100" value={gradYear} onChange={handleYearChange} title="Year">
+            <div className="grow flex-col w-full col-span-1">
+                <div className="filterSelect shadow w-full g-0">
+                    <select className="w-full" value={gradYear} onChange={handleYearChange} title="Year">
                         <option >Class Year</option>
                         {yearsList.map((year) => (
                             <option key={year} value={year}>
@@ -69,8 +71,8 @@ export default function Filter(props: FilterProps) {
                     </select>
                 </div>
             </div>
-            <div className="col-12 col-md-4 gx-2 gy-2">
-                <button className="filterButton shadow-md w-100" onClick={handleReset}>Reset</button>
+            <div className="grow flex-col w-full col-span-1">
+                <button className="filterButton shadow w-full" onClick={handleReset}>Reset</button>
             </div>
         </div>
     )

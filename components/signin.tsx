@@ -1,36 +1,37 @@
 'use client'
 
+import { play } from "@/app/fonts";
 import { useSession, signIn, signOut } from "next-auth/react"
 
 export default function SignIn() {
     const { data: session } = useSession();
     if (session?.user) {
         return (
-            <div className="d-inline-flex w-full margin-spacing">
+            <div className="inline-flex w-full margin-spacing">
                 Signed in as {session.user.email} <br />
                 <button className="mt-8" onClick={() => signOut()}>Sign out</button>
             </div>
         )
     }
     return (
-        <div className="mont d-flex mt-5 align-items-center justify-content-center row w-100">
-            <div className="col-12">
+        <div className="flex mt-16 items-center justify-center flex-col w-full text-lg text-black dark:text-white">
+            <div className="flex-row justify-center">
                 <p
-                    className="h4 text-center"
+                    className="text-center"
                 >
                     Welcome to<br />
-                    <span className="play text-black">the&nbsp;<span className="h1">CYGNET</span><span className="h4 grad"> by SCCS</span></span>
+                    <span className={`${play.className}`}>the&nbsp;<span className="text-3xl dark:brightness-150">CYGNET</span><span className="grad"> by SCCS</span></span>
                 </p>
             </div>
-            <div className="col-12 d-flex justify-content-center">
+            <div className="flex-row justify-center">
                 <p
-                    className="text-center h6 mt-5"
+                    className="text-center mt-5"
                 >
                     Please sign in to continue
                 </p>
             </div>
-            <div className="col-12 d-flex justify-content-center">
-                <button className="filterButton shadow-md mt-5" onClick={() => signIn("keycloak")}>Sign in</button>
+            <div className="flex-row justify-center">
+                <button className="filterButton shadow mt-5" onClick={() => signIn("keycloak")}>Sign in</button>
             </div>
         </div>
     )

@@ -10,11 +10,11 @@ export default function CardBody(props: CardBodyProps) {
     const { filteredData } = props;
     if (filteredData) {
         return (
-            <div className="container mb-4">
-                <div className="row flex align-items-stretch">
+            <div className="max-w-screen-lg md:mx-auto mt-4 mb-4 justify-center">
+                <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {
                         use(filteredData).map((item, index) => (
-                            <div className="col-6 col-md-4 col-lg-3 gy-4">
+                            <div className="flex-col">
                                 <Card key={index} {...item} />
                             </div>
                         ))
@@ -24,30 +24,30 @@ export default function CardBody(props: CardBodyProps) {
         )
     } else {
         return (
-            <div className="container mb-4">
-                <div className="row">
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+            <div className="max-w-screen-lg md:mx-auto mt-4 mb-4 justify-center">
+                <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
-                    <div className="col-6 col-md-4 col-lg-3 gy-4">
+                    <div className="flex-col gy-4">
                         <Card />
                     </div>
                 </div>
