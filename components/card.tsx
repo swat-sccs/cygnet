@@ -26,7 +26,7 @@ export default function Card(props: StudentInfo | any) {
     );
   } else {
     return (
-      <div className="items-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow grow h-full">
+      <div className="items-center justify-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow grow h-full">
         <UserImage />
         <UserInfo />
       </div>
