@@ -193,7 +193,8 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
                 showProfile: student.showProfile,
             };
 
-            data.push(newStudent);
+            if(newStudent.showProfile)
+                data.push(newStudent);
         }),
         raw.map(async (student) => {
 
