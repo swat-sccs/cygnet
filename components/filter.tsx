@@ -1,12 +1,14 @@
 'use client'
 import React, { ChangeEvent } from 'react';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import filterData from '../data/filterData.json';
+import AnimateHeight, { Height } from 'react-animate-height';
+
 interface FilterProps {
-    filterOn: boolean;
+    filterHeight: Height;
     setFilters: (query: string) => void;
 }
+
 const dormsList = filterData[0].DORMS;
 const currentYear = new Date().getFullYear();
 const yearsList = Array.from({ length: 4 }, (_, i) => currentYear + i)
@@ -43,37 +45,45 @@ export default function Filter(props: FilterProps) {
         setGradYear("");
     }
     return (
-        <div className={props.filterOn ? "absolute filterwindow bg-gray-50/25 dark:bg-gray-800/25 grid gap-4 grid-cols-3 grid-rows-2 mx-2" : "absolute opacity-0 invisible"}>
-            <div className="grow flex-col w-full col-span-3">
-                <p className="h4 font-semibold text-2xl dark:text-white ml-1">Filters</p>
-            </div>
-            <div className="grow flex-col w-full col-span-1">
-                <div className="filterSelect shadow w-full g-0">
-                    <select className="w-full" value={dorm} onChange={handleDormChange} title="Dorm">
-                        <option>Dorms</option>
-                        {dormsList.map((dormName) => (
-                            <option key={dormName} value={dormName}>
-                                {dormName}
-                            </option>
-                        ))}
-                    </select>
+        <div className="absolute filterwindow-wrapper z-50">
+            <AnimateHeight
+                id="filter-panel"
+                duration={500}
+                height={props.filterHeight} // see props documentation below
+            >
+                <div className="filterwindow bg-gray-50/25 dark:bg-primary-800/25 grid gap-4 grid-cols-3 grid-rows-2">
+                    <div className="grow flex-col w-full col-span-3">
+                        <p className="font-semibold text-2xl dark:text-white ml-1">Filters</p>
+                    </div>
+                    <div className="grow flex-col w-full col-span-1">
+                        <div className="filterSelect shadow w-full g-0 rounded-full bg-white dark:bg-primary-800 dark:text-white border-0">
+                            <select className="w-full" value={dorm} onChange={handleDormChange} title="Dorm">
+                                <option>Dorms</option>
+                                {dormsList.map((dormName) => (
+                                    <option key={dormName} value={dormName}>
+                                        {dormName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="grow flex-col w-full col-span-1">
+                        <div className="filterSelect shadow w-full g-0 rounded-full bg-white dark:bg-primary-800 dark:text-white border-0">
+                            <select className="w-full" value={gradYear} onChange={handleYearChange} title="Year">
+                                <option >Class Year</option>
+                                {yearsList.map((year) => (
+                                    <option key={year} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="grow flex-col w-full col-span-1 rounded-full bg-white dark:bg-primary-600 dark:text-white border-0">
+                        <button className="filterButton shadow w-full" onClick={handleReset}>Reset</button>
+                    </div>
                 </div>
-            </div>
-            <div className="grow flex-col w-full col-span-1">
-                <div className="filterSelect shadow w-full g-0">
-                    <select className="w-full" value={gradYear} onChange={handleYearChange} title="Year">
-                        <option >Class Year</option>
-                        {yearsList.map((year) => (
-                            <option key={year} value={year}>
-                                {year}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="grow flex-col w-full col-span-1">
-                <button className="filterButton shadow w-full" onClick={handleReset}>Reset</button>
-            </div>
+            </AnimateHeight>
         </div>
     )
 }

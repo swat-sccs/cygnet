@@ -1,7 +1,7 @@
 'use client'
-import Image from 'next/image';
 import Filter from './filter';
 import { useState } from 'react';
+import AnimateHeight, { Height } from 'react-animate-height';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 interface SearchbarProps {
@@ -34,7 +34,7 @@ export default function SearchBar() {
         replace(`${pathname}?${params.toString()}`);
     }
 
-    const [filterOn, setFilterOn] = useState(false);
+    const [filterHeight, setFilterHeight] = useState<Height>(0);
 
     return (
         <div className="flex justify-center">
@@ -57,10 +57,13 @@ export default function SearchBar() {
                         <line x1="1.18359" y1="0.314453" x2="1.18359" y2="51.2774" stroke-width="2" />
                     </svg>
 
-                    <svg className="stroke-gray-500 dark:stroke-white" onClick={() => setFilterOn(!filterOn)} width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="stroke-gray-500 dark:stroke-white" aria-expanded={filterHeight !== 0}
+                        aria-controls="filter-panel"
+                        onClick={() => setFilterHeight(filterHeight === 0 ? '100%' : 0)}
+                        width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.01855 13.9951L17.7686 22.7451L26.5186 13.9951" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <Filter filterOn={filterOn} setFilters={handleFilters} />
+                    <Filter filterHeight={filterHeight} setFilters={handleFilters} />
                 </div>
             </div>
         </div>

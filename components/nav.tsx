@@ -3,22 +3,20 @@
 import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link";
-//@ts-ignore
-import { Collapse } from 'react-collapse';
+import { useCollapse } from 'react-collapsed';
 import { play } from "@/app/fonts";
-import { useState } from "react";
 
 export default function Nav() {
     const pathName = usePathname();
+    const { getCollapseProps, getToggleProps, isExpanded } = useCollapse()
 
-    const [isOpen, setOpen] = useState(false);
     const { data: session } = useSession();
 
     return (
         <nav className="bg-white dark:bg-dark-blue shadow flex-col">
             <div className="max-w-screen-lg md:mx-auto flex flex-wrap items-center justify-between p-4">
                 <p className={`${play.className} cursor-pointer`}>
-                    <Link className="text-decoration-none nav-item transition transition-colors text-black dark:md:hover:text-primary-800 md:hover:text-primary-500 md:p-0 dark:text-white text-3xl" href="/">
+                    <Link className="text-decoration-none nav-item transition transition-colors text-black dark:md:hover:text-primary-800 md:hover:text-primary-500 md:p-0 dark:text-white text-4xl" href="/">
                         CYGNET
                     </Link>
                     <span className="grad transition transition-colors hover:brightness-150 dark:brightness-150 dark:hover:brightness-100">
@@ -31,9 +29,7 @@ export default function Nav() {
                     data-collapse-toggle="navbar-default"
                     type="button"
                     className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:focus:ring-gray-600"
-                    aria-controls="navbar-default"
-                    aria-expanded="false"
-                    onClick={() => setOpen(!isOpen)}>
+                    {...getToggleProps()}>
                     <span className="sr-only">Open main menu</span>
                     <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
@@ -66,7 +62,7 @@ export default function Nav() {
                     </ul>
                 </div>
             </div>
-            <Collapse isOpened={isOpen}>
+            <section {...getCollapseProps()}>
                 <div className="w-full md:hidden" id="navbar-default">
                     <ul className="font-medium flex flex-col items-center px-4 pb-4 md:p-0 rounded-lg">
                         <li className="grow w-full">
@@ -93,7 +89,7 @@ export default function Nav() {
                         </li>
                     </ul>
                 </div>
-            </Collapse>
+            </section>
         </nav>
     );
 }

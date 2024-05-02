@@ -21,12 +21,14 @@ body {
 
 /*footer.tsx*/
 .most-height {
-    min-height: 92dvh;
+    min-height: 90dvh;
 }
 
 .footer-height {
-    height: 8dvh;
+    height: 10dvh;
 }
+
+
 
 /* nav.tsx */
 .grad {
@@ -45,10 +47,13 @@ body {
     min-width: 0;
 }
 
-.filterwindow {
+.filterwindow-wrapper {
     top: calc(100% + 20px);
     right: 0px;
-    z-index: 1000;
+    height: 30dvh;
+}
+
+.filterwindow {
     backdrop-filter: blur(10px);
     border-radius: 25px;
     padding: 15px;
@@ -70,9 +75,6 @@ body {
 .filterSelect {
     position: relative;
     display: inline-flex;
-    border-radius: 1000px;
-    background-color: white;
-    border: #B9B9B9 solid 1px;
     cursor: pointer;
     min-height: 40px;
     height: 100%;
@@ -96,10 +98,7 @@ body {
 }
 
 .filterButton {
-    border: transparent solid 0.5px;
-    background-color: #44608F;
     padding: 8px 30px;
-    border-radius: 100px;
     color: white;
     outline: none;
     font-weight: 600;

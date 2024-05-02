@@ -256,14 +256,14 @@ export default async function PageBody({
             <div className="flex mt-5 items-center justify-center flex-col w-full text-black dark:text-white">
                 <div className="flex-row w-full">
                     <p
-                        className="h4 text-center"
+                        className="text-center"
                     >
                         Welcome to<br />
                         <span className={`${play.className} h1`}>
                             <span className="text-black dark:text-white text-3xl" >
                                 CYGNET
                             </span>
-                            <span className="h4 grad dark:brightness-150">
+                            <span className="grad dark:brightness-150 z-0">
                                 by SCCS
                             </span>
                         </span>
