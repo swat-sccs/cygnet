@@ -48,8 +48,8 @@ body {
 }
 
 .filterwindow-wrapper {
-    top: calc(100% + 20px);
-    right: 0px;
+    top: 100%;
+    right: -1.25rem;
     height: 30dvh;
 }
 

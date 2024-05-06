@@ -36,6 +36,11 @@ export default function SearchBar() {
 
     const [filterHeight, setFilterHeight] = useState<Height>(0);
 
+    const style = {
+        transform: filterHeight ? 'rotate(180deg)' : '',
+        transition: 'transform 150ms ease-in-out', // smooth transition
+    }
+
     return (
         <div className="flex justify-center">
             <div className="max-w-screen-lg mx-2 mt-4 grow min-w-0">
@@ -57,7 +62,7 @@ export default function SearchBar() {
                         <line x1="1.18359" y1="0.314453" x2="1.18359" y2="51.2774" stroke-width="2" />
                     </svg>
 
-                    <svg className="stroke-gray-500 dark:stroke-white" aria-expanded={filterHeight !== 0}
+                    <svg className="stroke-gray-500 dark:stroke-white cursor-pointer" style={style} aria-expanded={filterHeight !== 0}
                         aria-controls="filter-panel"
                         onClick={() => setFilterHeight(filterHeight === 0 ? '100%' : 0)}
                         width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">

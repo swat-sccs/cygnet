@@ -43,13 +43,12 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
             </div>
             <div className="flex-col grow col-span-1 md:col-span-3">
                 <div className="bg-white h-full grow dark:bg-dark-blue py-3 px-4 shadow rounded-lg grow text-black dark:text-white">
-                    <h1 className="text-2xl text-center mb-4">Edit Profile</h1>
-                    <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+                    <h1 className="text-2xl text-center mb-4">Edit Profile</h1>                    <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
                         <div className="flex-col col-span-1">
                             <label className="h6 d-block">First Name</label>
                             <input
                                 name="fName"
-                                className="py-1 px-2 w-full d-block rounded bg-primary-600 dark:bg-primary-800 border-0"
+                                className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
                                 value={userData.first}
                                 onChange={(e) => {
                                     setUserData(
@@ -63,7 +62,7 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                             <label className="h6 d-block">Last Name</label>
                             <input
                                 name="lName"
-                                className="py-1 px-2 w-full d-block rounded bg-primary-600 dark:bg-primary-800 border-0"
+                                className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
                                 value={userData.last}
                                 onChange={(e) => {
                                     setUserData(
@@ -77,7 +76,7 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                             <label className="h6 d-block">Pronouns</label>
                             <input
                                 name="pNouns"
-                                className="py-1 px-2 w-full d-block rounded bg-primary-600 dark:bg-primary-800 border-0"
+                                className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
                                 value={userData.pronouns}
                                 onChange={(e) => {
                                     setUserData(
@@ -91,7 +90,7 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                     <div className="grid gap-4 grid-cols-3 mt-4">
                         <div className="flex-col col-span-1 justify-center">
                             <input
-                                className="w-5 h-5 mb-px cursor-pointer text-primary-600 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
+                                className="w-5 h-5 mb-px cursor-pointer text-primary-400 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
                                 type="checkbox"
                                 name="showDorm"
                                 id="showDorm"
@@ -107,7 +106,7 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                         </div>
                         <div className="flex-col col-span-1 justify-center">
                             <input
-                                className="w-5 h-5 mb-px cursor-pointer text-primary-600 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
+                                className="w-5 h-5 mb-px cursor-pointer text-primary-400 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
                                 type="checkbox"
                                 name="showPicture"
                                 id="showPicture"
@@ -123,7 +122,7 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                         </div>
                         <div className="flex-col col-span-1 justify-center">
                             <input
-                                className="w-5 h-5 mb-px cursor-pointer text-primary-600 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
+                                className="w-5 h-5 mb-px cursor-pointer text-primary-400 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
                                 type="checkbox"
                                 name="showProfile"
                                 id="showProfile"
@@ -139,7 +138,7 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                         </div>
                     </div>
                     <div className="flex flex-row justify-center">
-                        <input type="submit" value="Submit" aria-disabled={props.pending} className="cursor-pointer mt-8 mx-auto w-full bg-primary-600 dark:bg-primary-800 hover:brightness-75 transition transition-filters rounded h-8 max-w-2xl" />
+                        <input type="submit" value="Submit" aria-disabled={props.pending} className="cursor-pointer mt-8 mx-auto w-full text-white bg-primary-400 dark:bg-primary-800 hover:brightness-75 transition transition-filters rounded h-8 max-w-2xl" />
                     </div>
                 </div>
             </div>

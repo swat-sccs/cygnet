@@ -51,13 +51,13 @@ export default function Filter(props: FilterProps) {
                 duration={500}
                 height={props.filterHeight} // see props documentation below
             >
-                <div className="filterwindow bg-gray-50/25 dark:bg-primary-800/25 grid gap-4 grid-cols-3 grid-rows-2">
+                <div className="filterwindow bg-gray-50/25 dark:bg-primary-800/25 grid gap-4 grid-cols-3 grid-rows-2 m-5">
                     <div className="grow flex-col w-full col-span-3">
                         <p className="font-semibold text-2xl dark:text-white ml-1">Filters</p>
                     </div>
                     <div className="grow flex-col w-full col-span-1">
-                        <div className="filterSelect shadow w-full g-0 rounded-full bg-white dark:bg-primary-800 dark:text-white border-0">
-                            <select className="w-full" value={dorm} onChange={handleDormChange} title="Dorm">
+                        <div className="filterSelect shadow w-full g-0 rounded-full bg-primary-400 hover:bg-primary-500 dark:bg-primary-800 text-white dark:hover:bg-primary-900 border-0">
+                            <select className="w-full text-black" value={dorm} onChange={handleDormChange} title="Dorm">
                                 <option>Dorms</option>
                                 {dormsList.map((dormName) => (
                                     <option key={dormName} value={dormName}>
@@ -68,8 +68,8 @@ export default function Filter(props: FilterProps) {
                         </div>
                     </div>
                     <div className="grow flex-col w-full col-span-1">
-                        <div className="filterSelect shadow w-full g-0 rounded-full bg-white dark:bg-primary-800 dark:text-white border-0">
-                            <select className="w-full" value={gradYear} onChange={handleYearChange} title="Year">
+                        <div className="filterSelect shadow w-full g-0 rounded-full bg-primary-400 hover:bg-primary-500 dark:bg-primary-800 text-white dark:hover:bg-primary-900 border-0">
+                            <select className="w-full text-black" value={gradYear} onChange={handleYearChange} title="Year">
                                 <option >Class Year</option>
                                 {yearsList.map((year) => (
                                     <option key={year} value={year}>
@@ -79,8 +79,8 @@ export default function Filter(props: FilterProps) {
                             </select>
                         </div>
                     </div>
-                    <div className="grow flex-col w-full col-span-1 rounded-full bg-white dark:bg-primary-600 dark:text-white border-0">
-                        <button className="filterButton shadow w-full" onClick={handleReset}>Reset</button>
+                    <div className="grow flex-col w-full col-span-1 rounded-full bg-primary-600 text-white border-0">
+                        <button className="filterButton rounded-full shadow w-full bg-transparent" onClick={handleReset}>Reset</button>
                     </div>
                 </div>
             </AnimateHeight>
