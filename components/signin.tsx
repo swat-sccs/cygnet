@@ -14,7 +14,7 @@ export default function SignIn() {
         )
     }
     return (
-        <div className="flex mt-16 items-center justify-center flex-col w-full text-lg text-black dark:text-white">
+        <div className="flex pt-16 items-center justify-center flex-col w-full text-lg text-black dark:text-white">
             <div className="flex-row justify-center">
                 <p
                     className="text-center"
@@ -31,7 +31,7 @@ export default function SignIn() {
                 </p>
             </div>
             <div className="flex-row justify-center">
-                <button className="filterButton shadow mt-5" onClick={() => signIn("keycloak")}>Sign in</button>
+                <button className="shadow px-6 py-2 mt-5 rounded-full bg-primary-600 hover:bg-primary-800 dark:bg-dark-blue text-white transition-colors border-0" onClick={() => signIn("keycloak")}>Sign in</button>
             </div>
         </div>
     )

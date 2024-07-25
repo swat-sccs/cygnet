@@ -21,14 +21,12 @@ body {
 
 /*footer.tsx*/
 .most-height {
-    min-height: 90dvh;
+    min-height: 80dvh;
 }
 
-.footer-height {
+.header-height {
     height: 10dvh;
 }
-
-
 
 /* nav.tsx */
 .grad {
@@ -127,22 +125,6 @@ body {
 
 .font-light {
     font-weight: 400;
-}
-
-.enlarge-properties {
-    position: absolute;
-    z-index: 1;
-    top: 20px;
-    left: 20px;
-    width: 20px;
-    height: 20px;
-}
-
-.enlarge-properties:hover {
-    filter: invert(37%) sepia(15%) saturate(1655%) hue-rotate(179deg) brightness(91%) contrast(86%);
-    cursor: pointer;
-    transition: filter 0.1s;
-    transition-timing-function: ease-in-out;
 }
 
 .cursor-pointer {

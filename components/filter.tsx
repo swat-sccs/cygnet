@@ -45,7 +45,7 @@ export default function Filter(props: FilterProps) {
         setGradYear("");
     }
     return (
-        <div className="absolute filterwindow-wrapper z-50">
+        <div className="absolute filterwindow-wrapper z-30">
             <AnimateHeight
                 id="filter-panel"
                 duration={500}
