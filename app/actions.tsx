@@ -4,13 +4,14 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import fs from "fs";
-import { DbInfo, StudentInfo } from "@/components/pagebody";
+import { DbInfo } from "@/components/pagebody";
 import { queryDb } from "./queryDb";
 
 import sharp from 'sharp';
 
 import BadWordsNext from "bad-words-next";
 import en from 'bad-words-next/data/en.json';
+import { StudentOverlay } from "@prisma/client";
 
 export async function getUser(id: string | undefined) {
     if (!id) {
@@ -50,17 +51,17 @@ export async function getUser(id: string | undefined) {
         path = staticPath;
     }
 
-    const user_data: StudentInfo = {
-        first: student["FIRST_NAME"],
-        last: student["LAST_NAME"],
-        year: student["GRAD_YEAR"],
+    const user_data: StudentOverlay = {
+        firstName: student["FIRST_NAME"],
+        lastName: student["LAST_NAME"],
+        gradYear: student["GRAD_YEAR"],
         dorm: student["DORM"],
-        room: student["DORM_ROOM"],
-        id: id,
-        photo_path: path,
+        dormRoom: student["DORM_ROOM"],
+        uid: id,
+        photoPath: path,
         pronouns: "",
         showDorm: true,
-        showPicture: true,
+        showPhoto: true,
         showProfile: true,
     };
 
@@ -84,7 +85,7 @@ export async function submitData(prevState: {
         const id = session.user.email?.split("@")[0];
         if (!id) return { message: "ID not found!" };
 
-        let photo_path = (await getUser(id)).photo_path;
+        let photo_path = (await getUser(id)).photoPath;
 
         const picData = formData.get("picFile") as File;
         if (picData) {

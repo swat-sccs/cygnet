@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useState } from "react";
-import { StudentInfo } from "./pagebody";
 import Card from "./card";
 import { useSnackbar } from '@swat-sccs/react-simple-snackbar';
+import { StudentOverlay } from "@prisma/client";
 
 const snackOptions = {
     position: 'bottom-left' as const,
@@ -21,7 +21,7 @@ const snackOptions = {
     },
 }
 
-export default function SettingsForm(props: { inData: StudentInfo, pending: boolean, state: { message: string } }) {
+export default function SettingsForm(props: { inData: StudentOverlay, pending: boolean, state: { message: string } }) {
 
     const [userData, setUserData] = useState(props.inData);
     const [openSnackbar, closeSnackbar] = useSnackbar(snackOptions);
@@ -42,14 +42,15 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                 <Card {...userData} button={true} />
             </div>
             <div className="flex-col grow col-span-1 md:col-span-3">
-                <div className="bg-white h-full grow dark:bg-dark-blue py-3 px-4 shadow rounded-lg grow text-black dark:text-white">
-                    <h1 className="text-2xl text-center mb-4">Edit Profile</h1>                    <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+                <div className="bg-white h-full grow dark:bg-dark-blue py-3 px-4 shadow rounded-lg text-black dark:text-white">
+                    <h1 className="text-2xl text-center mb-4">Edit Profile</h1>
+                    <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
                         <div className="flex-col col-span-1">
                             <label className="h6 d-block">First Name</label>
                             <input
                                 name="fName"
                                 className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
-                                value={userData.first}
+                                value={userData.firstName}
                                 onChange={(e) => {
                                     setUserData(
                                         Object.assign({}, userData, { first: e.target.value })
@@ -63,7 +64,7 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                             <input
                                 name="lName"
                                 className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
-                                value={userData.last}
+                                value={userData.lastName}
                                 onChange={(e) => {
                                     setUserData(
                                         Object.assign({}, userData, { last: e.target.value })
@@ -108,17 +109,17 @@ export default function SettingsForm(props: { inData: StudentInfo, pending: bool
                             <input
                                 className="w-5 h-5 mb-px cursor-pointer text-primary-400 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
                                 type="checkbox"
-                                name="showPicture"
-                                id="showPicture"
+                                name="showPhoto"
+                                id="showPhoto"
                                 role="switch"
-                                checked={userData.showPicture}
+                                checked={userData.showPhoto}
                                 onChange={(e) =>
                                     setUserData(
-                                        Object.assign({}, userData, { showPicture: !(userData.showPicture) })
+                                        Object.assign({}, userData, { showPhoto: !(userData.showPhoto) })
                                     )
                                 }
                             />
-                            <label className="cursor-pointer text-black dark:text-white" htmlFor="showPicture">Show Picture</label>
+                            <label className="cursor-pointer text-black dark:text-white" htmlFor="showPhoto">Show Picture</label>
                         </div>
                         <div className="flex-col col-span-1 justify-center">
                             <input

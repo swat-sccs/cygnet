@@ -1,26 +1,28 @@
 "use client";
+import { StudentOverlay } from "@prisma/client";
 import UserImage from "./userimage";
 import UserInfo from "./userinfo";
-import { StudentInfo } from "@/components/pagebody";
 
-export default function Card(props: StudentInfo | any) {
-  //probably can just use props -abhi
-  if (props.id && props.showProfile) {
+export default function Card(props: StudentOverlay | any) {
+  if (props.uid && props.showProfile) {
     return (
       <div className="items-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow grow h-full">
         <UserImage
-          photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
-          button={(props.button && props.showPicture) ? props.button : false}
+          photo_path={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
+          button={(props.button && props.showPhoto) ? props.button : false}
         />{" "}
         <UserInfo
-          first={props.first}
-          last={props.last}
-          year={props.year}
+          firstName={props.firstName}
+          lastName={props.lastName}
+          gradYear={props.gradYear}
           dorm={(props.showDorm && props.dorm) ? props.dorm : "Room Not Shown"}
-          room={props.showDorm ? props.room : ""}
-          id={props.id}
-          photo_path={props.showPicture ? props.photo_path : "/placeholder.jpg"}
+          dormRoom={props.showDorm ? props.dormRoom : ""}
+          uid={props.uid}
+          photoPath={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
           pronouns={props.pronouns}
+          showDorm={props.showDorm}
+          showPhoto={props.showPhoto}
+          showProfile={props.showProfile}
         />
       </div>
     );

@@ -1,7 +1,7 @@
 'use client'
 import Filter from './filter';
 import { useState } from 'react';
-import AnimateHeight, { Height } from 'react-animate-height';
+import { Height } from 'react-animate-height';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 interface SearchbarProps {

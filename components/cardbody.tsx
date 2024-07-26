@@ -1,9 +1,9 @@
-import { StudentInfo } from '@/components/pagebody';
+import { StudentOverlay } from '@prisma/client';
 import Card from './card';
 import { use } from 'react';
 
 interface CardBodyProps {
-    filteredData: Promise<StudentInfo[]> | undefined;
+    filteredData: Promise<StudentOverlay[]> | undefined;
 }
 
 export default function CardBody(props: CardBodyProps) {

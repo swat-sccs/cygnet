@@ -17,20 +17,6 @@ export interface DbInfo {
     USER_ID: string;
 }
 
-export interface StudentInfo {
-    first: string;
-    last: string;
-    year: string;
-    dorm: string;
-    room: string;
-    id: string;
-    photo_path: string;
-    pronouns: string;
-    showDorm: boolean;
-    showProfile: boolean;
-    showPicture: boolean;
-}
-
 async function getPhoto(uid: string) {
     let path = "/placeholder.jpg";
 
@@ -61,22 +47,26 @@ async function getPhoto(uid: string) {
 
 async function filterData(searchParams: { query?: string; filters?: string }) {
     const searchQuery = (searchParams?.query || "").split(" ").filter((value: string) => {
+        // account for just spaces
         if (value.match(/^\s*$/g))
             return false;
         return true;
     });
 
+    // account for no terms
     if (!searchQuery.length) {
         return [];
     }
 
+    // replace whitespace lumps with space for parsing0
     searchQuery[0] = searchQuery[0].replaceAll(/\W/g, ' ');
 
-
+    // store prisma queries to execute
     let prismaQuery: any[] = [];
 
     const filters = (searchParams?.filters || "").split(",");
 
+    // query based on search terms
     let filterString: string = searchQuery[0]
         ? searchQuery
             .map((filter: string) => {
@@ -120,6 +110,7 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
             .join(") AND (")
         : "";
 
+    // query based on filters
     if (filters[0]) {
         filterString += searchQuery[0] ? ") AND (" : "";
         filterString += filters
@@ -162,15 +153,15 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
             .join(") AND (");
     }
 
+    // build full sql query
     const query = `SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM, \
         USER_ID FROM student_data WHERE (${filterString})`;
 
-
     // @ts-ignore
     const raw: any[] = await queryDb(query);
-    const data: StudentInfo[] = [];
+    const data: StudentOverlay[] = [];
 
-    // reuse query instead of reprocessing
+    // execute query
     const overlay: StudentOverlay[] = await prisma.studentOverlay.findMany({
         where: {
             AND: prismaQuery
@@ -179,17 +170,17 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
 
     const records = Promise.allSettled([
         overlay.map(async (student) => {
-            let newStudent: StudentInfo = {
-                first: student.firstName,
-                last: student.lastName,
-                year: student.gradYear,
+            let newStudent: StudentOverlay = {
+                firstName: student.firstName,
+                lastName: student.lastName,
+                gradYear: student.gradYear,
                 dorm: student.dorm,
-                room: student.dormRoom,
-                id: student.uid,
-                photo_path: student.photoPath,
+                dormRoom: student.dormRoom,
+                uid: student.uid,
+                photoPath: student.photoPath,
                 pronouns: student.pronouns,
                 showDorm: student.showDorm,
-                showPicture: student.showPhoto,
+                showPhoto: student.showPhoto,
                 showProfile: student.showProfile,
             };
 
@@ -198,23 +189,44 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
         }),
         raw.map(async (student) => {
 
-            if (overlay.find((record) => {
+            // check if in overlay with find => function
+            const idx = data.findIndex((record) => {
                 return record.uid === student["USER_ID"]
-            })) {
-                return;
+            })
+
+            if(idx >= 0) {
+                // check if properties ITS should control have changed
+                if(data[idx].dorm !== student["DORM"] ||
+                    data[idx].dormRoom !== student["DORM_ROOM"] ||
+                    data[idx].gradYear !== student["GRAD_YEAR"]
+                ) {
+                    data[idx].dorm = student["DORM"]
+                    data[idx].dormRoom = student["DORM_ROOM"]
+                    data[idx].gradYear = student["GRAD_YEAR"]
+
+                    prisma.studentOverlay.update({
+                        where: {
+                            uid: data[idx].uid
+                        },
+                        data: data[idx]
+                    })
+
+                    return // use overlay listing
+                }
             }
 
-            let newStudent: StudentInfo = {
-                first: student["FIRST_NAME"],
-                last: student["LAST_NAME"],
-                year: student["GRAD_YEAR"],
+            // construct StudentInfo dict from ITS db props
+            let newStudent: StudentOverlay = {
+                firstName: student["FIRST_NAME"],
+                lastName: student["LAST_NAME"],
+                gradYear: student["GRAD_YEAR"],
                 dorm: student["DORM"],
-                room: student["DORM_ROOM"],
-                id: student["USER_ID"],
-                photo_path: await getPhoto(student["USER_ID"]),
+                dormRoom: student["DORM_ROOM"],
+                uid: student["USER_ID"],
+                photoPath: await getPhoto(student["USER_ID"]),
                 pronouns: "",
                 showDorm: true,
-                showPicture: true,
+                showPhoto: true,
                 showProfile: true,
             };
 
@@ -224,13 +236,14 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
 
     await records;
 
-    return data.sort((a: StudentInfo, b: StudentInfo) => {
-        if (a.first == b.first)
-            if (a.last < b.last)
+    // sort merged records
+    return data.sort((a: StudentOverlay, b: StudentOverlay) => {
+        if (a.firstName == b.firstName)
+            if (a.lastName < b.lastName)
                 return -1
             else
                 return 1
-        if (a.first < b.first)
+        if (a.firstName < b.firstName)
             return -1;
         return 1;
     });
