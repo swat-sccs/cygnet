@@ -10,7 +10,7 @@ export default function CardBody(props: CardBodyProps) {
     const { filteredData } = props;
     if (filteredData) {
         return (
-            <div className="max-w-screen-lg md:mx-auto mt-4 mb-4 justify-center">
+            <div className="max-w-screen-lg w-full md:mx-auto mt-4 mb-4 justify-center">
                 <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {
                         use(filteredData).map((item, index) => (
@@ -24,7 +24,7 @@ export default function CardBody(props: CardBodyProps) {
         )
     } else {
         return (
-            <div className="max-w-screen-lg md:mx-auto mt-4 mb-4 justify-center">
+            <div className="max-w-screen-lg w-full md:mx-auto mt-4 mb-4 justify-center">
                 <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     <div className="flex-col gy-4">
                         <Card />
