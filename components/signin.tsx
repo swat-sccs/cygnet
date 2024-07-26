@@ -14,7 +14,7 @@ export default function SignIn() {
         )
     }
     return (
-        <div className="flex pt-16 items-center justify-center flex-col w-full text-lg text-black dark:text-white">
+        <div className="flex flex-grow flex-col mb-28 items-center justify-center w-full text-lg text-black dark:text-white">
             <div className="flex-row justify-center">
                 <p
                     className="text-center"

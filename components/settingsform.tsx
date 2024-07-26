@@ -37,7 +37,7 @@ export default function SettingsForm(props: { inData: StudentOverlay, pending: b
     }, [props.pending, props.state.message]);
 
     return (
-        <div className="my-4 px-4 max-w-screen-lg md:mx-auto grid gap-4 grid-cols-1 md:grid-cols-4">
+        <div className="px-4 max-w-screen-lg md:mx-auto grid gap-4 grid-cols-1 md:grid-cols-4">
             <div className="flex-col grow col-span-1">
                 <Card {...userData} button={true} />
             </div>

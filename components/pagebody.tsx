@@ -267,7 +267,7 @@ export default async function PageBody({
         );
     } else {
         return (
-            <div className="flex mt-5 items-center justify-center flex-col w-full text-black dark:text-white">
+            <div className="flex flex-grow flex-col mb-28 items-center justify-center w-full text-black dark:text-white">
                 <div className="flex-row w-full">
                     <p
                         className="text-center"

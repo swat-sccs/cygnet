@@ -43,7 +43,7 @@ export default function SearchBar() {
 
     return (
         <div className="flex justify-center">
-            <div className="max-w-screen-lg mx-2 mt-4 grow min-w-0">
+            <div className="max-w-screen-lg mx-2 grow min-w-0">
                 <div className="bg-white dark:bg-dark-blue rounded-full inline-flex items-center w-full px-6 shadow py-3 relative">
                     <svg width="30" height="30" viewBox="0 0 39 39" fill="none" className="stroke-gray-500 dark:stroke-white" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.9538 30.1576C24.9494 30.1576 30.6204 24.4865 30.6204 17.4909C30.6204 10.4953 24.9494 4.82422 17.9538 4.82422C10.9582 4.82422 5.28711 10.4953 5.28711 17.4909C5.28711 24.4865 10.9582 30.1576 17.9538 30.1576Z" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />

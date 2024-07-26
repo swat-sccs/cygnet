@@ -25,7 +25,7 @@ export default function RootLayout({
             <html lang="en" className={`${mont.className} font-medium`}>
                 <body className="bg-page-bg-light dark:bg-page-bg-dark">
                     <Nav />
-                    <div className="most-height">
+                    <div className="most-height py-4 flex flex-col">
                         {children}
                     </div>
                     <Footer/>
