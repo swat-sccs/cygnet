@@ -168,73 +168,70 @@ async function filterData(searchParams: { query?: string; filters?: string }) {
         }
     })
 
-    const records = Promise.allSettled([
-        overlay.map(async (student) => {
-            let newStudent: StudentOverlay = {
-                firstName: student.firstName,
-                lastName: student.lastName,
-                gradYear: student.gradYear,
-                dorm: student.dorm,
-                dormRoom: student.dormRoom,
-                uid: student.uid,
-                photoPath: student.photoPath,
-                pronouns: student.pronouns,
-                showDorm: student.showDorm,
-                showPhoto: student.showPhoto,
-                showProfile: student.showProfile,
-            };
+    overlay.map((student) => {
+        let newStudent: StudentOverlay = {
+            firstName: student.firstName,
+            lastName: student.lastName,
+            gradYear: student.gradYear,
+            dorm: student.dorm,
+            dormRoom: student.dormRoom,
+            uid: student.uid,
+            photoPath: student.photoPath,
+            pronouns: student.pronouns,
+            showDorm: student.showDorm,
+            showPhoto: student.showPhoto,
+            showProfile: student.showProfile,
+        };
 
-            if(newStudent.showProfile)
-                data.push(newStudent);
-        }),
-        raw.map(async (student) => {
+        if(newStudent.showProfile)
+            data.push(newStudent);
+    })
 
-            // check if in overlay with find => function
-            const idx = data.findIndex((record) => {
-                return record.uid === student["USER_ID"]
-            })
+    Promise.resolve(raw.map(async (student) => {
 
-            if(idx >= 0) {
-                // check if properties ITS should control have changed
-                if(data[idx].dorm !== student["DORM"] ||
-                    data[idx].dormRoom !== student["DORM_ROOM"] ||
-                    data[idx].gradYear !== student["GRAD_YEAR"]
-                ) {
-                    data[idx].dorm = student["DORM"]
-                    data[idx].dormRoom = student["DORM_ROOM"]
-                    data[idx].gradYear = student["GRAD_YEAR"]
+        // check if in overlay with find => function
+        const idx = data.findIndex((record) => {
+            return record.uid.trim().toLowerCase() === student["USER_ID"].trim().toLowerCase()
+        })
 
-                    prisma.studentOverlay.update({
-                        where: {
-                            uid: data[idx].uid
-                        },
-                        data: data[idx]
-                    })
+        if(idx >= 0) {
+            // check if properties ITS should control have changed
+            if(data[idx].dorm !== student["DORM"] ||
+                data[idx].dormRoom !== student["DORM_ROOM"] ||
+                data[idx].gradYear !== student["GRAD_YEAR"]
+            ) {
+                data[idx].dorm = student["DORM"]
+                data[idx].dormRoom = student["DORM_ROOM"]
+                data[idx].gradYear = student["GRAD_YEAR"]
 
-                    return // use overlay listing
-                }
+                prisma.studentOverlay.update({
+                    where: {
+                        uid: data[idx].uid
+                    },
+                    data: data[idx]
+                })
             }
 
-            // construct StudentInfo dict from ITS db props
-            let newStudent: StudentOverlay = {
-                firstName: student["FIRST_NAME"],
-                lastName: student["LAST_NAME"],
-                gradYear: student["GRAD_YEAR"],
-                dorm: student["DORM"],
-                dormRoom: student["DORM_ROOM"],
-                uid: student["USER_ID"],
-                photoPath: await getPhoto(student["USER_ID"]),
-                pronouns: "",
-                showDorm: true,
-                showPhoto: true,
-                showProfile: true,
-            };
+            return // use overlay listing
+        }
 
-            data.push(newStudent);
-        })]
-    );
+        // construct StudentInfo dict from ITS db props
+        let newStudent: StudentOverlay = {
+            firstName: student["FIRST_NAME"],
+            lastName: student["LAST_NAME"],
+            gradYear: student["GRAD_YEAR"],
+            dorm: student["DORM"],
+            dormRoom: student["DORM_ROOM"],
+            uid: student["USER_ID"],
+            photoPath: await getPhoto(student["USER_ID"]),
+            pronouns: "",
+            showDorm: true,
+            showPhoto: true,
+            showProfile: true,
+        };
 
-    await records;
+        data.push(newStudent);
+    }));
 
     // sort merged records
     return data.sort((a: StudentOverlay, b: StudentOverlay) => {
