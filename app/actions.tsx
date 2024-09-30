@@ -124,7 +124,7 @@ export async function submitData(prevState: {
             lastName: formData.get("lName")?.toString() || "",
             pronouns: formData.get("pNouns")?.toString() || "",
             showDorm: formData.get("showDorm"),
-            showPicture: formData.get("showPicture"),
+            showPhoto: formData.get("showPhoto"),
             showProfile: formData.get("showProfile"),
         };
 
@@ -143,7 +143,7 @@ export async function submitData(prevState: {
                 photoPath: photo_path,
                 showProfile: rawFormData.showProfile === "on" ? true : false,
                 showDorm: rawFormData.showDorm === "on" ? true : false,
-                showPhoto: rawFormData.showPicture === "on" ? true : false,
+                showPhoto: rawFormData.showPhoto === "on" ? true : false,
             },
             create: {
                 uid: id,
@@ -156,7 +156,7 @@ export async function submitData(prevState: {
                 gradYear: itsRecord[0]["GRAD_YEAR"],
                 showProfile: rawFormData.showProfile === "on" ? true : false,
                 showDorm: rawFormData.showDorm === "on" ? true : false,
-                showPhoto: rawFormData.showPicture === "on" ? true : false,
+                showPhoto: rawFormData.showPhoto === "on" ? true : false,
             },
         });
 
