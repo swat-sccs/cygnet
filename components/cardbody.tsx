@@ -13,11 +13,16 @@ export default function CardBody(props: CardBodyProps) {
             <div className="max-w-screen-lg w-full md:mx-auto mt-4 mb-4 justify-center">
                 <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {
-                        use(filteredData).map((item, index) => (
-                            <div className="flex-col">
-                                <Card key={index} {...item} />
-                            </div>
-                        ))
+                        use(filteredData).map((item: StudentOverlay, index) => {
+                            if (item.showProfile) {
+                                return (
+                                    <div className="flex-col">
+                                        <Card key={index} {...item} />
+                                    </div>
+                                )
+                            }
+                            return (<></>);
+                            })
                     }
                 </div>
             </div>
