@@ -12,7 +12,7 @@ export default function Nav() {
 
     const { data: session } = useSession();
 
-    return ( 
+    return (
         <nav className="bg-white dark:bg-dark-blue shadow flex-col header-height">
             <div className="h-full max-w-screen-lg md:mx-auto flex flex-wrap items-center justify-between content-center px-4 py-2">
                 <p className={`${play.className} cursor-pointer`}>
@@ -53,7 +53,7 @@ export default function Nav() {
                             <Link href="https://www.instagram.com/swatsccs/" className="block py-2 px-3 text-decoration-none md:p-0">
                                 <svg className="stroke-black dark:stroke-white dark:md:hover:stroke-primary-800 md:hover:stroke-primary-500 transition" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M19.8333 2.33301H8.16658C4.94492 2.33301 2.33325 4.94468 2.33325 8.16634V19.833C2.33325 23.0547 4.94492 25.6663 8.16658 25.6663H19.8333C23.0549 25.6663 25.6666 23.0547 25.6666 19.833V8.16634C25.6666 4.94468 23.0549 2.33301 19.8333 2.33301Z" strokeWidth="2.33333" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M18.6667 13.2654C18.8106 14.2363 18.6448 15.2279 18.1927 16.0992C17.7406 16.9705 17.0253 17.677 16.1485 18.1183C15.2718 18.5596 14.2782 18.7132 13.3091 18.5573C12.34 18.4013 11.4447 17.9438 10.7506 17.2497C10.0566 16.5556 9.599 15.6604 9.44306 14.6913C9.28712 13.7222 9.44073 12.7286 9.88203 11.8518C10.3233 10.975 11.0299 10.2597 11.9011 9.80763C12.7724 9.35555 13.764 9.1897 14.735 9.33369C15.7254 9.48055 16.6423 9.94206 17.3503 10.65C18.0583 11.358 18.5198 12.2749 18.6667 13.2654Z" stroke-width="2.33333" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M18.6667 13.2654C18.8106 14.2363 18.6448 15.2279 18.1927 16.0992C17.7406 16.9705 17.0253 17.677 16.1485 18.1183C15.2718 18.5596 14.2782 18.7132 13.3091 18.5573C12.34 18.4013 11.4447 17.9438 10.7506 17.2497C10.0566 16.5556 9.599 15.6604 9.44306 14.6913C9.28712 13.7222 9.44073 12.7286 9.88203 11.8518C10.3233 10.975 11.0299 10.2597 11.9011 9.80763C12.7724 9.35555 13.764 9.1897 14.735 9.33369C15.7254 9.48055 16.6423 9.94206 17.3503 10.65C18.0583 11.358 18.5198 12.2749 18.6667 13.2654Z" strokeWidth="2.33333" strokeLinecap="round" strokeLinejoin="round" />
                                     <path d="M20.4167 7.58301H20.4284" strokeWidth="2.33333" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </Link>
@@ -80,7 +80,7 @@ export default function Nav() {
                             <Link href="https://www.instagram.com/swatsccs/" className="flex flex-row justify-end py-2 px-3 text-decoration-none md:p-0">
                                 <svg className="stroke-black dark:stroke-white transition-colors" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M19.8333 2.33301H8.16658C4.94492 2.33301 2.33325 4.94468 2.33325 8.16634V19.833C2.33325 23.0547 4.94492 25.6663 8.16658 25.6663H19.8333C23.0549 25.6663 25.6666 23.0547 25.6666 19.833V8.16634C25.6666 4.94468 23.0549 2.33301 19.8333 2.33301Z" strokeWidth="2.33333" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M18.6667 13.2654C18.8106 14.2363 18.6448 15.2279 18.1927 16.0992C17.7406 16.9705 17.0253 17.677 16.1485 18.1183C15.2718 18.5596 14.2782 18.7132 13.3091 18.5573C12.34 18.4013 11.4447 17.9438 10.7506 17.2497C10.0566 16.5556 9.599 15.6604 9.44306 14.6913C9.28712 13.7222 9.44073 12.7286 9.88203 11.8518C10.3233 10.975 11.0299 10.2597 11.9011 9.80763C12.7724 9.35555 13.764 9.1897 14.735 9.33369C15.7254 9.48055 16.6423 9.94206 17.3503 10.65C18.0583 11.358 18.5198 12.2749 18.6667 13.2654Z" stroke-width="2.33333" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M18.6667 13.2654C18.8106 14.2363 18.6448 15.2279 18.1927 16.0992C17.7406 16.9705 17.0253 17.677 16.1485 18.1183C15.2718 18.5596 14.2782 18.7132 13.3091 18.5573C12.34 18.4013 11.4447 17.9438 10.7506 17.2497C10.0566 16.5556 9.599 15.6604 9.44306 14.6913C9.28712 13.7222 9.44073 12.7286 9.88203 11.8518C10.3233 10.975 11.0299 10.2597 11.9011 9.80763C12.7724 9.35555 13.764 9.1897 14.735 9.33369C15.7254 9.48055 16.6423 9.94206 17.3503 10.65C18.0583 11.358 18.5198 12.2749 18.6667 13.2654Z" strokeWidth="2.33333" strokeLinecap="round" strokeLinejoin="round" />
                                     <path d="M20.4167 7.58301H20.4284" strokeWidth="2.33333" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
 
