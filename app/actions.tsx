@@ -10,7 +10,7 @@ import { queryDb } from "./queryDb";
 import sharp from 'sharp';
 
 import BadWordsNext from "bad-words-next";
-import en from 'bad-words-next/data/en.json';
+import en from 'bad-words-next/lib/en';
 import { StudentOverlay } from "@prisma/client";
 
 export async function getUser(id: string | undefined) {
