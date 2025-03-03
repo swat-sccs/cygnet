@@ -52,7 +52,7 @@ export default function SearchBar() {
 
                     <input
                         type="search"
-                        className="grow flex-row mx-4 mont border-0 bg-transparent searchbar text-black dark:text-white"
+                        className="grow flex-row mx-4 mont border-none focus:ring-0 bg-transparent searchbar text-black dark:text-white"
                         onChange={(e) => {
                             handleSearch(e.target.value);
                         }}
