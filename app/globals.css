@@ -21,11 +21,11 @@ body {
 
 /*footer.tsx*/
 .most-height {
-    min-height: 80dvh;
+    min-height: 88dvh;
 }
 
 .header-height {
-    height: 10dvh;
+    height: 6dvh;
 }
 
 /* nav.tsx */

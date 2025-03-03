@@ -5,15 +5,16 @@ import PageBody from '@/components/pagebody';
 import { auth } from '@/lib/auth';
 import SignIn from '@/components/signin';
 
-function IP() {
+async function IP() {
     const FALLBACK_IP_ADDRESS = '0.0.0.0'
-    const forwardedFor = headers().get('x-forwarded-for')
+    const curHeaders = await headers()
+    const forwardedFor = curHeaders.get('x-forwarded-for')
 
     if (forwardedFor) {
         return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
     }
 
-    return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
+    return curHeaders.get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
 
 export default async function Home({ searchParams }: {
@@ -24,7 +25,7 @@ export default async function Home({ searchParams }: {
 }) {
 
     // check ip or authentication
-    const clientIPArr = IP().split('.');
+    const clientIPArr = (await IP()).split('.');
     if((clientIPArr[0].includes('130') && clientIPArr[1] === '58') ||
             (clientIPArr[0].includes('172')) || await auth()) {
         return (

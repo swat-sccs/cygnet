@@ -16,8 +16,8 @@ export default function CardBody(props: CardBodyProps) {
                         use(filteredData).map((item: StudentOverlay, index) => {
                             if (item.showProfile) {
                                 return (
-                                    <div className="flex-col">
-                                        <Card key={index} {...item} />
+                                    <div key={index} className="flex-col">
+                                        <Card {...item} />
                                     </div>
                                 )
                             }

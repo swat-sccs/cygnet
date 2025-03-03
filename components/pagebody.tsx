@@ -253,8 +253,9 @@ export default async function PageBody({
         filters?: string;
     };
 }) {
-    if (searchParams?.query || searchParams?.filters) {
-        const filteredData = filterData(searchParams);
+    const params = await searchParams;
+    if (params?.query || params?.filters) {
+        const filteredData = filterData(params);
 
         return (
             <Suspense fallback={<CardBody filteredData={undefined} />}>

@@ -6,7 +6,7 @@ import UserInfo from "./userinfo";
 export default function Card(props: StudentOverlay | any) {
   if (props.uid && props.showProfile) {
     return (
-      <div className="items-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow grow h-full">
+      <div className="items-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow-md grow h-full transform transition hover:scale-125 hover:shadow-lg hover:z-50">
         <UserImage
           photo_path={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
           button={(props.button && props.showPhoto) ? props.button : false}
@@ -28,7 +28,7 @@ export default function Card(props: StudentOverlay | any) {
     );
   } else {
     return (
-      <div className="items-center justify-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow grow h-full">
+      <div className="items-center justify-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow-md grow h-full transform transition hover:scale-125 hover:shadow-lg hover:z-50">
         <UserImage />
         <UserInfo />
       </div>
