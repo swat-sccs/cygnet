@@ -17,13 +17,12 @@ async function IP() {
     return curHeaders.get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
 
-export default async function Home({ searchParams }: {
-    searchParams?: {
-        query?: string;
-        filters?: string;
-    }
-}) {
+type SearchParams = Promise<{
+    query?: string;
+    filters?: string;
+}>
 
+export default async function Home({ searchParams }: { searchParams: SearchParams }) {
     // check ip or authentication
     const clientIPArr = (await IP()).split('.');
     if((clientIPArr[0].includes('130') && clientIPArr[1] === '58') ||
@@ -34,7 +33,7 @@ export default async function Home({ searchParams }: {
                     <SearchBar />
                 </Suspense>
                 <Suspense>
-                    <PageBody searchParams={searchParams} />
+                    <PageBody searchParams={await searchParams} />
                 </Suspense>
             </div>
         );
