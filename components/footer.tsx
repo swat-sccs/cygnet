@@ -2,7 +2,7 @@ import packageInfo from '../package.json';
 
 export default function Footer() {
     return (
-        <footer className="py-2 bg-white dark:bg-dark-blue header-height flex justify-center items-center shadow">
+        <footer className="py-2 bg-white dark:bg-dark-blue h-[10dvh] md:h-[6dvh] flex justify-center items-center shadow">
             <div className="max-w-screen-lg h-full content-center px-2">
                 <p
                     className="text-black dark:text-white text-center mb-0 text-xs md:text-sm"

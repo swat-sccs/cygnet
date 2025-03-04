@@ -13,10 +13,10 @@ export default function Nav() {
     const { data: session } = useSession();
 
     return (
-        <nav className="bg-white dark:bg-dark-blue shadow flex-col header-height">
+        <nav className="bg-white dark:bg-dark-blue shadow flex-col h-[8dvh] md:h-[6dvh]">
             <div className="h-full max-w-screen-lg md:mx-auto flex flex-wrap items-center justify-between content-center px-4 py-2">
                 <p className={`${play.className} cursor-pointer`}>
-                    <Link className="text-decoration-none nav-item transition text-black dark:md:hover:text-primary-800 md:hover:text-primary-500 md:p-0 dark:text-white text-4xl" href="/">
+                    <Link className="text-decoration-none nav-item transition text-black dark:md:hover:text-primary-800 md:hover:text-primary-500 md:p-0 dark:text-white text-3xl md:text-4xl" href="/">
                         CYGNET
                     </Link>
                     <span className="grad transition-colors hover:brightness-150 dark:brightness-150 dark:hover:brightness-100">

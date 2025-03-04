@@ -19,15 +19,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/*footer.tsx*/
-.most-height {
-    min-height: 88dvh;
-}
-
-.header-height {
-    height: 6dvh;
-}
-
 /* nav.tsx */
 .grad {
     background: linear-gradient(139.78deg, #46408A 22.6%, #7670BA 29.58%, #27A4AC 45.92%, #355CC0 63.81%);
