@@ -2,23 +2,24 @@ name: Mirror
 
 on:
   push:
-    branches: [ "v2" ]
+    branches: ["v2"]
   pull_request:
-    branches: [ "v2" ]
+    branches: ["v2"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - uses: action-pack/gitlab-sync@v3
-      with:
-        # GitLab repo URL
-        url: https://gitlab.sccs.swarthmore.edu/sccs/cygnet.git
-        # GitLab username
-        username: mirrorbot
-        # GitLab token
-        token: ${{ secrets.GITLAB_TOKEN }}
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: action-pack/gitlab-sync@v3
+        with:
+          # GitLab repo URL
+          url: https://gitlab.sccs.swarthmore.edu/sccs/cygnet.git
+          # GitLab username
+          username: mirrorbot
+          # GitLab token
+          token: ${{ secrets.MIRRORBOT_PAT }}
+          # token: ${{ secrets.GITLAB_TOKEN }}
