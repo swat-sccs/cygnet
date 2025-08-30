@@ -7,7 +7,7 @@ default:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - mv .secure_files/.env .env
     - docker info
-    - docker login -u $SCCS_REGISTRY_USER -p $SCCS_REGISTRY_TOKEN $SCCS_REGISTRY
+    - docker login $SCCS_REGISTRY -u $SCCS_REGISTRY_USER -p $SCCS_REGISTRY_TOKEN
 
 variables:
   DOCKER_TLS_CERTDIR: ""
