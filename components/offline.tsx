@@ -1,6 +1,6 @@
 export default function Offline() {
   return (
-    <div className="dark:text-white w-[50%] justify-self-center mt-72 align-middle  items-center justify-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow-md grow h-full md:transform md:transition  md:hover:shadow-lg ">
+    <div className="dark:text-white md:w-[50%] justify-self-center md:mt-72 align-middle  items-center justify-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow-md grow h-full md:transform md:transition  md:hover:shadow-lg ">
       <h2 className="text-center">
         Due to recent changes in how student data is managed at Swarthmore, we
         are working closely with ITS and the administration to determine the
