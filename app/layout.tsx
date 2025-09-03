@@ -1,37 +1,44 @@
-import Nav from '@/components/nav'
-import './globals.css'
-import Script from 'next/script'
-import { NextAuthProvider } from './NextAuthProvider';
-import Footer from '@/components/footer';
-import { mont } from './fonts';
+import Nav from "@/components/nav";
+import "./globals.css";
+import Script from "next/script";
+import { NextAuthProvider } from "./NextAuthProvider";
+import Footer from "@/components/footer";
+import { mont } from "./fonts";
+import Offline from "@/components/offline";
 
 export const metadata = {
-    title: 'Cygnet',
-    description: 'The Swarthmore student directory | by SCCS',
-    generator: 'Cygnet',
-    applicationName: 'Cygnet',
-    keywords: ['Cygnet', 'Swarthmore', 'student', 'directory'],
-    authors: [{ name: "SCCS", url: "https://sccs.swarthmore.edu"}],
-    creator: "Swarthmore College Computer Society",
-}
+  title: "Cygnet",
+  description: "The Swarthmore student directory | by SCCS",
+  generator: "Cygnet",
+  applicationName: "Cygnet",
+  keywords: ["Cygnet", "Swarthmore", "student", "directory"],
+  authors: [{ name: "SCCS", url: "https://sccs.swarthmore.edu" }],
+  creator: "Swarthmore College Computer Society",
+};
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode
+  children: React.ReactNode;
 }) {
-    return (
-        <NextAuthProvider>
-            <html lang="en" className={`${mont.className} font-medium`}>
-                <body className="bg-page-bg-light dark:bg-page-bg-dark">
+  return (
+    <NextAuthProvider>
+      <html lang="en" className={`${mont.className} font-medium`}>
+        <body className="bg-page-bg-light dark:bg-page-bg-dark ">
+          <Offline></Offline>
+          {/* 
                     <Nav />
                     <div className="min-h-[82dvh] md:min-h-[88dvh] py-4 flex flex-col">
                         {children}
                     </div>
                     <Footer/>
-                </body>
-                <Script src="https://kit.fontawesome.com/3d9fad96a7.js" crossOrigin="anonymous" />
-            </html>
-        </NextAuthProvider>
-    )
+                    */}
+        </body>
+        <Script
+          src="https://kit.fontawesome.com/3d9fad96a7.js"
+          crossOrigin="anonymous"
+        />
+      </html>
+    </NextAuthProvider>
+  );
 }
