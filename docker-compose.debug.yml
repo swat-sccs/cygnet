@@ -29,3 +29,6 @@ services:
       - MYSQL_PASSWORD=An0thrS3crt
       - MYSQL_USER=cygnet_user
       - MYSQL_DATABASE=cygnet_db
+
+
+# (re)define traefik proxy network

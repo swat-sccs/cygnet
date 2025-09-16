@@ -25,14 +25,11 @@ export default function RootLayout({
     <NextAuthProvider>
       <html lang="en" className={`${mont.className} font-medium`}>
         <body className="bg-page-bg-light dark:bg-page-bg-dark ">
-          <Offline></Offline>
-          {/* 
-                    <Nav />
-                    <div className="min-h-[82dvh] md:min-h-[88dvh] py-4 flex flex-col">
-                        {children}
-                    </div>
-                    <Footer/>
-                    */}
+          <Nav />
+          <div className="min-h-[82dvh] md:min-h-[88dvh] py-4 flex flex-col">
+            {children}
+          </div>
+          <Footer />
         </body>
         <Script
           src="https://kit.fontawesome.com/3d9fad96a7.js"
