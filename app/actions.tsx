@@ -23,6 +23,7 @@ export async function getUser(id: string | undefined) {
     await queryDb(`SELECT FIRST_NAME, LAST_NAME, GRAD_YEAR, DORM, DORM_ROOM \
         FROM student_data WHERE USER_ID='${id}' `);
 
+  console.log(raw);
   const student: DbInfo = raw[0];
 
   let path = "/placeholder.jpg";
@@ -64,6 +65,7 @@ export async function getUser(id: string | undefined) {
     showPhoto: true,
     showProfile: true,
   };
+  console.log(user_data);
 
   return user_data;
 }
