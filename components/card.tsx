@@ -9,8 +9,22 @@ export default function Card(props: StudentOverlay | any) {
       <div className="items-center bg-white dark:bg-dark-blue rounded-lg py-6 px-3 cont shadow-md grow h-full md:transform md:transition md:hover:scale-125 md:hover:shadow-lg md:hover:z-50">
         <UserImage
           photo_path={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
-          button={(props.button && props.showPhoto) ? props.button : false}
+          button={props.button && props.showPhoto ? props.button : false}
         />{" "}
+        <UserInfo
+          firstName={"Nolan"}
+          lastName={"Weygandt"}
+          gradYear={""}
+          dorm={"Will You go to"}
+          dormRoom={""}
+          uid={"Homecoming with me?"}
+          photoPath={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
+          pronouns={props.pronouns}
+          showDorm={props.showDorm}
+          showPhoto={props.showPhoto}
+          showProfile={props.showProfile}
+        />
+        {/* 
         <UserInfo
           firstName={props.firstName}
           lastName={props.lastName}
@@ -24,6 +38,7 @@ export default function Card(props: StudentOverlay | any) {
           showPhoto={props.showPhoto}
           showProfile={props.showProfile}
         />
+        */}
       </div>
     );
   } else {
