@@ -24,6 +24,13 @@ export default function RootLayout({
   return (
     <NextAuthProvider>
       <html lang="en" className={`${mont.className} font-medium`}>
+        <head>
+          <script
+            defer
+            data-domain="cygnet.sccs.swarthmore.edu"
+            src="https://plausible.sccs.swarthmore.edu/js/script.js"
+          ></script>
+        </head>
         <body className="bg-page-bg-light dark:bg-page-bg-dark ">
           {/*<Offline></Offline> */}
 
