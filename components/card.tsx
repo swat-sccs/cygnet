@@ -11,20 +11,7 @@ export default function Card(props: StudentOverlay | any) {
           photo_path={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
           button={props.button && props.showPhoto ? props.button : false}
         />{" "}
-        <UserInfo
-          firstName={"Nolan"}
-          lastName={"Weygandt"}
-          gradYear={""}
-          dorm={"Will You go to"}
-          dormRoom={""}
-          uid={"Homecoming with me?"}
-          photoPath={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
-          pronouns={props.pronouns}
-          showDorm={props.showDorm}
-          showPhoto={props.showPhoto}
-          showProfile={props.showProfile}
-        />
-        {/* 
+      
         <UserInfo
           firstName={props.firstName}
           lastName={props.lastName}
@@ -38,7 +25,6 @@ export default function Card(props: StudentOverlay | any) {
           showPhoto={props.showPhoto}
           showProfile={props.showProfile}
         />
-        */}
       </div>
     );
   } else {
