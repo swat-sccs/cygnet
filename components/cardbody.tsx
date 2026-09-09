@@ -6,58 +6,45 @@ interface CardBodyProps {
     filteredData: Promise<StudentOverlay[]> | undefined;
 }
 
+const wrapClass = "max-w-5xl w-full mx-auto px-4 sm:px-6 mt-8";
+const gridClass = "grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4";
+
 export default function CardBody(props: CardBodyProps) {
     const { filteredData } = props;
+
     if (filteredData) {
+        const items = use(filteredData).filter((i: StudentOverlay) => i.showProfile);
+        const n = items.length;
+
         return (
-            <div className="max-w-screen-lg w-full md:mx-auto mt-4 mb-4 justify-center">
-                <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {
-                        use(filteredData).map((item: StudentOverlay, index) => {
-                            if (item.showProfile) {
-                                return (
-                                    <div key={index} className="flex-col">
-                                        <Card {...item} />
-                                    </div>
-                                )
-                            }
-                            return (<></>);
-                            })
-                    }
+            <div className={wrapClass}>
+                <div className="mb-3 text-sm text-fg-3">
+                    {n} {n === 1 ? "result" : "results"}
                 </div>
-            </div>
-        )
-    } else {
-        return (
-            <div className="max-w-screen-lg w-full md:mx-auto mt-4 mb-4 justify-center">
-                <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    <div className="flex-col gy-4">
-                        <Card />
+                {n === 0 ? (
+                    <div className="py-16 text-center">
+                        <p className="font-medium text-fg">No students found</p>
+                        <p className="mt-1 text-sm text-fg-2">Try a different spelling or clear your filters.</p>
                     </div>
-                    <div className="flex-col gy-4">
-                        <Card />
+                ) : (
+                    <div className={gridClass}>
+                        {items.map((item: StudentOverlay) => (
+                            <Card key={item.uid} {...item} />
+                        ))}
                     </div>
-                    <div className="flex-col gy-4">
-                        <Card />
-                    </div>
-                    <div className="flex-col gy-4">
-                        <Card />
-                    </div>
-                    <div className="flex-col gy-4">
-                        <Card />
-                    </div>
-                    <div className="flex-col gy-4">
-                        <Card />
-                    </div>
-                    <div className="flex-col gy-4">
-                        <Card />
-                    </div>
-                    <div className="flex-col gy-4">
-                        <Card />
-                    </div>
-                </div>
+                )}
             </div>
         )
     }
-}
 
+    return (
+        <div className={wrapClass}>
+            <div className="mb-3 text-sm text-fg-3">Searching…</div>
+            <div className={gridClass}>
+                {Array.from({ length: 8 }, (_, i) => (
+                    <Card key={i} />
+                ))}
+            </div>
+        </div>
+    )
+}

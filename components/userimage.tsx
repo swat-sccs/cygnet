@@ -2,6 +2,47 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
 
+const avatarSize = "h-24 w-24 sm:h-28 sm:w-28";
+
+function CameraIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+            aria-hidden="true"
+        >
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+            <circle cx="12" cy="13" r="3" />
+        </svg>
+    );
+}
+
+function UploadIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+            aria-hidden="true"
+        >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+    );
+}
+
 export default function UserImage(props: any) {
     const { photo_path } = props;
     const [selectedFile, setSelectedFile] = useState()
@@ -32,48 +73,52 @@ export default function UserImage(props: any) {
     }
 
     if (!photo_path) {
-        return ( /* placeholder image */
-            <>
-                <div className="w-full relative flex justify-center">
-                    <div role="status" className="animate-pulse">
-                        <div className="flex items-center justify-center mt-4">
-                            <svg className="h-28 w-28 md:h-32 md:w-32 lg:h-36 lg:w-36 text-gray-200 dark:text-gray-700 me-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
-                            </svg>
-                        </div>
-                        <span className="sr-only">Loading...</span>
-                    </div>
-
-                </div>
-            </>
+        return ( /* placeholder avatar */
+            <div role="status" className={`${avatarSize} rounded-full bg-surface-2 animate-pulse`}>
+                <span className="sr-only">Loading...</span>
+            </div>
         )
     }
 
     return (
-        <>
-            <div className="w-full relative flex justify-center">
-                <div className="relative cyg-img-container h-28 w-28 md:h-32 md:w-32 lg:h-36 lg:w-36 overflow-clip rounded-circle gradBorder">
-                    <Image
-                        fill={true}
-                        sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 15vw"
-                        loading={"lazy"}
-                        src={props.button ? preview : photo_path}
-                        alt="image of person"
-                        className="cyg-img"
-                    />
-                    {props.button ? (
-                        <div className="cyg-img-overlay flex-row justify-center">
-                            <input type="file" id="picFile" name="picFile" onChange={onSelectFile} hidden />
-                            <label htmlFor="picFile" className="cursor-pointer" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="75" height="60" viewBox="0 0 640 512" >
-                                    {/*<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->*/}
-                                    <path fill="white" d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z" />
-                                </svg>
-                            </label>
-                        </div>
-                    ) : (<></>)}
-                </div>
+        <div className={`relative ${avatarSize}`}>
+            <div className="relative h-full w-full rounded-full overflow-hidden ring-1 ring-line bg-surface-2">
+                <Image
+                    fill={true}
+                    sizes="(max-width: 768px) 30vw, (max-width: 1200px) 20vw, 15vw"
+                    loading={"lazy"}
+                    src={props.button ? preview : photo_path}
+                    alt="image of person"
+                    className="object-cover"
+                />
+                {props.button ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-ink-900/50 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition">
+                        <input type="file" id="picFile" name="picFile" onChange={onSelectFile} hidden />
+                        <label
+                            htmlFor="picFile"
+                            tabIndex={0}
+                            className="flex h-full w-full cursor-pointer items-center justify-center text-white focus:outline-none"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    document.getElementById("picFile")?.click();
+                                }
+                            }}
+                        >
+                            <UploadIcon className="h-6 w-6" />
+                            <span className="sr-only">Change photo</span>
+                        </label>
+                    </div>
+                ) : null}
             </div>
-        </>
+            {props.button ? (
+                <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full bg-accent text-accent-fg ring-2 ring-surface"
+                >
+                    <CameraIcon className="h-3.5 w-3.5" />
+                </span>
+            ) : null}
+        </div>
     )
 }
