@@ -4,6 +4,7 @@ import SearchBar from '@/components/searchbar';
 import PageBody from '@/components/pagebody';
 import { auth } from '@/lib/auth';
 import SignIn from '@/components/signin';
+import { MOCK_ENABLED } from '@/lib/mock';
 
 async function IP() {
     const FALLBACK_IP_ADDRESS = '0.0.0.0'
@@ -25,7 +26,7 @@ type SearchParams = Promise<{
 export default async function Home({ searchParams }: { searchParams: SearchParams }) {
     // check ip or authentication
     const clientIPArr = (await IP()).split('.');
-    if((clientIPArr[0].includes('130') && clientIPArr[1] === '58') ||
+    if(MOCK_ENABLED || (clientIPArr[0].includes('130') && clientIPArr[1] === '58') ||
             (clientIPArr[0].includes('172')) || await auth()) {
         return (
             <div className="px-4 flex flex-col flex-grow">

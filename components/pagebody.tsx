@@ -6,6 +6,7 @@ import CardBody from "./cardbody";
 import prisma from "@/lib/prisma";
 import { StudentOverlay } from "@prisma/client";
 import { play } from "@/app/fonts";
+import { MOCK_ENABLED, mockFilter } from "@/lib/mock";
 //import TextModerate from 'text-moderate';
 
 export interface DbInfo {
@@ -46,6 +47,8 @@ async function getPhoto(uid: string) {
 }
 
 async function filterData(searchParams: { query?: string; filters?: string }) {
+  if (MOCK_ENABLED) return mockFilter(searchParams);
+
   const searchQuery = (searchParams?.query || "")
     .split(" ")
     .filter((value: string) => {

@@ -5,11 +5,16 @@ import prisma from "../../lib/prisma";
 import { getUser } from "@/app/actions";
 import SnackbarWrapper from "@/components/snackwrapper";
 import { StudentOverlay } from "@prisma/client";
+import { MOCK_ENABLED, MOCK_USER } from "@/lib/mock";
 
 // will need to be loaded from our own database eventually,
 // just UI functional for now
 
 export default async function Settings() {
+  if (MOCK_ENABLED) {
+    return <SnackbarWrapper user_data={MOCK_USER} />;
+  }
+
   // await auth check
   const session = await auth();
   if (session?.user) {
