@@ -4,11 +4,6 @@ import { useState } from 'react';
 import { Height } from 'react-animate-height';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
-interface SearchbarProps {
-    setSearchQuery: (query: string) => void;
-    setFilters: (query: string) => void;
-}
-
 export default function SearchBar() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -35,42 +30,86 @@ export default function SearchBar() {
     }
 
     const [filterHeight, setFilterHeight] = useState<Height>(0);
-
-    const style = {
-        transform: filterHeight ? 'rotate(180deg)' : '',
-        transition: 'transform 150ms ease-in-out', // smooth transition
-    }
+    const filtersOpen = filterHeight !== 0;
+    const filtersActive = Boolean(searchParams.get('filters'));
 
     return (
-        <div className="flex justify-center">
-            <div className="max-w-screen-lg mx-2 grow min-w-0">
-                <div className="bg-white dark:bg-dark-blue rounded-full inline-flex items-center w-full px-6 shadow py-3 relative">
-                    <svg width="30" height="30" viewBox="0 0 39 39" fill="none" className="stroke-gray-500 dark:stroke-white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.9538 30.1576C24.9494 30.1576 30.6204 24.4865 30.6204 17.4909C30.6204 10.4953 24.9494 4.82422 17.9538 4.82422C10.9582 4.82422 5.28711 10.4953 5.28711 17.4909C5.28711 24.4865 10.9582 30.1576 17.9538 30.1576Z" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M33.7869 33.324L26.8994 26.4365" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+        <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 pt-8 sm:pt-12">
+            <div className="relative flex items-center h-14 rounded-2xl bg-surface border border-line shadow-card focus-within:border-line-2 focus-within:shadow-card-hover transition">
+                <svg
+                    className="ml-4 h-5 w-5 shrink-0 text-fg-3"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                >
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" />
+                </svg>
 
-                    <input
-                        type="search"
-                        className="grow flex-row mx-4 mont border-none focus:ring-0 bg-transparent searchbar text-black dark:text-white"
-                        onChange={(e) => {
-                            handleSearch(e.target.value);
-                        }}
-                        placeholder="Search for Swarthmore College students..."
-                        defaultValue={searchParams.get('query')?.toString()} />
-                    <svg className="stroke-gray-500 dark:stroke-white" width="30" height="30" viewBox="0 0 3 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="1.18359" y1="0.314453" x2="1.18359" y2="51.2774" strokeWidth="2" />
-                    </svg>
+                <label htmlFor="student-search" className="sr-only">Search students</label>
+                <input
+                    id="student-search"
+                    type="search"
+                    className="flex-1 min-w-0 bg-transparent border-0 focus:ring-0 focus:outline-none text-base sm:text-lg text-fg placeholder:text-fg-3 px-3 [&::-webkit-search-cancel-button]:appearance-none"
+                    onChange={(e) => {
+                        handleSearch(e.target.value);
+                    }}
+                    placeholder="Search students by name, dorm, or class year"
+                    autoComplete="off"
+                    defaultValue={searchParams.get('query')?.toString()} />
 
-                    <svg className="stroke-gray-500 dark:stroke-white cursor-pointer" style={style} aria-expanded={filterHeight !== 0}
-                        aria-controls="filter-panel"
-                        onClick={() => setFilterHeight(filterHeight === 0 ? '100%' : 0)}
-                        width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.01855 13.9951L17.7686 22.7451L26.5186 13.9951" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                <button
+                    type="button"
+                    className="relative mr-2.5 h-9 px-3 rounded-full text-sm font-medium inline-flex items-center gap-1.5 border border-line bg-surface-2 hover:bg-surface-3 text-fg-2 hover:text-fg transition shrink-0"
+                    aria-expanded={filtersOpen}
+                    aria-controls="filter-panel"
+                    onClick={() => setFilterHeight(filterHeight === 0 ? 'auto' : 0)}
+                >
+                    <svg
+                        className="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                    >
+                        <line x1="4" y1="7" x2="20" y2="7" />
+                        <line x1="4" y1="12" x2="20" y2="12" />
+                        <line x1="4" y1="17" x2="20" y2="17" />
+                        <circle cx="9" cy="7" r="2" fill="currentColor" stroke="none" />
+                        <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" />
+                        <circle cx="10" cy="17" r="2" fill="currentColor" stroke="none" />
                     </svg>
-                    <Filter filterHeight={filterHeight} setFilters={handleFilters} />
-                </div>
+                    <span>Filters</span>
+                    <svg
+                        className={`h-4 w-4 transition-transform duration-150 ease-out ${filtersOpen ? 'rotate-180' : ''}`}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="m6 9 6 6 6-6" />
+                    </svg>
+                    {filtersActive && (
+                        <span
+                            className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-accent ring-2 ring-surface"
+                            aria-hidden="true"
+                        />
+                    )}
+                    {filtersActive && <span className="sr-only">(filters active)</span>}
+                </button>
             </div>
+
+            <Filter filterHeight={filterHeight} setFilters={handleFilters} />
         </div>
     )
 }
