@@ -44,7 +44,7 @@ export default function SettingsForm(props: { inData: StudentOverlay, pending: b
             <div className="flex-col grow col-span-1 md:col-span-3">
                 <div className="bg-white h-full grow dark:bg-dark-blue py-3 px-4 shadow rounded-lg text-black dark:text-white">
                     <h1 className="text-2xl text-center mb-4">Edit Profile</h1>
-                    <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+                    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                         <div className="flex-col col-span-1">
                             <label className="h6 d-block">First Name</label>
                             <input
@@ -68,20 +68,6 @@ export default function SettingsForm(props: { inData: StudentOverlay, pending: b
                                 onChange={(e) => {
                                     setUserData(
                                         Object.assign({}, userData, { last: e.target.value })
-                                    )
-                                }
-                                }
-                            />
-                        </div>
-                        <div className="flex-col col-span-1">
-                            <label className="h6 d-block">Pronouns</label>
-                            <input
-                                name="pNouns"
-                                className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
-                                value={userData.pronouns}
-                                onChange={(e) => {
-                                    setUserData(
-                                        Object.assign({}, userData, { pronouns: e.target.value })
                                     )
                                 }
                                 }

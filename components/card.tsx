@@ -20,7 +20,6 @@ export default function Card(props: StudentOverlay | any) {
           dormRoom={props.showDorm ? props.dormRoom : ""}
           uid={props.uid}
           photoPath={props.showPhoto ? props.photoPath : "/placeholder.jpg"}
-          pronouns={props.pronouns}
           showDorm={props.showDorm}
           showPhoto={props.showPhoto}
           showProfile={props.showProfile}

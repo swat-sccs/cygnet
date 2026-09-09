@@ -82,8 +82,7 @@ export async function submitData(
   if (session && session.user) {
     if (
       badwords.check(formData.get("fName")?.toString() || "") ||
-      badwords.check(formData.get("lName")?.toString() || "") ||
-      badwords.check(formData.get("pNouns")?.toString() || "")
+      badwords.check(formData.get("lName")?.toString() || "")
     ) {
       return { message: "Inappropriate language detected!" };
     }
@@ -124,7 +123,6 @@ export async function submitData(
     const rawFormData = {
       firstName: formData.get("fName")?.toString() || "",
       lastName: formData.get("lName")?.toString() || "",
-      pronouns: formData.get("pNouns")?.toString() || "",
       showDorm: formData.get("showDorm"),
       showPhoto: formData.get("showPhoto"),
       showProfile: formData.get("showProfile"),
@@ -141,7 +139,6 @@ export async function submitData(
       update: {
         firstName: rawFormData.firstName,
         lastName: rawFormData.lastName,
-        pronouns: rawFormData.pronouns,
         photoPath: photo_path,
         showProfile: rawFormData.showProfile === "on" ? true : false,
         showDorm: rawFormData.showDorm === "on" ? true : false,
@@ -151,7 +148,7 @@ export async function submitData(
         uid: id,
         firstName: rawFormData.firstName,
         lastName: rawFormData.lastName,
-        pronouns: rawFormData.pronouns,
+        pronouns: "",
         photoPath: photo_path,
         dorm: itsRecord[0]["DORM"] || "Swarthmore",
         dormRoom: itsRecord[0]["DORM_ROOM"] || "404",

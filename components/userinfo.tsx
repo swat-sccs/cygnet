@@ -32,7 +32,6 @@ export default function UserInfo(props: StudentOverlay | any) {
     return (
         <div className="mt-2 text-center text-black dark:text-white">
             <div className="text-2xl mb-0">{props.firstName} {props.lastName}</div>
-            <p className="font-light mb-0">{props.pronouns}</p>
             <div className="text-md font-light mt-3">{props.dorm} {props.dormRoom} | {props.gradYear}</div>
             <div className="text-md font-light mt-3">{props.uid}</div>
         </div>
