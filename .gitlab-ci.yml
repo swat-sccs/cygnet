@@ -7,7 +7,8 @@ default:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - mv .secure_files/.env .env
     - docker info
-    - docker login $SCCS_REGISTRY -u $SCCS_REGISTRY_USER -p $SCCS_REGISTRY_TOKEN
+    # Authenticate with the job token; it can push to this project's registry and never needs rotating.
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
 
 variables:
   DOCKER_TLS_CERTDIR: ""
@@ -16,7 +17,7 @@ build:
   stage: build
   script:
     - docker compose build
-    - docker push $SCCS_REGISTRY/sccs/cygnet/cygnet:latest
+    - docker push "$CI_REGISTRY_IMAGE/cygnet:latest"
 
 deploy_docker_stage:
   stage: deploy
