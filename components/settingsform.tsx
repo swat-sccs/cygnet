@@ -7,19 +7,28 @@ import { StudentOverlay } from "@prisma/client";
 const snackOptions = {
     position: 'bottom-left' as const,
     style: {
-        backgroundColor: 'white',
-        border: 'none',
-        color: 'black',
-        fontFamily: 'Montserrat, sans-serif',
-        fontSize: '12px',
-        transform: 'translateY(-8dvh)',
-        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+        backgroundColor: 'rgb(var(--surface))',
+        color: 'rgb(var(--fg))',
+        border: '1px solid rgb(var(--line))',
+        borderRadius: '12px',
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '13px',
+        boxShadow: '0 12px 32px -8px rgb(0 0 0 / 0.28)',
     },
     closeStyle: {
-        color: '#44608F',
+        color: 'rgb(var(--accent))',
         fontSize: '12px',
     },
 }
+
+const labelClass = "block text-xs font-medium text-fg-3 uppercase tracking-wider mb-1.5";
+const inputClass =
+    "w-full bg-surface-2 border border-transparent focus:border-line-2 focus:bg-surface rounded-xl h-10 px-3 text-sm text-fg placeholder:text-fg-3 focus:ring-0 focus:outline-none transition";
+const toggleClass =
+    "appearance-none shrink-0 h-6 w-11 rounded-full border-0 bg-surface-3 checked:bg-accent checked:bg-none relative transition cursor-pointer " +
+    "before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:shadow before:transition " +
+    "checked:before:translate-x-5 focus:ring-0 focus:outline-none";
+const rowClass = "flex items-center justify-between gap-4 py-3 border-b border-line last:border-0";
 
 export default function SettingsForm(props: { inData: StudentOverlay, pending: boolean, state: { message: string } }) {
 
@@ -37,47 +46,64 @@ export default function SettingsForm(props: { inData: StudentOverlay, pending: b
     }, [props.pending, props.state.message]);
 
     return (
-        <div className="px-4 max-w-screen-lg md:mx-auto grid gap-4 grid-cols-1 md:grid-cols-4">
-            <div className="flex-col grow col-span-1">
-                <Card {...userData} button={true} />
-            </div>
-            <div className="flex-col grow col-span-1 md:col-span-3">
-                <div className="bg-white h-full grow dark:bg-dark-blue py-3 px-4 shadow rounded-lg text-black dark:text-white">
-                    <h1 className="text-2xl text-center mb-4">Edit Profile</h1>
-                    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                        <div className="flex-col col-span-1">
-                            <label className="h6 d-block">First Name</label>
-                            <input
-                                name="fName"
-                                className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
-                                value={userData.firstName}
-                                onChange={(e) => {
-                                    setUserData(
-                                        Object.assign({}, userData, { first: e.target.value })
-                                    )
-                                }
-                                }
-                            />
+        <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-8 sm:pt-12">
+            <header className="mb-6">
+                <h1 className="text-2xl font-semibold tracking-tight text-fg">Settings</h1>
+                <p className="text-fg-2 text-sm mt-1">Control what other students can see about you.</p>
+            </header>
+
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-[280px,1fr]">
+                <div className="md:self-start">
+                    <p className="text-xs uppercase tracking-wider text-fg-3 font-medium mb-2">Preview</p>
+                    <Card {...userData} button={true} />
+                </div>
+
+                <div className="bg-surface border border-line rounded-2xl p-5 sm:p-6">
+                    <section>
+                        <h2 className="text-sm font-semibold text-fg mb-4">Profile</h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label className={labelClass} htmlFor="fName">First name</label>
+                                <input
+                                    id="fName"
+                                    name="fName"
+                                    className={inputClass}
+                                    value={userData.firstName}
+                                    onChange={(e) => {
+                                        setUserData(
+                                            Object.assign({}, userData, { firstName: e.target.value })
+                                        )
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <label className={labelClass} htmlFor="lName">Last name</label>
+                                <input
+                                    id="lName"
+                                    name="lName"
+                                    className={inputClass}
+                                    value={userData.lastName}
+                                    onChange={(e) => {
+                                        setUserData(
+                                            Object.assign({}, userData, { lastName: e.target.value })
+                                        )
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <div className="flex-col col-span-1">
-                            <label className="h6 d-block">Last Name</label>
+                    </section>
+
+                    <div className="border-t border-line my-6" />
+
+                    <section>
+                        <h2 className="text-sm font-semibold text-fg mb-1">Visibility</h2>
+                        <div className={rowClass}>
+                            <div>
+                                <label className="block text-sm font-medium text-fg cursor-pointer" htmlFor="showDorm">Show dorm</label>
+                                <p className="text-xs text-fg-3">Display your dorm and room number</p>
+                            </div>
                             <input
-                                name="lName"
-                                className="py-1 px-2 w-full d-block rounded text-white bg-primary-400 dark:bg-primary-800 border-0"
-                                value={userData.lastName}
-                                onChange={(e) => {
-                                    setUserData(
-                                        Object.assign({}, userData, { last: e.target.value })
-                                    )
-                                }
-                                }
-                            />
-                        </div>
-                    </div>
-                    <div className="grid gap-4 grid-cols-3 mt-4">
-                        <div className="flex-col col-span-1 justify-center">
-                            <input
-                                className="w-5 h-5 mb-px cursor-pointer text-primary-400 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
+                                className={toggleClass}
                                 type="checkbox"
                                 name="showDorm"
                                 id="showDorm"
@@ -89,11 +115,14 @@ export default function SettingsForm(props: { inData: StudentOverlay, pending: b
                                     )
                                 }
                             />
-                            <label className="cursor-pointer text-black dark:text-white" htmlFor="showDorm">Show Dorm</label>
                         </div>
-                        <div className="flex-col col-span-1 justify-center">
+                        <div className={rowClass}>
+                            <div>
+                                <label className="block text-sm font-medium text-fg cursor-pointer" htmlFor="showPhoto">Show picture</label>
+                                <p className="text-xs text-fg-3">Display your photo on your card</p>
+                            </div>
                             <input
-                                className="w-5 h-5 mb-px cursor-pointer text-primary-400 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
+                                className={toggleClass}
                                 type="checkbox"
                                 name="showPhoto"
                                 id="showPhoto"
@@ -105,11 +134,14 @@ export default function SettingsForm(props: { inData: StudentOverlay, pending: b
                                     )
                                 }
                             />
-                            <label className="cursor-pointer text-black dark:text-white" htmlFor="showPhoto">Show Picture</label>
                         </div>
-                        <div className="flex-col col-span-1 justify-center">
+                        <div className={rowClass}>
+                            <div>
+                                <label className="block text-sm font-medium text-fg cursor-pointer" htmlFor="showProfile">Show profile</label>
+                                <p className="text-xs text-fg-3">Include you in search results at all</p>
+                            </div>
                             <input
-                                className="w-5 h-5 mb-px cursor-pointer text-primary-400 dark:text-primary-800 hover:brightness-75 transition transition-filters border-0 rounded mx-1"
+                                className={toggleClass}
                                 type="checkbox"
                                 name="showProfile"
                                 id="showProfile"
@@ -121,11 +153,16 @@ export default function SettingsForm(props: { inData: StudentOverlay, pending: b
                                     )
                                 }
                             />
-                            <label className="cursor-pointer text-black dark:text-white" htmlFor="showProfile">Show Profile</label>
                         </div>
-                    </div>
-                    <div className="flex flex-row justify-center">
-                        <input type="submit" value="Submit" aria-disabled={props.pending} className="cursor-pointer mt-8 mx-auto w-full text-white bg-primary-400 dark:bg-primary-800 hover:brightness-75 transition transition-filters rounded h-8 max-w-2xl" />
+                    </section>
+
+                    <div className="mt-6 flex justify-end">
+                        <input
+                            type="submit"
+                            value="Save changes"
+                            aria-disabled={props.pending}
+                            className={`cursor-pointer bg-accent text-accent-fg hover:bg-accent-hover rounded-full px-4 h-10 text-sm font-medium transition disabled:opacity-60 ${props.pending ? "opacity-60" : ""}`}
+                        />
                     </div>
                 </div>
             </div>
