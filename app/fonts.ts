@@ -1,16 +1,8 @@
-import { Montserrat, Play } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
-export const mont = Montserrat({
+// Single typeface, matching SwatGPT. Weights: 400 body, 500 UI, 600 headings.
+export const inter = Inter({
     subsets: ['latin', 'latin-ext'],
     display: 'swap',
-    weight: ['300', '400', '500', '700'],
-    variable: '--font-mont',
-});
-
-export const play = Play({
-    subsets: ['latin', 'latin-ext'],
-    display: 'swap',
-    style: 'normal',
-    weight: ['400', '700'],
-    variable: '--font-play',
+    variable: '--font-inter',
 });

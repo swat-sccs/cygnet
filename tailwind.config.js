@@ -1,72 +1,73 @@
 /** @type {import('tailwindcss').Config} */
+
+// Semantic color tokens. The RGB triplets live in app/globals.css and flip
+// automatically with prefers-color-scheme, so components never need `dark:`
+// variants for color. Use `bg-surface`, `text-fg-2`, `border-line`, etc.
+const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 module.exports = {
     content: [
-        "./app/**/*.{js,ts,jsx,tsx}", // Note the addition of the `app` directory.
+        "./app/**/*.{js,ts,jsx,tsx}",
         "./components/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
         extend: {
-            spacing: {
-                'most': '98%',
-            },
             fontFamily: {
-                sans: ["var(--font-mont)"],
-                play: ["var(--font-play)"],
-                mont: ["var(--font-mont)"],
+                sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
             },
             colors: {
-                'primary': {
-                    '50': '#f5f7fa',
-                    '100': '#eaedf4',
-                    '200': '#cfd8e8',
-                    '300': '#a5b8d4',
-                    '400': '#7591bb',
-                    '500': '#5474a3',
-                    '600': '#44608f', /* this is cygnet primary */
-                    '700': '#35496f',
-                    '800': '#2f405d',
-                    '900': '#2b384f',
-                    '950': '#1d2434',
+                // page + surfaces
+                "bg": token("bg"),
+                "surface": token("surface"),
+                "surface-2": token("surface-2"),
+                "surface-3": token("surface-3"),
+                // text
+                "fg": token("fg"),
+                "fg-2": token("fg-2"),
+                "fg-3": token("fg-3"),
+                // borders
+                "line": token("line"),
+                "line-2": token("line-2"),
+                // brand accent (SwatGPT burnt orange)
+                "accent": {
+                    DEFAULT: token("accent"),
+                    hover: token("accent-hover"),
+                    fg: token("accent-fg"),
+                    soft: token("accent-soft"),
                 },
-                'sccs': {
-                    '50': '#f5f7fa',
-                    '100': '#eaedf4',
-                    '200': '#d0d9e7',
-                    '300': '#a6b7d3',
-                    '400': '#7692ba',
-                    '500': '#5574a2',
-                    '600': '#425d87',
-                    '700': '#364a6e',
-                    '800': '#31425f', /* this is our primary */
-                    '900': '#2c384e',
+                "ring-token": token("ring"),
+                // raw palette from swat-sccs/SwatGPT, for the rare one-off
+                "paper": {
+                    20: "#f6f2ea", 50: "#faf6ef", 100: "#f1ebe0", 200: "#e8e1d3", 300: "#d5d0c4",
+                    card: "#fffdf8",
                 },
-                'gray': {
-                    '50': '#f8f8f8',
-                    '100': '#f1f1f1',
-                    '200': '#dcdcdc',
-                    '300': '#bdbdbd',
-                    '400': '#989898',
-                    '500': '#7c7c7c',
-                    '600': '#656565',
-                    '700': '#525252',
-                    '800': '#464646',
-                    '900': '#3d3d3d',
-                    '950': '#292929',
+                "ink": {
+                    400: "#8a8f9c", 500: "#575c6a", 600: "#444a5a", 650: "#3a4050", 700: "#313646",
+                    800: "#1a1f2e", 850: "#141825", 875: "#10141f", 900: "#0c101a",
                 },
-                "page-bg": {
-                    "light": "#f1f1f1",
-                    "dark": "#0d111a",
+                "navy": {
+                    20: "#f0f2f5", 50: "#eceff3", 100: "#d9d9d9", 200: "#bec7d1", 300: "#9fadbc",
+                    400: "#929aa6", 500: "#4a566a", 600: "#343f52", 650: "#2b3546", 700: "#252e3e",
+                    800: "#1a2332", 850: "#151d2b", 875: "#111722", 900: "#0c1019",
                 },
-                "card-bg": "#ffffff",
-                "alt-blue": "#364a6d",
-                "dark-blue": "#161e2c",
+            },
+            borderRadius: {
+                "xl2": "1.25rem",
+            },
+            boxShadow: {
+                "card": "0 1px 2px rgb(0 0 0 / 0.04), 0 1px 3px rgb(0 0 0 / 0.06)",
+                "card-hover": "0 10px 24px -8px rgb(0 0 0 / 0.16), 0 2px 6px rgb(0 0 0 / 0.06)",
+                "pop": "0 12px 32px -8px rgb(0 0 0 / 0.28), 0 2px 8px rgb(0 0 0 / 0.08)",
+            },
+            transitionTimingFunction: {
+                "out-expo": "cubic-bezier(0.22, 1, 0.36, 1)",
             },
             screens: {
                 'xs': '0px',
                 'sm': '640px',
                 'md': '768px',
-                'lg': '1280px',
-                'xl': '2160px',
+                'lg': '1024px',
+                'xl': '1280px',
             },
         }
     },

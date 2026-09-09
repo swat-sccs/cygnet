@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import CardBody from "./cardbody";
 import prisma from "@/lib/prisma";
 import { StudentOverlay } from "@prisma/client";
-import { play } from "@/app/fonts";
 import { MOCK_ENABLED, mockFilter } from "@/lib/mock";
 //import TextModerate from 'text-moderate';
 
@@ -283,24 +282,29 @@ export default async function PageBody({
     );
   } else {
     return (
-      <div className="flex flex-grow flex-col mb-28 items-center justify-center w-full text-black dark:text-white">
-        <div className="flex-row w-full">
-          <p className="text-center">
-            Welcome to
-            <br />
-            <span className={`${play.className} h1`}>
-              <span className="text-black dark:text-white text-3xl">
-                CYGNET
-              </span>
-              <span className="grad dark:brightness-150 z-0">by SCCS</span>
-            </span>
-          </p>
+      <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-16 animate-rise">
+        <div className="h-12 w-12 rounded-2xl bg-accent/10 text-accent flex items-center justify-center">
+          <svg
+            className="h-5 w-5"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
         </div>
-        <div className="flex-row w-full">
-          <p className="text-center h6 mt-5">
-            Enter a query or add a filter to begin
-          </p>
-        </div>
+        <h2 className="mt-5 mb-0 text-xl font-semibold tracking-tight text-fg">
+          Search the directory
+        </h2>
+        <p className="mt-2 mb-0 text-fg-2 max-w-sm">
+          Start typing a name, dorm, or class year above, or open filters.
+        </p>
       </div>
     );
   }

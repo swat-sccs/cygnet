@@ -1,10 +1,8 @@
 import Nav from "@/components/nav";
 import "./globals.css";
-import Script from "next/script";
 import { NextAuthProvider } from "./NextAuthProvider";
 import Footer from "@/components/footer";
-import { mont } from "./fonts";
-import Offline from "@/components/offline";
+import { inter } from "./fonts";
 
 export const metadata = {
   title: "Cygnet",
@@ -23,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <NextAuthProvider>
-      <html lang="en" className={`${mont.className} font-medium`}>
+      <html lang="en" className={`${inter.variable} ${inter.className} h-full`}>
         <head>
           <script
             defer
@@ -31,19 +29,13 @@ export default function RootLayout({
             src="https://plausible.sccs.swarthmore.edu/js/script.js"
           ></script>
         </head>
-        <body className="bg-page-bg-light dark:bg-page-bg-dark ">
-          {/*<Offline></Offline> */}
-
+        <body className="min-h-full flex flex-col bg-bg text-fg">
           <Nav />
-          <div className="min-h-[82dvh] md:min-h-[88dvh] py-4 flex flex-col">
+          <main className="flex-1 flex flex-col w-full pb-16">
             {children}
-          </div>
+          </main>
           <Footer />
         </body>
-        <Script
-          src="https://kit.fontawesome.com/3d9fad96a7.js"
-          crossOrigin="anonymous"
-        />
       </html>
     </NextAuthProvider>
   );
